@@ -28,3 +28,11 @@ export function getList(data) {
     data
   })
 }
+
+export function getHomeData(data) {
+  return request({
+    url: '/home/index',
+    method: 'post',
+    data
+  })
+}

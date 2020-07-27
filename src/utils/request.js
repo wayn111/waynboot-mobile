@@ -15,7 +15,7 @@ service.interceptors.request.use(
   config => {
     if (store.getters.token) {
       // ['X-Token']是我这里自定义测试而塞到请求头中
-      config.headers['X-TOKEN'] = getToken()
+      config.headers.Authorization = getToken()
     }
     return config
   },
@@ -32,7 +32,7 @@ service.interceptors.response.use(
 
     // 与后端约定的错误码
     if (res.code !== 200) {
-      Toast.fail(res.message)
+      Toast.fail(res.msg)
       // 现约定 50001:无效token 50002:token过期
       if (res.code === 50001 || res.code === 50002) {
         Dialog.alert({
@@ -45,7 +45,7 @@ service.interceptors.response.use(
         })
       }
 
-      return Promise.reject(new Error(res.message || 'Error'))
+      return Promise.reject(new Error(res.msg || 'Error'))
     } else {
       return res
     }

@@ -10,7 +10,7 @@
             :key="index"
             @click="onNavigate()"
           >
-            <img :src="item.icon" />
+            <img :src="item.iconUrl" />
             <p class="text">{{item.name}}</p>
           </div>
         </div>

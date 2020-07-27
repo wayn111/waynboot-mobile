@@ -15,18 +15,18 @@ const mutations = {
   SET_USER_INFO: (state, info) => {
     state.userInfo = info
     state.id = info.id
-    state.name = info.name
+    state.name = info.username
   }
 }
 
 const actions = {
   // 登录
   login({ commit }, userInfo) {
-    const { phonenum, password } = userInfo
+    const { mobile, password } = userInfo
     return new Promise((resolve, reject) => {
-      login({ phonenum, password })
+      login({ mobile, password })
         .then(res => {
-          const { token } = res.entry
+          const { token } = res.map
           commit('SET_TOKEN', token)
           setToken(token)
           resolve()
@@ -58,11 +58,11 @@ const actions = {
     return new Promise((resolve, reject) => {
       getInfo(state.token)
         .then(res => {
-          const data = res.entry
+          const data = res.map
           if (!data) {
             reject(new Error('获取基本信息失败，请重新登录'))
           }
-          commit('SET_USER_INFO', data)
+          commit('SET_USER_INFO', data.info)
           resolve(data)
         })
         .catch(error => {

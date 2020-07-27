@@ -3,6 +3,7 @@ const getters = {
   id: state => state.user.id,
   name: state => state.user.name,
   userInfo: state => state.user.userInfo,
+  token: state => state.user.token,
 
   // address
   addressList: state => state.address.addressList,

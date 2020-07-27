@@ -7,7 +7,7 @@
 
     <van-form class="form" @submit="onSubmit">
       <van-field
-        v-model="form.phonenum"
+        v-model="form.mobile"
         type="number"
         required
         clearable
@@ -58,8 +58,8 @@ export default {
   data() {
     return {
       form: {
-        phonenum: 123456789,
-        password: 1234
+        mobile: 13617159841,
+        password: 123456
       },
       loading: false
     }
