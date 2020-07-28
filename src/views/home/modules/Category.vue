@@ -130,7 +130,7 @@ export default {
           display: block;
           width: 88px;
           height: 88px;
-          border-radius: 50%;
+          border-radius: 18%;
           overflow: hidden;
           background: #f5f5f5;
           margin: 0 auto;

@@ -1,10 +1,10 @@
 import request from '@/utils/request'
 
-export function getGoodsList(data) {
+export function getGoodsList(query) {
   return request({
     url: '/home/goodsList',
-    method: 'post',
-    data
+    method: 'get',
+    params: query
   })
 }
 

@@ -57,8 +57,8 @@ export default {
       newGoodsList: [],
       hotGoodsList: [],
       goodsList: [],
-      pageSize: 1,
-      pageNum: 8,
+      pageSize: 6,
+      pageNum: 1,
       isLoading: false,
       isFinished: false,
       isSkeletonShow: true
@@ -84,17 +84,17 @@ export default {
         pageSize: this.pageSize,
         pageNum: this.pageNum
       }).then(res => {
-        const data = res.map
+        const { map: { data } } = res
         this.goodsList = [...this.goodsList, ...data]
         this.isLoading = false
-        if (data.length < this.pageNum && this.goodsList.length > 0) {
+        if (data.length < this.pageSize && this.goodsList.length > 0) {
           this.isFinished = true
         }
       })
     },
     // reach-bottom
     onReachBottom() {
-      this.pageSize += 1
+      this.pageNum += 1
       this.getGoodsList()
     }
   }
