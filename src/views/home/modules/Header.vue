@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="home-header">
-      <image-pic width="28px" height="28px" :src="require('@/assets/logo.png')" />
+      <!-- <image-pic width="28px" height="28px" :src="require('@/assets/logo.png')" /> -->
       <van-button block class="search" size="small" @click="onSearch">
         <span style="color:#8e8e8e;margin-right:6px">
           <svg-icon icon-class="search" :width="15" :height="15" />
@@ -47,7 +47,7 @@ export default {
   background: #fff;
   padding: 24px;
   .search {
-    margin: 0 18px;
+    margin: 0 16px 0 0;
     display: flex;
     align-items: center;
     font-size: 26px;

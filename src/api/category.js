@@ -1,13 +1,12 @@
 import request from '@/utils/request'
 
-export function getCateItems() {
+export function getCategoryData() {
   return request({
-    url: '/category/items',
+    url: '/category/index',
     method: 'get'
   })
 }
-
-export function getCateContent(data) {
+export function getCategoryContent(data) {
   return request({
     url: '/category/content',
     method: 'post',

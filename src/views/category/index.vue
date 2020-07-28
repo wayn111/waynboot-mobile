@@ -1,21 +1,22 @@
 <template>
   <div class="category">
+    <Header />
     <van-tree-select
       height="calc(100vh - 50px)"
-      :items="items"
+      :items="categoryList"
       :main-active-index.sync="active"
       @click-nav="onNavClick"
     >
       <template #content>
         <div class="main">
-          <image-pic width="100%" height="85" fit="fill" :src="banner" />
-          <div class="main__item" v-for="(item,index) in cate" :key="index">
-            <h3 class="main__item__title">{{item.title}}</h3>
+          <image-pic width="100%" height="85" fit="fill" :src="currentCategory.picUrl" />
+          <div class="main__item">
+            <h3 class="main__item__title">{{currentCategory.remark}}</h3>
             <div class="main__item__content">
               <van-grid :column-num="3" :border="false">
-                <van-grid-item class="single" v-for="(single,idx) in item.content" :key="idx">
-                  <image-pic fit="contain" :src="single.img" />
-                  <span>{{single.name}}</span>
+                <van-grid-item class="single" v-for="(single,idx) in subCategoryList" :key="idx">
+                  <image-pic fit="contain" :src="single.icon" />
+                  <span>{{single.text}}</span>
                 </van-grid-item>
               </van-grid>
             </div>
@@ -27,35 +28,41 @@
 </template>
 
 <script>
-import { getCateItems, getCateContent } from '@/api/category'
+import Header from '../home/modules/Header'
+import { getCategoryData, getCategoryContent } from '@/api/category'
 
 export default {
   name: 'Category',
+  components: {
+    Header
+  },
   data() {
     return {
       active: 0,
-      items: [],
-      cate: [],
-      banner: ''
+      categoryList: [],
+      currentCategory: {},
+      subCategoryList: []
     }
   },
   mounted() {
-    this.getCateItems()
-    this.getCateContent()
+    this.getCategoryData()
   },
   methods: {
-    getCateItems() {
-      getCateItems().then(res => {
-        this.items = res.entry
+    getCategoryData() {
+      getCategoryData().then((res) => {
+        const { categoryList, currentCategory, subCategoryList } = res.map
+        this.categoryList = categoryList
+        this.currentCategory = currentCategory
+        this.subCategoryList = subCategoryList
       })
     },
-    getCateContent() {
-      getCateContent({
+    getCategoryContent() {
+      getCategoryContent({
         index: this.active
-      }).then(res => {
-        const { banner, listItem } = res.entry
-        this.banner = banner
-        this.cate = listItem
+      }).then((res) => {
+        const { currentCategory, listItem } = res.map
+        this.subCategoryList = listItem
+        this.currentCategory = currentCategory
       })
     },
     onNavClick() {
@@ -66,7 +73,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "@/styles/variables.scss";
+@import '@/styles/variables.scss';
 
 .category {
   .main {
@@ -76,6 +83,7 @@ export default {
       .main__item__title {
         color: $black;
         font-size: $small;
+        text-align: center;
         font-weight: bold;
         padding: 16px;
       }
