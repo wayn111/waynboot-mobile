@@ -58,15 +58,15 @@ export default {
     },
     getCategoryContent() {
       getCategoryContent({
-        index: this.active
+        id: this.categoryList[this.active].id
       }).then((res) => {
-        const { currentCategory, listItem } = res.map
-        this.subCategoryList = listItem
+        const { currentCategory, subCategoryList } = res.map
         this.currentCategory = currentCategory
+        this.subCategoryList = subCategoryList
       })
     },
     onNavClick() {
-      this.getCateContent()
+      this.getCategoryContent()
     }
   }
 }

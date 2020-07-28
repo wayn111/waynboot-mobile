@@ -6,10 +6,10 @@ export function getCategoryData() {
     method: 'get'
   })
 }
-export function getCategoryContent(data) {
+export function getCategoryContent(query) {
   return request({
     url: '/category/content',
-    method: 'post',
-    data
+    method: 'get',
+    params: query
   })
 }
