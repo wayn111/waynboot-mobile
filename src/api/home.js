@@ -1,29 +1,8 @@
 import request from '@/utils/request'
 
-export function getBanner() {
+export function getGoodsList(data) {
   return request({
-    url: '/home/banner',
-    method: 'get'
-  })
-}
-
-export function getCategory() {
-  return request({
-    url: '/home/category',
-    method: 'get'
-  })
-}
-
-export function getSession() {
-  return request({
-    url: '/home/session',
-    method: 'get'
-  })
-}
-
-export function getList(data) {
-  return request({
-    url: '/home/list',
+    url: '/home/goodsList',
     method: 'post',
     data
   })

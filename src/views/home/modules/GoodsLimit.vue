@@ -4,8 +4,7 @@
 
     <van-list
       v-model="loading"
-      :finished="isFinished"
-      finished-text="没有更多了"
+      :finished="true"
       @load="onReachBottom"
       :immediate-check="false"
     >
@@ -13,11 +12,11 @@
         <goods-item
           v-for="(item,idx) in goodsList"
           :key="idx"
-          :img="item.img"
-          :title="item.title"
+          :img="item.picUrl"
+          :title="item.name"
           :desc="item.desc"
-          :price="item.price"
-          :discount="item.discount"
+          :price="item.retailPrice"
+          :discount="item.counterPrice"
         />
       </div>
     </van-list>
@@ -36,10 +35,6 @@ export default {
     goodsList: Array,
     titleName: String,
     isLoading: {
-      type: Boolean,
-      default: false
-    },
-    isFinished: {
       type: Boolean,
       default: false
     }
