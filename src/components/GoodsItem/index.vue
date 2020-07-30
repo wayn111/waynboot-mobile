@@ -17,14 +17,11 @@
 
 <script>
 export default {
-  props: ['img', 'title', 'desc', 'price', 'discount'],
+  props: ['goodsId', 'img', 'title', 'desc', 'price', 'discount'],
   methods: {
     onNavigate() {
       this.$router.push({
-        path: '/detail',
-        query: {
-          t: +new Date()
-        }
+        path: `/detail/${this.goodsId}`
       })
     }
   }

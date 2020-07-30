@@ -12,9 +12,10 @@
         <goods-item
           v-for="(item,idx) in goodsList"
           :key="idx"
+          :goodsId="item.id"
           :img="item.picUrl"
           :title="item.name"
-          :desc="item.desc"
+          :desc="item.brief"
           :price="item.retailPrice"
           :discount="item.counterPrice"
         />

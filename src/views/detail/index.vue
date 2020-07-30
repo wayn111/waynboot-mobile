@@ -9,19 +9,19 @@
     <Swiper :banner="banner" />
 
     <Overview
-      :title="overview.title"
-      :desc="overview.desc"
-      :price="overview.price"
-      :discount="overview.discount"
+      :title="overview.name"
+      :desc="overview.brief"
+      :price="overview.retailPrice"
+      :discount="overview.counterPrice"
     />
 
     <Section @input="isSkuShow = $event" />
 
-    <Comment :rate="comment.rate" :num="comment.num" :tags="comment.tags" :list="comment.list" />
+    <!-- <Comment :rate="comment.rate" :num="comment.num" :tags="comment.tags" :list="comment.list" /> -->
 
     <Description :description="description" />
 
-    <Sku :skudata="skudata" :goods="goods" v-model="isSkuShow" />
+    <!-- <Sku :skudata="skudata" :goods="goods" v-model="isSkuShow" /> -->
 
     <Tabbar @input="isSkuShow = $event" />
     <back-top />
@@ -43,6 +43,7 @@ import Skeleton from './modules/Skeleton'
 
 export default {
   name: 'Detail',
+  props: ['goodsId'],
   components: {
     NavBar,
     Swiper,
@@ -72,22 +73,12 @@ export default {
   methods: {
     getDetail() {
       getDetail({
-        goodsId: '1234'
+        goodsId: this.goodsId
       }).then(res => {
-        const {
-          banner,
-          overview,
-          comment,
-          description,
-          sku,
-          goods
-        } = res.entry
-        this.banner = banner
+        const { data: overview } = res.map
         this.overview = overview
-        this.comment = comment
-        this.description = description
-        this.skudata = sku
-        this.goods = goods
+        this.banner = overview.gallery
+        this.description = overview.picUrl
         this.isSkeletonShow = false
       })
     }
