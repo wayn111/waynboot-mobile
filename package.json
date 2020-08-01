@@ -14,7 +14,7 @@
     "url": "git+https://github.com/Ewall1106/mall"
   },
   "scripts": {
-    "dev": "vue-cli-service serve --mode=production",
+    "dev": "vue-cli-service serve",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
@@ -25,8 +25,9 @@
     "axios": "^0.19.2",
     "core-js": "^3.6.4",
     "js-cookie": "^2.2.1",
+    "lodash": "^4.17.19",
     "normalize.css": "^8.0.1",
-    "vant": "^2.5.5",
+    "vant": "^2.9.4",
     "vue": "^2.6.11",
     "vue-clipboard2": "^0.3.1",
     "vue-content-loader": "^0.2.3",

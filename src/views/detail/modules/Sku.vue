@@ -2,7 +2,7 @@
   <div class="goods-sku">
     <van-sku
       v-model="isShow"
-      :sku="skudata"
+      :sku="skuData"
       :goods="goods"
       :close-on-click-overlay="true"
       @buy-clicked="onBuy"
@@ -18,7 +18,7 @@ export default {
       type: Boolean,
       default: false
     },
-    skudata: Object,
+    skuData: Object,
     goods: Object
   },
   computed: {
@@ -31,6 +31,7 @@ export default {
       }
     }
   },
+  created() { console.log(1) },
   methods: {
     onBuy() {
       console.log('buy')

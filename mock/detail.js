@@ -88,30 +88,6 @@ export default [
                         'http://m.360buyimg.com/mobilecms/s843x843_jfs/t1/61801/33/670/234001/5cee2008Ea77b2f13/c193d2370dab7ff2.jpg',
                       previewImgUrl:
                         'http://m.360buyimg.com/mobilecms/s843x843_jfs/t1/61801/33/670/234001/5cee2008Ea77b2f13/c193d2370dab7ff2.jpg'
-                    },
-                    {
-                      id: '1003',
-                      name: '三体2：黑暗森林',
-                      imgUrl:
-                        'http://m.360buyimg.com/mobilecms/s843x843_jfs/t5953/39/822101194/248686/1d0b6b5e/592bf161N3c12cc3a.jpg',
-                      previewImgUrl:
-                        'http://m.360buyimg.com/mobilecms/s843x843_jfs/t5953/39/822101194/248686/1d0b6b5e/592bf161N3c12cc3a.jpg'
-                    },
-                    {
-                      id: '1004',
-                      name: '三体（纪念版）（套装共3册）',
-                      imgUrl:
-                        'http://m.360buyimg.com/mobilecms/s843x843_jfs/t7084/309/1723776720/329560/b5511e85/598d1fe1N95cad7bc.jpg',
-                      previewImgUrl:
-                        'http://m.360buyimg.com/mobilecms/s843x843_jfs/t7084/309/1723776720/329560/b5511e85/598d1fe1N95cad7bc.jpg'
-                    },
-                    {
-                      id: '1005',
-                      name: '三体2.黑暗森林（典藏版）',
-                      imgUrl:
-                        'http://m.360buyimg.com/mobilecms/s843x843_jfs/t4288/65/1458919872/394831/25fb907b/58c213a5N4bf8e476.jpg',
-                      previewImgUrl:
-                        'http://m.360buyimg.com/mobilecms/s843x843_jfs/t4288/65/1458919872/394831/25fb907b/58c213a5N4bf8e476.jpg'
                     }
                   ],
                   k_s: 's1'

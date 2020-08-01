@@ -9,10 +9,10 @@
     <Swiper :banner="banner" />
 
     <Overview
-      :title="overview.name"
-      :desc="overview.brief"
-      :price="overview.retailPrice"
-      :discount="overview.counterPrice"
+      :title="info.name"
+      :desc="info.brief"
+      :price="info.retailPrice"
+      :discount="info.counterPrice"
     />
 
     <Section @input="isSkuShow = $event" />
@@ -21,7 +21,7 @@
 
     <Description :description="description" />
 
-    <!-- <Sku :skudata="skudata" :goods="goods" v-model="isSkuShow" /> -->
+    <Sku :skuData="skuData" :goods="skuGoods" v-model="isSkuShow" />
 
     <Tabbar @input="isSkuShow = $event" />
     <back-top />
@@ -40,6 +40,7 @@ import Description from './modules/Description'
 import Tabbar from './modules/Tabbar'
 import Sku from './modules/Sku'
 import Skeleton from './modules/Skeleton'
+import _ from 'lodash'
 
 export default {
   name: 'Detail',
@@ -58,11 +59,12 @@ export default {
   data() {
     return {
       banner: [],
-      overview: {},
+      goods: {},
+      info: {},
       comment: {},
       description: '',
-      skudata: {},
-      goods: {},
+      skuData: {},
+      skuGoods: {},
       isSkuShow: false,
       isSkeletonShow: true
     }
@@ -75,12 +77,83 @@ export default {
       getDetail({
         goodsId: this.goodsId
       }).then(res => {
-        const { data: overview } = res.map
-        this.overview = overview
-        this.banner = overview.gallery
-        this.description = overview.picUrl
+        const goods = res.map
+        this.goods = goods
+        this.info = goods.info
+        this.banner = goods.info.gallery
+        this.description = goods.info.picUrl
+        this.skuAdapter()
         this.isSkeletonShow = false
       })
+    },
+    skuAdapter() {
+      const tree = this.setSkuTree()
+      const list = this.setSkuList()
+      const skuInfo = {
+        price: parseInt(this.goods.info.retailPrice), // 未选择规格时的价格
+        stock_num: 0, // TODO 总库存
+        collection_id: '', // 无规格商品skuId取collection_id，否则取所选sku组合对应的id
+        none_sku: false, // 是否无规格商品
+        hide_stock: true
+      }
+      this.skuData = {
+        tree,
+        list,
+        ...skuInfo
+      }
+      this.skuGoods = {
+        title: this.goods.info.name,
+        picture: this.goods.info.picUrl
+      }
+    },
+    setSkuTree() {
+      const specifications = []
+      _.each(this.goods.specificationList, (v, k) => {
+        const values = []
+        _.each(v.valueList, vv => {
+          vv.name = vv.value
+          values.push({
+            id: vv.id,
+            name: vv.value,
+            imUrl: vv.picUrl
+          })
+        })
+        specifications.push({
+          k: v.name,
+          v: values,
+          k_s: 's' + (~~k + 1)
+        })
+      })
+
+      return specifications
+    },
+    setSkuList() {
+      const skuList = []
+      _.each(this.goods.productList, v => {
+        var skuListObj = {}
+        _.each(v.specifications, (specificationName, index) => {
+          skuListObj['s' + (~~index + 1)] = this.findSpecValueIdByName(specificationName)
+        })
+
+        skuListObj.price = v.price * 100
+        skuListObj.stock_num = v.number
+        skuList.push(skuListObj)
+      })
+      return skuList
+    },
+    findSpecValueIdByName(name) {
+      let id = 0
+      _.each(this.goods.specificationList, specification => {
+        _.each(specification.valueList, specValue => {
+          if (specValue.value === name) {
+            id = specValue.id
+          }
+        })
+        if (id !== 0) {
+
+        }
+      })
+      return id
     }
   }
 }
