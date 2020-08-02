@@ -15,17 +15,17 @@
       :discount="info.counterPrice"
     />
 
-    <Section @input="isSkuShow = $event" />
+    <Section @input="isSkuShow = $event" :stockNum="stockNum" :name="name" />
 
     <!-- <Comment :rate="comment.rate" :num="comment.num" :tags="comment.tags" :list="comment.list" /> -->
 
     <Description :description="description" />
 
-    <Sku :skuData="skuData" :goods="skuGoods" v-model="isSkuShow" />
+    <Sku v-if="isSkuShow" :skuData="skuData" :goods="skuGoods" :initialSku="initialSku" @initSku="initSku($event)" @initSkuNum="stockNum = $event" v-model="isSkuShow" />
 
     <Tabbar @input="isSkuShow = $event" />
     <back-top />
-    <Skeleton v-if="isSkeletonShow"/>
+    <Skeleton v-if="isSkeletonShow" />
   </div>
 </template>
 
@@ -61,9 +61,12 @@ export default {
       banner: [],
       goods: {},
       info: {},
+      name: '',
+      stockNum: 1,
       comment: {},
       description: '',
       skuData: {},
+      initialSku: {},
       skuGoods: {},
       isSkuShow: false,
       isSkeletonShow: true
@@ -76,7 +79,7 @@ export default {
     getDetail() {
       getDetail({
         goodsId: this.goodsId
-      }).then(res => {
+      }).then((res) => {
         const goods = res.map
         this.goods = goods
         this.info = goods.info
@@ -94,8 +97,9 @@ export default {
         stock_num: 0, // TODO 总库存
         collection_id: '', // 无规格商品skuId取collection_id，否则取所选sku组合对应的id
         none_sku: false, // 是否无规格商品
-        hide_stock: true
+        hide_stock: false
       }
+      this.name = tree[0].v[0].name
       this.skuData = {
         tree,
         list,
@@ -106,11 +110,14 @@ export default {
         picture: this.goods.info.picUrl
       }
     },
+    initSku($event) {
+      this.initialSku[$event.skuKeyStr] = $event.id
+    },
     setSkuTree() {
       const specifications = []
       _.each(this.goods.specificationList, (v, k) => {
         const values = []
-        _.each(v.valueList, vv => {
+        _.each(v.valueList, (vv) => {
           vv.name = vv.value
           values.push({
             id: vv.id,
@@ -129,10 +136,12 @@ export default {
     },
     setSkuList() {
       const skuList = []
-      _.each(this.goods.productList, v => {
+      _.each(this.goods.productList, (v) => {
         var skuListObj = {}
         _.each(v.specifications, (specificationName, index) => {
-          skuListObj['s' + (~~index + 1)] = this.findSpecValueIdByName(specificationName)
+          skuListObj['s' + (~~index + 1)] = this.findSpecValueIdByName(
+            specificationName
+          )
         })
 
         skuListObj.price = v.price * 100
@@ -143,14 +152,13 @@ export default {
     },
     findSpecValueIdByName(name) {
       let id = 0
-      _.each(this.goods.specificationList, specification => {
-        _.each(specification.valueList, specValue => {
+      _.each(this.goods.specificationList, (specification) => {
+        _.each(specification.valueList, (specValue) => {
           if (specValue.value === name) {
             id = specValue.id
           }
         })
         if (id !== 0) {
-
         }
       })
       return id

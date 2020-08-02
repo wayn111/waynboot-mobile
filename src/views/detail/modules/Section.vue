@@ -4,7 +4,7 @@
       <div class="section__item">
         <div class="section__item__left">
           <span class="title">已选</span>
-          <span class="content">三体（套装1-3册），1个</span>
+          <span class="content">{{name}}，{{stockNum}}个</span>
         </div>
         <div class="section__item__right">
           <van-icon name="arrow" />
@@ -46,6 +46,7 @@
 import { mapGetters } from 'vuex'
 
 export default {
+  props: ['name', 'stockNum'],
   computed: {
     ...mapGetters(['selectedAddress'])
   },

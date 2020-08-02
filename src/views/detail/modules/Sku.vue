@@ -4,9 +4,13 @@
       v-model="isShow"
       :sku="skuData"
       :goods="goods"
+      :initial-sku="initialSku"
+      :hide-stock="skuData.hide_stock"
       :close-on-click-overlay="true"
       @buy-clicked="onBuy"
       @add-cart="onAddCart"
+      @sku-selected="onSkuSelected"
+      @stepper-change="onStepperChange"
     />
   </div>
 </template>
@@ -19,7 +23,8 @@ export default {
       default: false
     },
     skuData: Object,
-    goods: Object
+    goods: Object,
+    initialSku: Object
   },
   computed: {
     isShow: {
@@ -31,7 +36,6 @@ export default {
       }
     }
   },
-  created() { console.log(1) },
   methods: {
     onBuy() {
       console.log('buy')
@@ -39,6 +43,12 @@ export default {
     onAddCart() {
       this.$toast.success('添加成功')
       this.$emit('input', false)
+    },
+    onSkuSelected({ skuValue, selectedSku, selectedSkuComb }) {
+      this.$emit('initSku', skuValue)
+    },
+    onStepperChange(num) {
+      this.$emit('initSkuNum', num)
     }
   }
 }
