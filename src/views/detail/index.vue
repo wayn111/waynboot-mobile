@@ -99,7 +99,7 @@ export default {
         none_sku: false, // 是否无规格商品
         hide_stock: false
       }
-      this.name = tree[0].v[0].name
+      this.name = '请选择'
       this.skuData = {
         tree,
         list,
@@ -113,21 +113,32 @@ export default {
     initSku($event) {
       const skuValue = $event.skuValue
       const selectedSku = $event.selectedSku
-      for (const key in selectedSku) {
-        this.initialSku[key] = selectedSku[key]
-        if (selectedSku[key] && skuValue.skuKeyStr === key) {
-          this.initialSku[key + 'name'] = skuValue.name
-        } else if (skuValue.skuKeyStr === key) {
-          this.initialSku[key + 'name'] = ''
+      if (Object.keys(selectedSku).length > 1) {
+        for (const key in selectedSku) {
+          this.initialSku[key] = selectedSku[key]
+          if (selectedSku[key] && skuValue.skuKeyStr === key) {
+            this.initialSku[key + 'name'] = skuValue.name
+          } else if (skuValue.skuKeyStr === key) {
+            this.initialSku[key + 'name'] = ''
+          }
+        }
+      } else {
+        for (const key in selectedSku) {
+          if (selectedSku[key]) {
+            this.initialSku[key + 'name'] = skuValue.name
+          } else {
+            this.initialSku[key + 'name'] = ''
+          }
         }
       }
+
       const nameArr = []
       for (const key in this.initialSku) {
         if (key.indexOf('name') > 0 && this.initialSku[key]) {
           nameArr.push(this.initialSku[key])
         }
       }
-      this.name = nameArr.join('，')
+      this.name = nameArr.join('，') || '请选择'
     },
     initSkuNum($event) {
       this.stockNum = $event
