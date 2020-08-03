@@ -45,7 +45,7 @@ export default {
       this.$emit('input', false)
     },
     onSkuSelected({ skuValue, selectedSku, selectedSkuComb }) {
-      this.$emit('initSku', skuValue)
+      this.$emit('initSku', { skuValue, selectedSku })
     },
     onStepperChange(num) {
       this.$emit('initSkuNum', num)

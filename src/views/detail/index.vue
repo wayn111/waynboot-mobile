@@ -21,7 +21,7 @@
 
     <Description :description="description" />
 
-    <Sku v-if="isSkuShow" :skuData="skuData" :goods="skuGoods" :initialSku="initialSku" @initSku="initSku($event)" @initSkuNum="stockNum = $event" v-model="isSkuShow" />
+    <Sku v-if="isSkuShow" :skuData="skuData" :goods="skuGoods" :initialSku="initialSku" @initSku="initSku($event)" @initSkuNum="initSkuNum($event)" v-model="isSkuShow" />
 
     <Tabbar @input="isSkuShow = $event" />
     <back-top />
@@ -111,7 +111,27 @@ export default {
       }
     },
     initSku($event) {
-      this.initialSku[$event.skuKeyStr] = $event.id
+      const skuValue = $event.skuValue
+      const selectedSku = $event.selectedSku
+      for (const key in selectedSku) {
+        this.initialSku[key] = selectedSku[key]
+        if (selectedSku[key] && skuValue.skuKeyStr === key) {
+          this.initialSku[key + 'name'] = skuValue.name
+        } else if (skuValue.skuKeyStr === key) {
+          this.initialSku[key + 'name'] = ''
+        }
+      }
+      const nameArr = []
+      for (const key in this.initialSku) {
+        if (key.indexOf('name') > 0 && this.initialSku[key]) {
+          nameArr.push(this.initialSku[key])
+        }
+      }
+      this.name = nameArr.join('，')
+    },
+    initSkuNum($event) {
+      this.stockNum = $event
+      this.initialSku.selectedNum = $event
     },
     setSkuTree() {
       const specifications = []
