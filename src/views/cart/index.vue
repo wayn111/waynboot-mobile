@@ -5,15 +5,14 @@
       v-for="(item,idx) in list"
       :key="idx"
       :index="idx"
-      :num="item.num"
-      :thumb="item.thumb"
-      :title="item.title"
-      :desc="item.desc"
-      :tag="item.tag"
-      :tags="item.tags"
-      :originPrice="item.originPrice"
+      :num="item.number"
+      :thumb="item.picUrl"
+      :title="item.goodsName"
+      :desc="item.remak"
+      :tag="'123'"
+      :tags="['满50减20', 'hot']"
       :price="item.price"
-      :isChecked="item.isChecked"
+      :isChecked="item.checked"
       @input="handleItemSelect"
       @handleDelete="handleDelete"
     />
@@ -64,7 +63,7 @@ export default {
     // get list
     getList() {
       getCartList().then(res => {
-        const data = res.entry
+        const { data } = res.map
         data.forEach(item => {
           item.isChecked = false
         })

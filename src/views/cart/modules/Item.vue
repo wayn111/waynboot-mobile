@@ -14,7 +14,6 @@
         :desc="desc"
         :title="title"
         :thumb="thumb"
-        :origin-price="originPrice"
       >
         <template #tags>
           <van-tag
@@ -24,6 +23,10 @@
             :key="idx"
             style="margin-right:4px"
           >{{item}}</van-tag>
+        </template>
+         <template #footer>
+          <van-button size="mini">按钮</van-button>
+          <van-button size="mini">按钮</van-button>
         </template>
       </van-card>
       <template #right>
@@ -47,7 +50,6 @@ export default {
     desc: String,
     tag: String,
     tags: Array,
-    originPrice: Number,
     price: Number,
     num: Number,
     isChecked: {
