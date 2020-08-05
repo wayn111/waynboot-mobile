@@ -4,6 +4,7 @@
       v-model="isShow"
       :sku="skuData"
       :goods="goods"
+      :goods-id="goods.goodsId"
       :initial-sku="initialSku"
       :hide-stock="skuData.hide_stock"
       :close-on-click-overlay="true"
@@ -16,6 +17,9 @@
 </template>
 
 <script>
+import { addCart } from '@/api/cart'
+import _ from 'lodash'
+
 export default {
   props: {
     value: {
@@ -37,18 +41,84 @@ export default {
     }
   },
   methods: {
-    onBuy() {
+    onBuy(data) {
       console.log('buy')
     },
-    onAddCart() {
-      this.$toast.success('添加成功')
-      this.$emit('input', false)
+    onAddCart(data) {
+      const params = {
+        goodsId: data.goodsId,
+        number: data.selectedNum,
+        productId: 0
+      }
+      if (_.has(data.selectedSkuComb, 's3')) {
+        this.$toast({
+          message: '目前仅支持两规格',
+          duration: 1500
+        })
+        return
+      } else if (_.has(data.selectedSkuComb, 's2')) {
+        params.productId = this.getProductId(
+          data.selectedSkuComb.s1,
+          data.selectedSkuComb.s2
+        )
+      } else {
+        params.productId = this.getProductIdByOne(data.selectedSkuComb.s1)
+      }
+      addCart(params).then(() => {
+        this.$toast({
+          message: '已添加至购物车',
+          duration: 1500
+        })
+        this.$emit('input', false)
+        this.$emit('getNum')
+      })
     },
     onSkuSelected({ skuValue, selectedSku, selectedSkuComb }) {
       this.$emit('initSku', { skuValue, selectedSku })
     },
     onStepperChange(num) {
       this.$emit('initSkuNum', num)
+    },
+    getProductId(s1, s2) {
+      var productId
+      var s1Name
+      var s2Name
+      _.each(this.goods.specificationList, specification => {
+        _.each(specification.valueList, specValue => {
+          if (specValue.id === s1) {
+            s1Name = specValue.value
+          } else if (specValue.id === s2) {
+            s2Name = specValue.value
+          }
+        })
+      })
+
+      _.each(this.goods.productList, v => {
+        const result = _.without(v.specifications, s1Name, s2Name)
+        if (result.length === 0) {
+          productId = v.id
+        }
+      })
+      return productId
+    },
+    getProductIdByOne(s1) {
+      var productId
+      var s1Name
+      _.each(this.goods.specificationList, (specification) => {
+        _.each(specification.valueList, (specValue) => {
+          if (specValue.id === s1) {
+            s1Name = specValue.value
+          }
+        })
+      })
+
+      _.each(this.goods.productList, (v) => {
+        const result = _.without(v.specifications, s1Name)
+        if (result.length === 0) {
+          productId = v.id
+        }
+      })
+      return productId
     }
   }
 }

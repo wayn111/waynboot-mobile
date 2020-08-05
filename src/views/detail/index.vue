@@ -21,9 +21,9 @@
 
     <Description :description="description" />
 
-    <Sku v-if="isSkuShow" :skuData="skuData" :goods="skuGoods" :initialSku="initialSku" @initSku="initSku($event)" @initSkuNum="initSkuNum($event)" v-model="isSkuShow" />
+    <Sku v-if="isSkuShow" :skuData="skuData" :goods="skuGoods" :initialSku="initialSku" @initSku="initSku($event)" @getNum="getNum" @initSkuNum="initSkuNum($event)" v-model="isSkuShow" />
 
-    <Tabbar @input="isSkuShow = $event" />
+    <Tabbar @input="isSkuShow = $event" ref="tabbar"/>
     <back-top />
     <Skeleton v-if="isSkeletonShow" />
   </div>
@@ -35,7 +35,7 @@ import NavBar from '@/components/NavBar'
 import Swiper from './modules/Swiper'
 import Overview from './modules/Overview'
 import Section from './modules/Section'
-import Comment from './modules/Comment'
+// import Comment from './modules/Comment'
 import Description from './modules/Description'
 import Tabbar from './modules/Tabbar'
 import Sku from './modules/Sku'
@@ -50,7 +50,7 @@ export default {
     Swiper,
     Overview,
     Section,
-    Comment,
+    // Comment,
     Description,
     Tabbar,
     Sku,
@@ -107,8 +107,15 @@ export default {
       }
       this.skuGoods = {
         title: this.goods.info.name,
-        picture: this.goods.info.picUrl
+        goodsId: this.goods.info.id,
+        picture: this.goods.info.picUrl,
+        specificationList: this.goods.specificationList,
+        productList: this.goods.productList
+
       }
+    },
+    getNum() {
+      this.$refs.tabbar.getCartGoodsCount()
     },
     initSku($event) {
       const skuValue = $event.skuValue

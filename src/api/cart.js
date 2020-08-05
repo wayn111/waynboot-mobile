@@ -6,3 +6,18 @@ export function getCartList() {
     method: 'get'
   })
 }
+
+export function getCartGoodsCount() {
+  return request({
+    url: '/cart/goodsCount',
+    method: 'get'
+  })
+}
+
+export function addCart(data) {
+  return request({
+    url: '/cart/add',
+    method: 'post',
+    data
+  })
+}
