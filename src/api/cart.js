@@ -21,3 +21,10 @@ export function addCart(data) {
     data
   })
 }
+
+export function deleteCart(cartId) {
+  return request({
+    url: '/cart/' + cartId,
+    method: 'delete'
+  })
+}

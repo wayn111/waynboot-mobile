@@ -4,7 +4,7 @@
     <Item
       v-for="(item,idx) in list"
       :key="idx"
-      :index="idx"
+      :index="item.id"
       :num="item.number"
       :thumb="item.picUrl"
       :title="item.goodsName"
@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { getCartList } from '@/api/cart'
+import { getCartList, deleteCart } from '@/api/cart'
 import Nav from './modules/Nav'
 import Item from './modules/Item'
 import Tabbar from './modules/Tabbar'
@@ -95,17 +95,11 @@ export default {
         forbidClick: true
       })
 
-      // 模拟删除
-      let second = 3
-      const timer = setInterval(() => {
-        second--
-        if (!second) {
-          clearInterval(timer)
-          this.$toast.clear()
-          this.list.splice(idx, 1)
-          this.$toast.success('删除成功')
-        }
-      }, 1000)
+      deleteCart(idx).then(res => {
+        this.$toast.clear()
+        this.$toast.success('删除成功')
+        this.getList()
+      }).catch(e => {})
     }
   }
 }
