@@ -8,7 +8,5 @@ export default {
 }
 </script>
 
- <style lang="scss" scoped>
-.order-list {
-}
+<style lang="scss" scoped>
 </style>

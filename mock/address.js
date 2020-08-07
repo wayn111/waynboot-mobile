@@ -21,7 +21,6 @@ export default [
             address: '浙江省杭州市拱墅区莫干山路 50 号'
           },
           {
-            id: '2',
             name: '李四',
             tel: '1310000000',
             country: '',

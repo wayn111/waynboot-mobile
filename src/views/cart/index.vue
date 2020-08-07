@@ -91,6 +91,9 @@ export default {
     // all select
     handleAllSelect(value) {
       const data = this.list.map(item => {
+        const data = { id: item.id, checked: value }
+        updateCart(data).then(res => {
+        }).catch(e => {})
         item.checked = value
         return item
       })
