@@ -38,9 +38,9 @@ const actions = {
   },
 
   // 登出
-  logout({ commit, state }) {
+  logout({ commit }) {
     return new Promise((resolve, reject) => {
-      logout(state.token)
+      logout()
         .then(() => {
           commit('SET_TOKEN', '')
           removeToken()

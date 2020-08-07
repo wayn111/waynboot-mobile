@@ -36,6 +36,10 @@ export default {
   },
   methods: {
     onSubmit() {
+      if (this.amount <= 0) {
+        return this.$toast.success('请至少选择一件商品')
+      }
+
       this.$router.push({
         path: '/order/confirm'
       })
@@ -47,5 +51,9 @@ export default {
 <style scoped>
 .submit-bar {
   box-shadow: 0px -2px 10px 0px rgba(0, 0, 0, 0.08);
+
+}
+.van-submit-bar {
+  bottom: 50px;
 }
 </style>

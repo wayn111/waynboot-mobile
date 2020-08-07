@@ -37,7 +37,6 @@ export default {
     ...mapGetters(['selectedAddress'])
   },
   mounted() {
-
   },
   activated() {
     // 对于使用了keep-alive的组件

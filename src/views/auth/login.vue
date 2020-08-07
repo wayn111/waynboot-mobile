@@ -89,6 +89,7 @@ export default {
       this.$store
         .dispatch('user/login', this.form)
         .then(() => {
+          this.$store.dispatch('address/getList')
           this.$notify({
             type: 'success',
             message: '登录成功',
