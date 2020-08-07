@@ -25,8 +25,8 @@
           >{{item}}</van-tag>
         </template>
          <template #footer>
-          <van-button size="mini">按钮</van-button>
-          <van-button size="mini">按钮</van-button>
+          <svg-icon icon-class="add-circle" :width="20" :height="20" @click="addNum"/>&nbsp;&nbsp;
+          <svg-icon icon-class="minus-circle" :width="20" :height="20" @click="minusNum"/>
         </template>
       </van-card>
       <template #right>
@@ -38,7 +38,7 @@
 
 <script>
 import variables from '@/styles/variables.scss'
-
+import { addNumber, minusNumber } from '@/api/cart'
 export default {
   model: {
     prop: 'isChecked'
@@ -50,7 +50,7 @@ export default {
     desc: String,
     tag: String,
     tags: Array,
-    price: Number,
+    price: String,
     num: Number,
     isChecked: {
       type: Boolean,
@@ -93,6 +93,16 @@ export default {
             })
           break
       }
+    },
+    addNum() {
+      addNumber(this.index, 1).then(res => {
+        this.$emit('changeNum', this.index, 1)
+      }).catch()
+    },
+    minusNum() {
+      minusNumber(this.index, 1).then(res => {
+        this.$emit('changeNum', this.index, 2)
+      }).catch()
     }
   }
 }
@@ -103,5 +113,10 @@ export default {
   display: flex;
   flex-direction: row;
   margin-bottom: 14px;
+
+  .van-card__num {
+    font-size: 16px;
+  }
 }
+
 </style>

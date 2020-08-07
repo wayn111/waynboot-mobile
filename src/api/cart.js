@@ -16,9 +16,31 @@ export function getCartGoodsCount() {
 
 export function addCart(data) {
   return request({
-    url: '/cart/add',
+    url: '/cart',
     method: 'post',
     data
+  })
+}
+
+export function updateCart(data) {
+  return request({
+    url: '/cart',
+    method: 'put',
+    data
+  })
+}
+
+export function addNumber(cartId, number) {
+  return request({
+    url: `/cart/addNum/${cartId}/${number}`,
+    method: 'post'
+  })
+}
+
+export function minusNumber(cartId, number) {
+  return request({
+    url: `/cart/minusNum/${cartId}/${number}`,
+    method: 'post'
   })
 }
 

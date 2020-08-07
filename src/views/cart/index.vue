@@ -15,6 +15,7 @@
       :isChecked="item.checked"
       @input="handleItemSelect"
       @handleDelete="handleDelete"
+      @changeNum="changeNum"
     />
     <Tabbar :amount="amount" :value="isAllSelect" @input="handleAllSelect" />
     <Skeleton v-if="isSkeletonShow" />
@@ -22,7 +23,7 @@
 </template>
 
 <script>
-import { getCartList, deleteCart } from '@/api/cart'
+import { getCartList, updateCart, deleteCart } from '@/api/cart'
 import Nav from './modules/Nav'
 import Item from './modules/Item'
 import Tabbar from './modules/Tabbar'
@@ -51,12 +52,12 @@ export default {
     list(newval) {
       let num = 0
       newval.forEach(item => {
-        if (item.isChecked) num += item.price
+        if (item.checked) num += parseFloat(item.price) * item.number
       })
       this.isAllSelect = newval.every(item => {
-        return item.isChecked === true
+        return item.checked === true
       })
-      this.amount = num
+      this.amount = num * 100
     }
   },
   methods: {
@@ -64,24 +65,33 @@ export default {
     getList() {
       getCartList().then(res => {
         const { data } = res.map
-        data.forEach(item => {
-          item.isChecked = false
-        })
         this.list = data
+        this.list.forEach(item => {
+          item.price = this.$toDecimal2(item.price)
+        })
         this.isSkeletonShow = false
       })
     },
     // single select
     handleItemSelect(playload) {
       const { val, idx } = playload
-      const newval = this.list[idx]
-      newval.isChecked = val
-      this.$set(this.list, idx, newval)
+      const arr = this.list.filter(item => {
+        return item.id === idx
+      })
+      const index = this.list.findIndex(item => {
+        return item.id === idx
+      })
+      const data = { id: idx, checked: val }
+      updateCart(data).then(res => {
+        const newval = arr[0]
+        newval.checked = val
+        this.$set(this.list, index, newval)
+      }).catch(e => {})
     },
     // all select
     handleAllSelect(value) {
       const data = this.list.map(item => {
-        item.isChecked = value
+        item.checked = value
         return item
       })
       this.list = data
@@ -100,6 +110,23 @@ export default {
         this.$toast.success('删除成功')
         this.getList()
       }).catch(e => {})
+    },
+    changeNum(id, type) {
+      let num = 1
+      if (type === 2) {
+        num = -1
+      }
+      let newval
+      this.list.forEach(item => {
+        if (item.id === id) {
+          item.number += num
+          newval = item
+        }
+      })
+      const index = this.list.findIndex(item => {
+        return item.id === id
+      })
+      this.$set(this.list, index, newval)
     }
   }
 }
