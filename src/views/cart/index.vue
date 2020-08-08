@@ -10,6 +10,7 @@
       :title="item.goodsName"
       :desc="item.remark"
       :tag="'123'"
+      :specifications="item.specifications"
       :tags="['满50减20', 'hot']"
       :price="item.price"
       :isChecked="item.checked"
