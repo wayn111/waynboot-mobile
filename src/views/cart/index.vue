@@ -8,7 +8,7 @@
       :num="item.number"
       :thumb="item.picUrl"
       :title="item.goodsName"
-      :desc="item.remak"
+      :desc="item.remark"
       :tag="'123'"
       :tags="['满50减20', 'hot']"
       :price="item.price"
