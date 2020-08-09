@@ -35,7 +35,7 @@ import NavBar from '@/components/NavBar'
 import Swiper from './modules/Swiper'
 import Overview from './modules/Overview'
 import Section from './modules/Section'
-// import Comment from './modules/Comment'
+import Comment from './modules/Comment'
 import Description from './modules/Description'
 import Tabbar from './modules/Tabbar'
 import Sku from './modules/Sku'
@@ -50,7 +50,7 @@ export default {
     Swiper,
     Overview,
     Section,
-    // Comment,
+    Comment,
     Description,
     Tabbar,
     Sku,
