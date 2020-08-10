@@ -16,7 +16,8 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
+
 import ListItem from './modules/ListItem'
 
 export default {
@@ -34,13 +35,21 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['selectedAddress'])
+    ...mapGetters(['selectedAddress']),
+    ...mapState(['address'])
   },
   mounted() {
   },
   activated() {
     // 对于使用了keep-alive的组件
     // 使用activated这个生命周期钩子刷新地址
+    // 在页面加载时读取sessionStorage里的状态信息
+    if (sessionStorage.getItem('contact')) {
+      // this.address.selectedAddress = JSON.parse(sessionStorage.getItem('contact'))
+      this.$store.commit('address/SET_SELECTED_ADDRESS', JSON.parse(sessionStorage.getItem('contact')))
+      sessionStorage.removeItem('contact')
+    }
+
     if (this.selectedAddress.id) {
       const { name, tel } = this.selectedAddress
       this.contact.type = 'edit'
@@ -49,6 +58,11 @@ export default {
     } else {
       this.contact.type = 'add'
     }
+
+    // 在页面刷新时将vuex里的信息保存到sessionStorage里
+    window.addEventListener('beforeunload', () => {
+      sessionStorage.setItem('contact', JSON.stringify(this.selectedAddress))
+    })
   },
   methods: {
     onContact() {

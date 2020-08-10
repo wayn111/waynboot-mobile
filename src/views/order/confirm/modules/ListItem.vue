@@ -4,34 +4,75 @@
       <van-icon name="shop-o" />
       <span class="title__name">熊猫商城自营</span>
     </h3>
-    <div class="item" v-for="(item,idx) in 2" :key="idx">
+    <div class="item" v-for="(item,idx) in goodsList" :key="idx">
       <image-pic
         width="80"
         height="80"
         fit="fill"
-        src="http://img3m4.ddimg.cn/32/35/23579654-1_l_3.jpg"
+        :src="item.picUrl"
       />
       <div class="item__main">
-        <p class="item__main__desc van-multi-ellipsis--l2">中国科幻中国科幻基石丛书：三体（套装1-3册）</p>
+        <p class="item__main__desc van-multi-ellipsis--l2">{{item.goodsName}}</p>
         <p class="item__main__attr">
           <span>1.320kg/件</span>
           <span>套装1-3册</span>
         </p>
       </div>
       <div class="item__price">
-        <span class="item__price__price">¥1111.00</span>
-        <span class="item__price__count">x3</span>
+        <span class="item__price__price">¥{{item.price}}</span>
+        <span class="item__price__count">x{{item.number}}</span>
       </div>
     </div>
-    <div class="amount">
-      共<span class="amount--red">1</span>件商品 合计:
-      <span class="amount--red">¥1111.10</span>
-    </div>
+    <van-cell-group>
+      <van-cell title="商品金额">
+        <span class="red">{{amount}} 元</span>
+      </van-cell>
+      <van-cell title="邮费">
+        <span class="red">0 元</span>
+      </van-cell>
+      <van-cell title="优惠券">
+        <span class="red">不可用</span>
+      </van-cell>
+      <van-field v-model="message" placeholder="请输入备注" label="订单备注">
+        <template slot="icon">{{500}}/50</template>
+      </van-field>
+    </van-cell-group>
+
+    <van-submit-bar
+      :price="amount * 100 "
+      label="总计："
+      buttonText="提交订单"
+      :disabled="false"
+    />
   </div>
 </template>
 
 <script>
-export default {}
+import { getCheckedGoods } from '@/api/cart'
+export default {
+  data() {
+    return {
+      message: '',
+      amount: 0,
+      goodsList: []
+    }
+  },
+  activated() {
+    // 对于使用了keep-alive的组件
+    // 使用activated这个生命周期钩子刷新地址
+    this.getGoodsList()
+  },
+  methods: {
+    getGoodsList() {
+      this.goodsList = []
+      getCheckedGoods().then(res => {
+        const { data, amount } = res.map
+        this.goodsList = data
+        this.amount = amount
+      })
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -104,15 +145,6 @@ export default {}
         color: $gray;
         margin-top: 12px;
       }
-    }
-  }
-  .amount {
-    margin-top: 14px;
-    text-align: right;
-    font-size: $small;
-    color: $black;
-    .amount--red {
-      color: $red;
     }
   }
 }

@@ -50,3 +50,10 @@ export function deleteCart(cartId) {
     method: 'delete'
   })
 }
+
+export function getCheckedGoods() {
+  return request({
+    url: '/cart/getCheckedGoods',
+    method: 'post'
+  })
+}

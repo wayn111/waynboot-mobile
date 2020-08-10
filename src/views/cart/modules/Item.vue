@@ -25,7 +25,6 @@
           >{{item}}</van-tag>
         </template>
          <template #footer>
-          <span style="margin-right:10px;" v-for="(item, index) in specifications" :key="index">{{item}}</span>
           <svg-icon icon-class="add-circle" :width="20" :height="20" @click="addNum"/>&nbsp;&nbsp;
           <svg-icon icon-class="minus-circle" :width="20" :height="20" @click="minusNum"/>
         </template>
@@ -51,7 +50,6 @@ export default {
     desc: String,
     tag: String,
     tags: Array,
-    specifications: Array,
     price: String,
     num: Number,
     isChecked: {
