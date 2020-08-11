@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 
 import ListItem from './modules/ListItem'
 
@@ -35,8 +35,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['selectedAddress']),
-    ...mapState(['address'])
+    ...mapGetters(['selectedAddress'])
   },
   mounted() {
   },
@@ -45,8 +44,7 @@ export default {
     // 使用activated这个生命周期钩子刷新地址
     // 在页面加载时读取sessionStorage里的状态信息
     if (sessionStorage.getItem('contact')) {
-      // this.address.selectedAddress = JSON.parse(sessionStorage.getItem('contact'))
-      this.$store.commit('address/SET_SELECTED_ADDRESS', JSON.parse(sessionStorage.getItem('contact')))
+      this['address/SET_SELECTED_ADDRESS'](JSON.parse(sessionStorage.getItem('contact')))
       sessionStorage.removeItem('contact')
     }
 
@@ -69,7 +67,10 @@ export default {
       this.$router.push({
         path: '/address'
       })
-    }
+    },
+    ...mapMutations([
+      'address/SET_SELECTED_ADDRESS' // 将 `this.increment()` 映射为 `this.$store.commit('increment')`
+    ])
   }
 }
 </script>

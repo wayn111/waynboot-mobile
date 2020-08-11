@@ -14,8 +14,7 @@
       <div class="item__main">
         <p class="item__main__desc van-multi-ellipsis--l2">{{item.goodsName}}</p>
         <p class="item__main__attr">
-          <span>1.320kg/件</span>
-          <span>套装1-3册</span>
+          <span v-for="(item, index) in item.specifications" :key="index">{{item}}</span>
         </p>
       </div>
       <div class="item__price">
