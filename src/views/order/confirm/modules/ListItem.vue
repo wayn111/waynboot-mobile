@@ -41,6 +41,7 @@
       :price="amount * 100 "
       label="总计："
       buttonText="提交订单"
+      @submit="onSubmit"
       :disabled="false"
     />
   </div>
@@ -48,6 +49,8 @@
 
 <script>
 import { getCheckedGoods } from '@/api/cart'
+import { mapGetters } from 'vuex'
+import { submit } from '@/api/order'
 export default {
   data() {
     return {
@@ -55,6 +58,9 @@ export default {
       amount: 0,
       goodsList: []
     }
+  },
+  computed: {
+    ...mapGetters(['selectedAddress', 'id'])
   },
   activated() {
     // 对于使用了keep-alive的组件
@@ -68,6 +74,15 @@ export default {
         const { data, amount } = res.map
         this.goodsList = data
         this.amount = amount
+      })
+    },
+    onSubmit() {
+      const cartIdArr = this.goodsList.map(item => { return item.id })
+      const addressId = this.selectedAddress.id
+      const message = this.message
+      const userId = this.id
+      submit({ cartIdArr, addressId, userId, message }).then(res => {
+        this.$toast('提交成功')
       })
     }
   }
