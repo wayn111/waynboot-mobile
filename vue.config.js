@@ -1,6 +1,7 @@
 'use strict'
 const path = require('path')
 
+const port = process.env.port || process.env.npm_config_port || 4949
 const mockUrl = 'http://localhost:82'
 
 function resolve (dir) {
@@ -15,7 +16,7 @@ module.exports = {
   lintOnSave: process.env.NODE_ENV === 'development',
   productionSourceMap: false,
   devServer: {
-    port: 8099,
+    port: port,
     open: true,
     overlay: {
       warnings: false,
