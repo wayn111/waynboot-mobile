@@ -31,7 +31,6 @@
 
 <script>
 import { getDetail } from '@/api/detail'
-import NavBar from '@/components/NavBar'
 import Swiper from './modules/Swiper'
 import Overview from './modules/Overview'
 import Section from './modules/Section'
@@ -46,7 +45,6 @@ export default {
   name: 'Detail',
   props: ['goodsId'],
   components: {
-    NavBar,
     Swiper,
     Overview,
     Section,

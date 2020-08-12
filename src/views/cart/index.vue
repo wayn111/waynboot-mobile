@@ -11,7 +11,7 @@
       :desc="item.specifications.join(' ')"
       :tag="'123'"
       :tags="['满50减20', 'hot']"
-      :price="item.price"
+      :price="item.price | yuan"
       :isChecked="item.checked"
       @input="handleItemSelect"
       @handleDelete="handleDelete"
@@ -66,9 +66,6 @@ export default {
       getCartList().then(res => {
         const { data } = res.map
         this.list = data
-        this.list.forEach(item => {
-          item.price = this.$toDecimal2(item.price)
-        })
         this.isSkeletonShow = false
       })
     },

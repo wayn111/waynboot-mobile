@@ -23,6 +23,7 @@
     "@better-scroll/core": "^2.0.0-beta.6",
     "axios": "^0.19.2",
     "core-js": "^3.6.4",
+    "dayjs": "^1.8.33",
     "js-cookie": "^2.2.1",
     "lodash": "^4.17.19",
     "normalize.css": "^8.0.1",

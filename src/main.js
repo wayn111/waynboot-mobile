@@ -16,7 +16,9 @@ import './permission'
 import '@/components/Vant'
 // register common components globally
 import '@/components/common'
-import { toDecimal2 } from '@/utils'
+import filters from '@/filter'
+
+Vue.use(filters)
 
 // mock in online
 if (process.env.NODE_ENV === 'production') {
@@ -25,8 +27,6 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 Vue.config.productionTip = false
-
-Vue.prototype.$toDecimal2 = toDecimal2
 
 new Vue({
   router,

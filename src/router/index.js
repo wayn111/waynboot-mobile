@@ -124,6 +124,15 @@ const routes = [
       keepAlive: true
     }
   },
+  // 订单支付
+  {
+    path: '/order/pay',
+    name: 'OrderPay',
+    component: () => import('@/views/order/pay'),
+    meta: {
+      title: '订单支付'
+    }
+  },
   // 订单列表
   {
     path: '/order/list',

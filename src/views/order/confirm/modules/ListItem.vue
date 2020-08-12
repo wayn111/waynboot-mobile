@@ -83,6 +83,7 @@ export default {
       const userId = this.id
       submit({ cartIdArr, addressId, userId, message }).then(res => {
         this.$toast('提交成功')
+        this.$router.push({ name: 'OrderPay' })
       })
     }
   }
