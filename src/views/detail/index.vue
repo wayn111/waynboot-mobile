@@ -73,13 +73,11 @@ export default {
     }
   },
   mounted() {
-    this.getDetail()
+    this.getGoodsDetail()
   },
   methods: {
-    getDetail() {
-      getDetail({
-        goodsId: this.goodsId
-      }).then((res) => {
+    getGoodsDetail() {
+      getDetail(this.goodsId).then((res) => {
         const goods = res.map
         this.goods = goods
         this.info = goods.info
