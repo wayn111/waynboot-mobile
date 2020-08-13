@@ -5,12 +5,7 @@
       <span class="title__name">熊猫商城自营</span>
     </h3>
     <div class="item" v-for="(item,idx) in goodsList" :key="idx">
-      <image-pic
-        width="80"
-        height="80"
-        fit="fill"
-        :src="item.picUrl"
-      />
+      <image-pic width="80" height="80" fit="fill" :src="item.picUrl" />
       <div class="item__main">
         <p class="item__main__desc van-multi-ellipsis--l2">{{item.goodsName}}</p>
         <p class="item__main__attr">
@@ -70,20 +65,22 @@ export default {
   methods: {
     getGoodsList() {
       this.goodsList = []
-      getCheckedGoods().then(res => {
+      getCheckedGoods().then((res) => {
         const { data, amount } = res.map
         this.goodsList = data
         this.amount = amount
       })
     },
     onSubmit() {
-      const cartIdArr = this.goodsList.map(item => { return item.id })
+      const cartIdArr = this.goodsList.map((item) => {
+        return item.id
+      })
       const addressId = this.selectedAddress.id
       const message = this.message
       const userId = this.id
-      submit({ cartIdArr, addressId, userId, message }).then(res => {
-        this.$toast('提交成功')
-        this.$router.push({ name: 'OrderPay' })
+      submit({ cartIdArr, addressId, userId, message }).then((res) => {
+        const { orderId } = res.map
+        this.$router.push({ name: 'OrderPay', params: { orderId } })
       })
     }
   }

@@ -133,6 +133,16 @@ const routes = [
       title: '订单支付'
     }
   },
+  // 订单支付状态显示
+  {
+    path: '/order/payStatus/{status}',
+    name: 'PayStatus',
+    props: true,
+    component: () => import('@/views/order/payStatus'),
+    meta: {
+      title: '订单支付状态'
+    }
+  },
   // 订单列表
   {
     path: '/order/list',

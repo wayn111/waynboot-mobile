@@ -5,9 +5,9 @@
     <van-notice-bar mode="closeable">请在半小时内完成付款，否则系统自动取消订单</van-notice-bar>
 
     <van-cell-group class="payment_group">
-      <van-cell title="订单编号" :value="order.orderInfo.orderSn" />
+      <van-cell title="订单编号" :value="order.orderSn" />
       <van-cell title="实付金额">
-        <span class="red">{{1 *100 | yuan}}</span>
+        <span class="red">{{order.actualPrice | yuan}}</span>
       </van-cell>
     </van-cell-group>
 
@@ -47,10 +47,7 @@ export default {
   data() {
     return {
       payWay: 'wx',
-      order: {
-        orderInfo: {},
-        orderGoods: []
-      },
+      order: {},
       orderId: 0
     }
   },
@@ -62,8 +59,8 @@ export default {
   },
   methods: {
     getOrder(orderId) {
-      orderDetail({ orderId: orderId }).then((res) => {
-        this.order = res.data.data
+      orderDetail({ orderId }).then((res) => {
+        this.order = res.map.data
       })
     },
     pay() {
@@ -110,7 +107,7 @@ export default {
                 }
               })
               .catch((err) => {
-                Dialog.alert({ message: err.data.errmsg })
+                Dialog.alert({ message: err.map.msg })
                 this.$router.replace({
                   name: 'paymentStatus',
                   params: {
@@ -186,16 +183,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$mb2vw: 2vw;
 .payment {
   min-height: 100vh;
   background: #f5f5f5;
 
   .van-notice-bar {
-    margin-bottom: 2vw;
+    margin-bottom: $mb2vw
   }
 
   .payment_group {
-    margin-bottom: 2vw;
+    margin-bottom: $mb2vw
   }
 
   .pay_submit {
