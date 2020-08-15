@@ -19,7 +19,6 @@
             :key="i"
             :title="'订单编号: ' + el.orderSn"
             :status="el.orderStatusText"
-            @click.native="toOrderDetail(el.id)"
           >
             <van-card
               v-for="(goods, goodsI) in el.goodsList"
@@ -27,6 +26,7 @@
               :title="goods.goodsName"
               :num="goods.number"
               :thumb="goods.picUrl"
+              @click.native="toOrderDetail(goods.id)"
             >
               <div slot="desc">
                 <div class="desc">
@@ -39,7 +39,7 @@
                 </div>
               </div>
             </van-card>
-            <div class="total">合计: {{el.actualPrice * 100 | yuan}}（含运费{{el.post_fee | yuan}}）</div>
+            <div class="total">合计: {{el.actualPrice | yuan}}（含运费{{el.post_fee | yuan}}）</div>
 
             <div slot="footer" class="footer_btn">
               <van-button
@@ -193,8 +193,7 @@ export default {
     },
     toOrderDetail(id) {
       this.$router.push({
-        path: '/order/order-detail',
-        query: { orderId: id }
+        path: `/detail/${id}`
       })
     }
   },

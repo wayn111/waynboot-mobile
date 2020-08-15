@@ -149,15 +149,6 @@ const routes = [
     meta: {
       title: '订单支付状态'
     }
-  },
-  // 订单列表
-  {
-    path: '/order/list',
-    name: 'OrderList',
-    component: () => import('@/views/order/list'),
-    meta: {
-      title: '订单列表'
-    }
   }
 ]
 
