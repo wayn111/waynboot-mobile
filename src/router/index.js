@@ -57,6 +57,13 @@ const routes = [
       showTab: true
     }
   },
+  // 订单列表
+  {
+    path: '/user/order/list/:active',
+    name: 'OrderList',
+    props: true,
+    component: () => import('@/views/order/list')
+  },
   // 商品列表
   {
     path: '/product',
@@ -135,7 +142,7 @@ const routes = [
   },
   // 订单支付状态显示
   {
-    path: '/order/payStatus/{status}',
+    path: '/order/payStatus/:status',
     name: 'PayStatus',
     props: true,
     component: () => import('@/views/order/payStatus'),

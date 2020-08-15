@@ -26,9 +26,9 @@ export default {
     status: String
   },
   created() {
-    setTimeout(() => {
+    /* setTimeout(() => {
       this.$router.push({ path: '/user/order/list/0' })
-    }, 3000)
+    }, 3000) */
   },
   data() {
     return {
@@ -48,37 +48,39 @@ export default {
     }
   },
 
-  activated() {
+  mounted() {
     this.isSuccess = this.status === 'success'
   }
 }
 </script>
 
 <style lang="scss" scopd>
+@import "@/styles/variables.scss";
+
 .payment_status {
-  padding-top: 30px;
+  padding-top: 5vw;
   box-sizing: border-box;
   background-color: #fff;
   text-align: center;
 }
 
 .status_top {
-  margin-bottom: 15px;
+  margin-bottom: 5vw;
   i {
-    margin-bottom: 5px;
+    margin-bottom: 3vw;
   }
   > div {
-    font-size: 18px;
+    font-size: 6vw;
   }
 }
 
 .status_text {
   color: $font-color-gray;
-  margin-bottom: 50px;
+  margin-bottom: 8vw;
 }
 
 .status_icon {
-  font-size: 80px;
+  font-size: 8vw;
 }
 
 i.success_icon {

@@ -2,13 +2,13 @@
   <div class="user-order">
     <h3 class="order__title">
       <p class="order__title__title">我的订单</p>
-      <p class="order__title__navigate">
+      <p class="order__title__navigate" @click="$router.push({path: '/user/order/list/0'})">
         <span>全部订单</span>
         <van-icon name="arrow" color="#969799" />
       </p>
     </h3>
     <div class="order__bd">
-      <div class="order__bd__item" v-for="(item,idx) in orderList" :key="idx">
+      <div @click="$router.push({path: `/user/order/list/${item.type}`})" class="order__bd__item" v-for="(item,idx) in orderList" :key="idx">
         <van-icon :name="item.icon" size="25" color="#dab309" :badge="item.count" />
         <span class="name">{{item.name}}</span>
       </div>
@@ -24,22 +24,26 @@ export default {
         {
           icon: 'pending-payment',
           name: '待支付',
-          count: 3
+          count: 3,
+          type: 1
         },
         {
           icon: 'peer-pay',
           name: '待发货',
-          count: ''
+          count: '',
+          type: 2
         },
         {
           icon: 'logistics',
           name: '待收货',
-          count: ''
+          count: '',
+          type: 3
         },
         {
           icon: 'chat-o',
-          name: '售后',
-          count: ''
+          name: '已完成',
+          count: '',
+          type: 4
         }
       ]
     }

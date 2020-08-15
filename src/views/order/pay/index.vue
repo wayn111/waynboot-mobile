@@ -131,7 +131,13 @@ export default {
                 )
               })
               .catch((err) => {
-                Dialog.alert({ message: err.data.errmsg })
+                Dialog.alert({ message: '支付失败' })
+                this.$router.replace({
+                  name: 'PayStatus',
+                  params: {
+                    status: 'failed'
+                  }
+                })
               })
           }
         } else {

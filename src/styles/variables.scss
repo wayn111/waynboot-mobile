@@ -3,6 +3,7 @@ $theme: #1c99e2c0;
 $bg-gradient: linear-gradient(90deg, #0af, #0085ff);
 $black: #333;
 $gray: #0000008a;
+$gray-deep: #999;
 $red: #ea625b;
 $green: #38ca73;
 
@@ -11,6 +12,9 @@ $large: 38px;
 $normal: 32px;
 $small: 28px;
 $mini: 20px;
+
+//字体变量
+$font-color-gray: $gray-deep;
 
 // 单行溢出
 @mixin text-ellipsis {

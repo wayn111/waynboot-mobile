@@ -30,3 +30,11 @@ export function orderH5pay(data) {
     data
   })
 }
+
+export function orderList(data) {
+  return request({
+    url: '/order/list',
+    method: 'get',
+    params: data
+  })
+}
