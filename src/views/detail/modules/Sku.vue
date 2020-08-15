@@ -42,9 +42,22 @@ export default {
   },
   methods: {
     onBuy(data) {
-      console.log('buy')
+      addCart(this.validateSkuData(data)).then(() => {
+        this.$router.push({ name: 'Cart' })
+      })
     },
     onAddCart(data) {
+      addCart(this.validateSkuData(data)).then(() => {
+        this.$toast({
+          message: '已添加至购物车',
+          duration: 1500
+        })
+        this.$emit('input', false)
+        this.$emit('getNum')
+      })
+    },
+    // 校验sku数据
+    validateSkuData(data) {
       const params = {
         goodsId: data.goodsId,
         number: data.selectedNum,
@@ -55,7 +68,6 @@ export default {
           message: '目前仅支持两规格',
           duration: 1500
         })
-        return
       } else if (_.has(data.selectedSkuComb, 's2')) {
         params.productId = this.getProductId(
           data.selectedSkuComb.s1,
@@ -64,14 +76,7 @@ export default {
       } else {
         params.productId = this.getProductIdByOne(data.selectedSkuComb.s1)
       }
-      addCart(params).then(() => {
-        this.$toast({
-          message: '已添加至购物车',
-          duration: 1500
-        })
-        this.$emit('input', false)
-        this.$emit('getNum')
-      })
+      return params
     },
     onSkuSelected({ skuValue, selectedSku, selectedSkuComb }) {
       this.$emit('initSku', { skuValue, selectedSku })
