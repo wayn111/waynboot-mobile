@@ -46,7 +46,12 @@ import {
   ContactCard,
   ContactList,
   ContactEdit,
-  NoticeBar
+  NoticeBar,
+  Radio,
+  RadioGroup,
+  Panel,
+  Tab,
+  Tabs
 } from 'vant'
 
 Vue.use(Toast)
@@ -84,6 +89,7 @@ Vue.use(Toast)
   .use(SwipeCell)
   .use(Card)
   .use(SubmitBar)
+  .use(SubmitBar)
   .use(Checkbox)
   .use(CheckboxGroup)
   .use(Grid)
@@ -94,3 +100,8 @@ Vue.use(Toast)
   .use(ContactList)
   .use(ContactEdit)
   .use(NoticeBar)
+  .use(Radio)
+  .use(RadioGroup)
+  .use(Panel)
+  .use(Tab)
+  .use(Tabs)

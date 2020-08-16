@@ -36,7 +36,6 @@
 </template>
 
 <script>
-import { Radio, RadioGroup, Dialog } from 'vant'
 import { orderDetail, orderPrepay, orderH5pay } from '@/api/order'
 import _ from 'lodash'
 import { getLocalStorage, setLocalStorage } from '@/utils/localStorage'
@@ -64,7 +63,7 @@ export default {
       })
     },
     pay() {
-      Dialog.alert({
+      this.$dialog.alert({
         message:
           '你选择了' + (this.payWay === 'wx' ? '微信支付' : '支付宝支付')
       }).then(() => {
@@ -107,7 +106,7 @@ export default {
                 }
               })
               .catch((err) => {
-                Dialog.alert({ message: err.map.msg })
+                this.$dialog.alert({ message: err.map.msg })
                 this.$router.replace({
                   name: 'paymentStatus',
                   params: {
@@ -131,7 +130,7 @@ export default {
                 )
               })
               .catch((err) => {
-                Dialog.alert({ message: '支付失败' })
+                this.$dialog.alert({ message: '支付失败' })
                 this.$router.replace({
                   name: 'PayStatus',
                   params: {
@@ -178,13 +177,8 @@ export default {
         }
       )
     }
-  },
-
-  components: {
-    [Radio.name]: Radio,
-    [RadioGroup.name]: RadioGroup,
-    [Dialog.name]: Dialog
   }
+
 }
 </script>
 

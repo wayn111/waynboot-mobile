@@ -91,7 +91,6 @@ import {
   orderCancel,
   orderRefund
 } from '@/api/order'
-import { Tab, Tabs, Panel, Card, List, Tag } from 'vant'
 
 export default {
   name: 'order-list',
@@ -196,14 +195,6 @@ export default {
         path: `/detail/${id}`
       })
     }
-  },
-  components: {
-    [Tab.name]: Tab,
-    [Tabs.name]: Tabs,
-    [Panel.name]: Panel,
-    [Card.name]: Card,
-    [List.name]: List,
-    [Tag.name]: Tag
   }
 }
 </script>
