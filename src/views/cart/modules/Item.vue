@@ -25,8 +25,9 @@
           >{{item}}</van-tag>
         </template>
          <template #footer>
-          <svg-icon icon-class="add-circle" :width="20" :height="20" @click="addNum"/>&nbsp;&nbsp;
-          <svg-icon icon-class="minus-circle" :width="20" :height="20" @click="minusNum"/>
+          <van-stepper v-model="value" theme="round" button-size="18" disable-input />
+          <!-- <svg-icon icon-class="add-circle" :width="20" :height="20" @click="addNum"/>&nbsp;&nbsp;
+          <svg-icon icon-class="minus-circle" :width="20" :height="20" @click="minusNum"/> -->
         </template>
       </van-card>
       <template #right>
@@ -69,6 +70,9 @@ export default {
         this.$emit('input', { val, idx: this.index })
       }
     }
+  },
+  data() {
+    return { value: 1 }
   },
   methods: {
     // position 为关闭时点击的位置

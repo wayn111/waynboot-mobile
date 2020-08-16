@@ -46,6 +46,7 @@ import {
   ContactCard,
   ContactList,
   ContactEdit,
+  Stepper,
   NoticeBar,
   Radio,
   RadioGroup,
@@ -99,6 +100,7 @@ Vue.use(Toast)
   .use(ContactCard)
   .use(ContactList)
   .use(ContactEdit)
+  .use(Stepper)
   .use(NoticeBar)
   .use(Radio)
   .use(RadioGroup)
