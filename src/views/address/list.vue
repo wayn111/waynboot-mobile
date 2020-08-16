@@ -68,7 +68,6 @@ export default {
   async mounted() {
     this.$toast.loading('加载中...')
     this.list = await this.$store.dispatch('address/getList')
-    console.log(this.list)
     this.list.forEach(item => {
       item.address = item.province + item.city + item.county + ' ' + item.addressDetail
     })
