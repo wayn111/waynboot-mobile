@@ -8,6 +8,13 @@ export function submit(data) {
   })
 }
 
+export function statusCount() {
+  return request({
+    url: '/order/statusCount',
+    method: 'post'
+  })
+}
+
 export function orderDetail(data) {
   return request({
     url: '/order/info',

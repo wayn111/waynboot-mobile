@@ -17,6 +17,8 @@
 </template>
 
 <script>
+import { statusCount } from '@/api/order'
+
 export default {
   data() {
     return {
@@ -24,7 +26,7 @@ export default {
         {
           icon: 'pending-payment',
           name: '待支付',
-          count: 3,
+          count: '',
           type: 1
         },
         {
@@ -41,11 +43,24 @@ export default {
         },
         {
           icon: 'chat-o',
-          name: '已完成',
+          name: '待评价',
           count: '',
           type: 4
         }
       ]
+    }
+  },
+  mounted() {
+    this.init()
+  },
+  methods: {
+    init() {
+      statusCount().then(res => {
+        this.orderList[0].count = res.map.unpaid || ''
+        this.orderList[1].count = res.map.unship || ''
+        this.orderList[2].count = res.map.unrecv || ''
+        this.orderList[3].count = res.map.uncomment || ''
+      })
     }
   }
 }
