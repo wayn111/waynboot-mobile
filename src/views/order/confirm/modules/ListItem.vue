@@ -74,7 +74,7 @@ export default {
     onSubmit() {
       const addressId = this.selectedAddress.id
       if (!addressId) {
-        this.$toast.error('请选择地址')
+        return this.$toast.fail('请选择地址')
       }
       const cartIdArr = this.goodsList.map((item) => {
         return item.id
