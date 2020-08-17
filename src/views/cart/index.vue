@@ -111,21 +111,18 @@ export default {
         this.getList()
       }).catch(e => {})
     },
-    changeNum(id, type) {
-      let num = 1
-      if (type === 2) {
-        num = -1
-      }
+    changeNum(id, num) {
       let newval
       this.list.forEach(item => {
         if (item.id === id) {
-          item.number += num
+          item.number = num
           newval = item
         }
       })
       const index = this.list.findIndex(item => {
         return item.id === id
       })
+      // vue动态更新list集合
       this.$set(this.list, index, newval)
     }
   }

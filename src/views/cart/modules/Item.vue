@@ -7,14 +7,7 @@
       style="padding:0 10px 0 16px"
     ></van-checkbox>
     <van-swipe-cell style="width:100%" :before-close="beforeClose">
-      <van-card
-        :num="num"
-        :tag="tag"
-        :price="price"
-        :desc="desc"
-        :title="title"
-        :thumb="thumb"
-      >
+      <van-card :tag="tag" :price="price" :desc="desc" :title="title" :thumb="thumb">
         <template #tags>
           <van-tag
             plain
@@ -24,10 +17,17 @@
             style="margin-right:4px"
           >{{item}}</van-tag>
         </template>
-         <template #footer>
-          <van-stepper v-model="value" theme="round" button-size="18" disable-input />
+        <template #footer>
+          <van-stepper
+            v-model.number="value"
+            theme="round"
+            button-size="20"
+            integer
+            async-change
+            @change="onChange"
+          />
           <!-- <svg-icon icon-class="add-circle" :width="20" :height="20" @click="addNum"/>&nbsp;&nbsp;
-          <svg-icon icon-class="minus-circle" :width="20" :height="20" @click="minusNum"/> -->
+          <svg-icon icon-class="minus-circle" :width="20" :height="20" @click="minusNum"/>-->
         </template>
       </van-card>
       <template #right>
@@ -39,7 +39,7 @@
 
 <script>
 import variables from '@/styles/variables.scss'
-import { addNumber, minusNumber } from '@/api/cart'
+import { changeNumber } from '@/api/cart'
 export default {
   model: {
     prop: 'isChecked'
@@ -72,7 +72,7 @@ export default {
     }
   },
   data() {
-    return { value: 1 }
+    return { value: this.num }
   },
   methods: {
     // position 为关闭时点击的位置
@@ -98,15 +98,13 @@ export default {
           break
       }
     },
-    addNum() {
-      addNumber(this.index, 1).then(res => {
-        this.$emit('changeNum', this.index, 1)
-      }).catch()
-    },
-    minusNum() {
-      minusNumber(this.index, 1).then(res => {
-        this.$emit('changeNum', this.index, 2)
-      }).catch()
+    onChange(value) {
+      // 注意此时修改 value 后会再次触发 change 事件
+      changeNumber(this.index, value)
+        .then((res) => {
+          this.$emit('changeNum', this.index, Number(value))
+        })
+        .catch()
     }
   }
 }
@@ -122,5 +120,4 @@ export default {
     font-size: 16px;
   }
 }
-
 </style>

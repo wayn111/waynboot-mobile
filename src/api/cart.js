@@ -30,6 +30,13 @@ export function updateCart(data) {
   })
 }
 
+export function changeNumber(cartId, number) {
+  return request({
+    url: `/cart/changeNum/${cartId}/${number}`,
+    method: 'post'
+  })
+}
+
 export function addNumber(cartId, number) {
   return request({
     url: `/cart/addNum/${cartId}/${number}`,
