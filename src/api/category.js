@@ -6,6 +6,7 @@ export function getCategoryData() {
     method: 'get'
   })
 }
+
 export function getCategoryContent(query) {
   return request({
     url: '/category/content',

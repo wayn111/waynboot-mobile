@@ -66,8 +66,9 @@ const routes = [
   },
   // 商品列表
   {
-    path: '/product',
+    path: '/product/:cateId',
     name: 'Product',
+    props: true,
     component: () => import('@/views/product'),
     meta: {
       title: '商品列表',

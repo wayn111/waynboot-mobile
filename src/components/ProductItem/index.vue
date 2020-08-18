@@ -1,5 +1,5 @@
 <template>
-  <div class="product-item" @click="onClick">
+  <div class="product-item">
     <image-pic :src="img" width="90" height="90" />
     <div class="desc">
       <div class="desc__top">
@@ -17,7 +17,7 @@
           </div>
         </div>
         <div class="desc__bottom__btn">
-          <van-button class="btn" size="mini">立即购买</van-button>
+          <van-button class="btn" size="mini" @click="onClick">立即购买</van-button>
         </div>
       </div>
     </div>
@@ -26,14 +26,11 @@
 
 <script>
 export default {
-  props: ['img', 'title', 'desc', 'price', 'discount', 'percentage'],
+  props: ['goodsId', 'img', 'title', 'desc', 'price', 'discount', 'percentage'],
   methods: {
     onClick() {
       this.$router.push({
-        path: '/detail',
-        query: {
-          t: +new Date()
-        }
+        path: '/detail/' + this.goodsId
       })
     }
   }
