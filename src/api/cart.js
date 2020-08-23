@@ -22,6 +22,14 @@ export function addCart(data) {
   })
 }
 
+export function addDefaultGoodsProduct(data) {
+  return request({
+    url: '/cart/addDefaultGoodsProduct',
+    method: 'post',
+    data
+  })
+}
+
 export function updateCart(data) {
   return request({
     url: '/cart',

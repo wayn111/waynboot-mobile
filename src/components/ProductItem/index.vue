@@ -21,7 +21,7 @@
           </div>
         </div>
         <div class="desc__bottom__btn">
-          <van-button class="btn" size="mini" @click="addCart">加入购物车</van-button>
+          <van-button class="btn" size="mini" @click.stop="onAddCart">加入购物车</van-button>
         </div>
       </div>
     </div>
@@ -29,7 +29,7 @@
 </template>
 
 <script>
-// import { addCart } from '@/api/cart'
+import { addDefaultGoodsProduct } from '@/api/cart'
 
 export default {
   props: ['goodsId', 'img', 'title', 'desc', 'price', 'discount', 'percentage'],
@@ -39,7 +39,16 @@ export default {
         path: '/detail/' + this.goodsId
       })
     },
-    addCart() {
+    onAddCart() {
+      addDefaultGoodsProduct({
+        goodsId: this.goodsId,
+        number: 1
+      }).then(() => {
+        this.$toast({
+          message: '已添加至购物车',
+          duration: 1500
+        })
+      })
     }
   }
 }

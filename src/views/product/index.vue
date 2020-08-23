@@ -30,7 +30,6 @@
             :desc="item.brief"
             :price="item.retailPrice"
             :discount="item.counterPrice"
-            :percentage="30"
             style="margin-bottom:6px"
           />
         </van-list>
@@ -90,32 +89,7 @@ export default {
       }).then(res => {
         const data = res.map.data
         if (this.refreshing) {
-          this.list = [{
-            img: 'http://img3m1.ddimg.cn/31/4/20039611-1_b_9.jpg',
-            title: '小熊和最好的爸爸（全7册）',
-            desc:
-            '作者：（荷）阿兰德·丹姆  著，（荷）亚历克斯·沃尔夫  绘，漆仰平，爱桐  译 ',
-            price: 1233,
-            discount: 322,
-            percentage: 70
-          },
-          {
-            img: 'http://img3m2.ddimg.cn/0/27/28473192-1_b_3.jpg',
-            title:
-            '你当像鸟飞往你的山（比尔·盖茨年度特别推荐，登顶《纽约时报》畅销榜80 周！多一个人读到这个真实故事，就多一个人勇敢做自己！',
-            desc: '作者：塔拉·韦斯特弗著，新经典出品',
-            price: 1000,
-            discount: 888,
-            percentage: 40
-          },
-          {
-            img: 'http://img3m0.ddimg.cn/61/3/23444350-1_b_4.jpg',
-            title: '神奇校车·桥梁书版（全20',
-            desc: '作者：乔安娜柯尔　著 布鲁斯迪根 图　施芳',
-            price: 8833,
-            discount: 987,
-            percentage: 60
-          }]
+          this.list = data
           this.refreshing = false
         } else {
           this.list = [...this.list, ...data]
