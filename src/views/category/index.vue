@@ -5,7 +5,7 @@
       height="calc(100vh - 50px)"
       :items="categoryList"
       :main-active-index.sync="active"
-      @click-nav="onNavClick"
+      @click-nav="onL1CateClick"
     >
       <template #content>
         <div class="main">
@@ -14,7 +14,7 @@
             <h3 class="main__item__title">{{currentCategory.remark}}</h3>
             <div class="main__item__content">
               <van-grid :column-num="3" :border="false">
-                <van-grid-item class="single" v-for="(single,idx) in subCategoryList" :key="idx">
+                <van-grid-item class="single" @click="onL2CateClick(single.id)" v-for="(single,idx) in subCategoryList" :key="idx">
                   <image-pic fit="contain" :src="single.icon" />
                   <span>{{single.text}}</span>
                 </van-grid-item>
@@ -65,8 +65,14 @@ export default {
         this.subCategoryList = subCategoryList
       })
     },
-    onNavClick() {
+    onL1CateClick() {
       this.getCategoryContent()
+    },
+    // 跳转
+    onL2CateClick(cateId) {
+      this.$router.push({
+        path: `/product/2/${cateId}`
+      })
     }
   }
 }

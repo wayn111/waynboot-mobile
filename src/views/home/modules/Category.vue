@@ -78,7 +78,7 @@ export default {
     // 跳转
     onNavigate(cateId) {
       this.$router.push({
-        path: '/product/' + cateId
+        path: `/product/1/${cateId}`
       })
     },
     // 初始化

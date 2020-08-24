@@ -66,7 +66,7 @@ const routes = [
   },
   // 商品列表
   {
-    path: '/product/:cateId',
+    path: '/product/:categoryLevel/:cateId',
     name: 'Product',
     props: true,
     component: () => import('@/views/product'),

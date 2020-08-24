@@ -1,12 +1,12 @@
 <template>
   <div class="product">
-    <nav-bar title="商品列表">
+    <nav-bar :title="category.name">
       <van-icon name="shopping-cart-o" :color="variables.black" size="18" />
     </nav-bar>
 
     <div class="banner">
       <image-pic
-        src="http://m.360buyimg.com/babel/jfs/t1/106316/25/14939/138006/5e6a3b4dE5609efcf/27de6ed334aa7c9b.jpg!q70.dpg"
+        :src="category.picUrl"
         width="100%"
         height="100"
       />
@@ -41,11 +41,10 @@
 </template>
 
 <script>
-import { getList } from '@/api/product'
+import { firstCategoryGoods, secondCategoryGoods } from '@/api/product'
 import NavBar from '@/components/NavBar'
 import ProductItem from '@/components/ProductItem'
 import Skeleton from './modules/Skeleton'
-
 import variables from '@/styles/variables.scss'
 
 export default {
@@ -59,11 +58,17 @@ export default {
     cateId: {
       type: [String, Number],
       default: 0
+    },
+    categoryLevel: {
+      type: [String, Number],
+      default: ''
     }
   },
   data() {
     return {
       list: [],
+      category: [],
+      initFun: '',
       pageNo: 1,
       pageSize: 10,
       loading: false,
@@ -78,16 +83,18 @@ export default {
     }
   },
   mounted() {
+    this.initFun = this.categoryLevel === '1' ? firstCategoryGoods : secondCategoryGoods
     this.getProductList()
   },
   methods: {
     getProductList() {
-      getList({
+      this.initFun({
         pageNum: this.pageNo,
         pageSize: this.pageSize,
         cateId: this.cateId
       }).then(res => {
-        const data = res.map.data
+        const data = res.map.goods
+        this.category = res.map.category
         if (this.refreshing) {
           this.list = data
           this.refreshing = false
