@@ -139,7 +139,7 @@ export default {
       this.$dialog
         .confirm({ message: '确定要删除该订单吗?' })
         .then(() => {
-          orderDelete({ orderId: id }).then(() => {
+          orderDelete(id).then(() => {
             this.init()
             this.$toast('已删除订单')
           })
@@ -150,7 +150,7 @@ export default {
       this.$dialog
         .confirm({ message: '确定要取消该订单吗?' })
         .then(() => {
-          orderCancel({ orderId: id }).then(() => {
+          orderCancel(id).then(() => {
             this.init()
             this.$toast('已取消该订单')
           })
@@ -161,7 +161,7 @@ export default {
       this.$dialog
         .confirm({ message: '确定要申请退款吗?' })
         .then(() => {
-          orderRefund({ orderId: id }).then(() => {
+          orderRefund(id).then(() => {
             this.init()
             this.$toast('已申请订单退款')
           })
@@ -174,7 +174,7 @@ export default {
           message: '请确认收到货物, 确认收货后无法撤销!'
         })
         .then(() => {
-          orderConfirm({ orderId: id }).then(() => {
+          orderConfirm(id).then(() => {
             this.init()
             this.$toast('已确认收货')
           })
@@ -183,7 +183,7 @@ export default {
     },
     commentOrder(id) {},
     toPay(id) {
-      this.$router.push({ name: 'payment', params: { orderId: id } })
+      this.$router.push({ name: 'OrderPay', params: { orderId: id } })
     },
     handleTabClick() {
       this.page = 0

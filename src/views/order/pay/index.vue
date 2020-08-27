@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import { orderDetail, orderPrepay, orderH5pay } from '@/api/order'
+import { orderDetail, orderPrepay, orderH5pay, testPayNotify } from '@/api/order'
 import _ from 'lodash'
 import { getLocalStorage, setLocalStorage } from '@/utils/localStorage'
 
@@ -141,6 +141,19 @@ export default {
           }
         } else {
           // todo : alipay
+          testPayNotify(this.orderId)
+            .then((res) => {
+              this.$router.push({ name: 'User' })
+            })
+            .catch((err) => {
+              this.$dialog.alert({ message: '支付失败' })
+              this.$router.replace({
+                name: 'PayStatus',
+                params: {
+                  status: 'failed'
+                }
+              })
+            })
         }
       })
     },

@@ -38,10 +38,45 @@ export function orderH5pay(data) {
   })
 }
 
+export function testPayNotify(orderId) {
+  return request({
+    url: '/order/testPayNotify/' + orderId,
+    method: 'get'
+  })
+}
+
 export function orderList(data) {
   return request({
     url: '/order/list',
     method: 'get',
     params: data
+  })
+}
+
+export function orderCancel(orderId) {
+  return request({
+    url: '/order/cancel/' + orderId,
+    method: 'post'
+  })
+}
+
+export function orderRefund(orderId) {
+  return request({
+    url: '/order/refund/' + orderId,
+    method: 'post'
+  })
+}
+
+export function orderDelete(orderId) {
+  return request({
+    url: '/order/delete/' + orderId,
+    method: 'post'
+  })
+}
+
+export function orderConfirm(orderId) {
+  return request({
+    url: '/order/confirm/' + orderId,
+    method: 'post'
   })
 }
