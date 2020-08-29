@@ -143,7 +143,7 @@ export default {
           // todo : alipay
           testPayNotify(this.orderId)
             .then((res) => {
-              this.$router.push({ path: '/user/order/list/2' })
+              this.$router.push({ path: '/user/order/list/2' })// 跳转到订单列表带配送tab下
             })
             .catch((err) => {
               this.$dialog.alert({ message: '支付失败' })
