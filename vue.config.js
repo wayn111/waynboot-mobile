@@ -4,7 +4,7 @@ const path = require('path')
 const port = process.env.port || process.env.npm_config_port || 4949
 const mockUrl = 'http://localhost:82'
 
-function resolve (dir) {
+function resolve(dir) {
   return path.join(__dirname, dir)
 }
 
@@ -14,7 +14,6 @@ module.exports = {
   outputDir: 'dist',
   assetsDir: 'static',
   lintOnSave: process.env.NODE_ENV === 'development',
-  productionSourceMap: false,
   devServer: {
     port: port,
     open: true,
@@ -25,15 +24,16 @@ module.exports = {
     proxy: {
       '/dev-api': {
         target: mockUrl,
-        pathRewrite: { '^/dev-api': '' },
+        pathRewrite: {
+          '^/dev-api': '/'
+        },
         secure: false,
         changeOrigin: true
       }
     }
   },
   configureWebpack: {
-    // provide the app's title in webpack's name field, so that
-    // it can be accessed in index.html to inject the correct title.
+    devtool: 'source-map',
     name: 'panda-mall',
     resolve: {
       alias: {
@@ -41,10 +41,19 @@ module.exports = {
       }
     }
   },
-  chainWebpack (config) {
-    // 禁用prefetch和preload，在router.jszhong1通过webpack的内联注释手动选定要提前获取的代码区块
-    // https://cli.vuejs.org/zh/guide/html-and-static-assets.html#preload
-    config.plugins.delete('preload')
+  chainWebpack(config) {
+    // it can improve the speed of the first screen, it is recommended to turn on preload
+    config.plugin('preload').tap(() => [
+      {
+        rel: 'preload',
+        // to ignore runtime.js
+        // https://github.com/vuejs/vue-cli/blob/dev/packages/@vue/cli-service/lib/config/app.js#L171
+        fileBlacklist: [/\.map$/, /hot-update\.js$/, /runtime\..*\.js$/],
+        include: 'initial'
+      }
+    ])
+
+    // when there are many pages, it will cause too many meaningless requests
     config.plugins.delete('prefetch')
 
     // set svg-sprite-loader
@@ -63,23 +72,6 @@ module.exports = {
         symbolId: 'icon-[name]'
       })
       .end()
-
-    // set preserveWhitespace
-    config.module
-      .rule('vue')
-      .use('vue-loader')
-      .loader('vue-loader')
-      .tap(options => {
-        options.compilerOptions.preserveWhitespace = true
-        return options
-      })
-      .end()
-
-    config
-      // https://webpack.js.org/configuration/devtool/#development
-      .when(process.env.NODE_ENV === 'development', config =>
-        config.devtool('cheap-source-map')
-      )
 
     config.when(process.env.NODE_ENV !== 'development', config => {
       config.optimization.splitChunks({
@@ -100,6 +92,7 @@ module.exports = {
           }
         }
       })
+      // https:// webpack.js.org/configuration/optimization/#optimizationruntimechunk
       config.optimization.runtimeChunk('single')
     })
   }

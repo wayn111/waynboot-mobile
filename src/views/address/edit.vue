@@ -25,14 +25,14 @@ import { addAddress } from '@/api/address.js'
 
 export default {
   name: 'AddressEdit',
+  components: {
+    NavBar
+  },
   data() {
     return {
       areaList,
       addressInfo: {}
     }
-  },
-  components: {
-    NavBar
   },
   computed: {
     ...mapGetters(['addressList'])

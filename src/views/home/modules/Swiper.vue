@@ -10,6 +10,13 @@
 
 <script>
 export default {
-  props: ['bannerList']
+  props: {
+    bannerList: {
+      type: Array,
+      default() {
+        return []
+      }
+    }
+  }
 }
 </script>

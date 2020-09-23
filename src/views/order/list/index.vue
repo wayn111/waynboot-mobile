@@ -6,7 +6,7 @@
       </span>
     </nav-bar>
     <van-tabs v-model="activeIndex" :swipe-threshold="5" @click="handleTabClick">
-      <van-tab v-for="(tabTitle, index) in tabTitles" :title="tabTitle" :key="index">
+      <van-tab v-for="(tabTitle, index) in tabTitles" :key="index" :title="tabTitle">
         <van-list
           v-model="loading"
           :finished="finished"
@@ -31,48 +31,48 @@
               <div slot="desc">
                 <div class="desc">
                   <van-tag
+                    v-for="(spec, idx) in goods.specifications"
+                    :key="idx"
                     plain
                     style="margin-right:6px;"
-                    v-for="(spec, index) in goods.specifications"
-                    :key="index"
-                  >{{spec}}</van-tag>
+                  >{{ spec }}</van-tag>
                 </div>
               </div>
             </van-card>
-            <div class="total">合计: {{el.actualPrice | yuan}}（含运费{{el.post_fee | yuan}}）</div>
+            <div class="total">合计: {{ el.actualPrice | yuan }}（含运费{{ el.post_fee | yuan }}）</div>
 
             <div slot="footer" class="footer_btn">
               <van-button
-                size="small"
                 v-if="el.handleOption.cancel"
+                size="small"
                 @click.stop="cancelOrder(el.id)"
               >取消订单</van-button>
               <van-button
-                size="small"
                 v-if="el.handleOption.pay"
+                size="small"
                 type="danger"
                 @click.stop="toPay(el.id)"
               >去支付</van-button>
               <van-button
-                size="small"
                 v-if="el.handleOption.refund"
+                size="small"
                 type="danger"
                 @click.stop="refundOrder(el.id)"
               >退款</van-button>
               <van-button
-                size="small"
                 v-if="el.handleOption.confirm"
+                size="small"
                 type="danger"
                 @click.stop="confirmOrder(el.id)"
               >确认收货</van-button>
               <van-button
-                size="small"
                 v-if="el.handleOption.delete"
+                size="small"
                 @click.stop="delOrder(el.id)"
               >删除订单</van-button>
               <van-button
-                size="small"
                 v-if="el.handleOption.comment"
+                size="small"
                 @click.stop="commentOrder(el.id)"
               >去评价</van-button>
             </div>
@@ -93,16 +93,13 @@ import {
 } from '@/api/order'
 
 export default {
-  name: 'order-list',
+  name: 'OrderList',
 
   props: {
     active: {
       type: [String, Number],
       default: 0
     }
-  },
-  created() {
-    this.init()
   },
   data() {
     return {
@@ -114,6 +111,9 @@ export default {
       loading: false,
       finished: false
     }
+  },
+  created() {
+    this.init()
   },
 
   methods: {
@@ -183,7 +183,7 @@ export default {
     },
     commentOrder(id) {},
     toPay(id) {
-      this.$router.push({ name: 'OrderPay', params: { orderId: id } })
+      this.$router.push({ name: 'OrderPay', params: { orderId: id }})
     },
     handleTabClick() {
       this.page = 0

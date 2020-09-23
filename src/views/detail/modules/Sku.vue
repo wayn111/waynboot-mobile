@@ -26,9 +26,24 @@ export default {
       type: Boolean,
       default: false
     },
-    skuData: Object,
-    goods: Object,
-    initialSku: Object
+    skuData: {
+      type: Object,
+      default() {
+        return {}
+      }
+    },
+    goods: {
+      type: Object,
+      default() {
+        return {}
+      }
+    },
+    initialSku: {
+      type: Object,
+      default() {
+        return {}
+      }
+    }
   },
   computed: {
     isShow: {

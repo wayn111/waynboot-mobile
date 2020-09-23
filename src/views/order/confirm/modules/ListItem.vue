@@ -4,22 +4,22 @@
       <van-icon name="shop-o" />
       <span class="title__name">熊猫商城自营</span>
     </h3>
-    <div class="item" v-for="(item,idx) in goodsList" :key="idx">
+    <div v-for="(item,idx) in goodsList" :key="idx" class="item">
       <image-pic width="80" height="80" fit="fill" :src="item.picUrl" />
       <div class="item__main">
-        <p class="item__main__desc van-multi-ellipsis--l2">{{item.goodsName}}</p>
+        <p class="item__main__desc van-multi-ellipsis--l2">{{ item.goodsName }}</p>
         <p class="item__main__attr">
-          <span v-for="(item, index) in item.specifications" :key="index">{{item}}</span>
+          <span v-for="(specification, index) in item.specifications" :key="index">{{ specification }}</span>
         </p>
       </div>
       <div class="item__price">
-        <span class="item__price__price">¥{{item.price}}</span>
-        <span class="item__price__count">x{{item.number}}</span>
+        <span class="item__price__price">¥{{ item.price }}</span>
+        <span class="item__price__count">x{{ item.number }}</span>
       </div>
     </div>
     <van-cell-group>
       <van-cell title="商品金额">
-        <span class="red">{{amount}} 元</span>
+        <span class="red">{{ amount }} 元</span>
       </van-cell>
       <van-cell title="邮费">
         <span class="red">0 元</span>
@@ -28,16 +28,16 @@
         <span class="red">不可用</span>
       </van-cell>
       <van-field v-model="message" placeholder="请输入备注" label="订单备注">
-        <template slot="icon">{{500}}/50</template>
+        <template slot="icon">{{ 500 }}/50</template>
       </van-field>
     </van-cell-group>
 
     <van-submit-bar
       :price="amount * 100 "
       label="总计："
-      buttonText="提交订单"
-      @submit="onSubmit"
+      button-text="提交订单"
       :disabled="false"
+      @submit="onSubmit"
     />
   </div>
 </template>
@@ -83,7 +83,7 @@ export default {
       const userId = this.id
       submit({ cartIdArr, addressId, userId, message }).then((res) => {
         const { orderId } = res.map
-        this.$router.push({ name: 'OrderPay', params: { orderId } })
+        this.$router.push({ name: 'OrderPay', params: { orderId }})
       })
     }
   }

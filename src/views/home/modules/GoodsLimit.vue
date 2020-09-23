@@ -5,14 +5,14 @@
     <van-list
       v-model="loading"
       :finished="true"
-      @load="onReachBottom"
       :immediate-check="false"
+      @load="onReachBottom"
     >
       <div class="main">
         <goods-item
           v-for="(item,idx) in goodsList"
           :key="idx"
-          :goodsId="item.id"
+          :goods-id="item.id"
           :img="item.picUrl"
           :title="item.name"
           :desc="item.brief"
@@ -29,20 +29,28 @@ import Title from './Title'
 import GoodsItem from '@/components/GoodsItem'
 
 export default {
+  components: {
+    GoodsItem,
+    Title
+  },
   model: {
     prop: 'isLoading'
   },
   props: {
-    goodsList: Array,
-    titleName: String,
+    goodsList: {
+      type: Array,
+      default() {
+        return []
+      }
+    },
+    titleName: {
+      type: String,
+      default: ''
+    },
     isLoading: {
       type: Boolean,
       default: false
     }
-  },
-  components: {
-    GoodsItem,
-    Title
   },
   computed: {
     loading: {

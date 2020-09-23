@@ -18,13 +18,13 @@
           v-model="loading"
           :finished="finished"
           finished-text="没有更多了"
-          @load="onLoad"
           :immediate-check="false"
+          @load="onLoad"
         >
           <product-item
             v-for="(item,idx) in list"
             :key="idx"
-            :goodsId="item.id"
+            :goods-id="item.id"
             :img="item.picUrl"
             :title="item.name"
             :desc="item.brief"
@@ -36,7 +36,7 @@
       </van-pull-refresh>
     </div>
 
-    <Skeleton v-if="isSkeletonShow"/>
+    <Skeleton v-if="isSkeletonShow" />
   </div>
 </template>
 

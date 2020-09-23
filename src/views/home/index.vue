@@ -1,27 +1,27 @@
 <template>
   <div class="home">
     <Header />
-    <Swiper :bannerList="bannerList" />
-    <Category :cateList="cateList" />
+    <Swiper :banner-list="bannerList" />
+    <Category :cate-list="cateList" />
     <Goods-limit
       v-model="isLoading"
-      titleName="新品上线"
-      :goodsList="newGoodsList"
-      :isFinished="true"
+      title-name="新品上线"
+      :goods-list="newGoodsList"
+      :is-finished="true"
       @onReachBottom="onReachBottom"
     />
-     <Goods-limit
+    <Goods-limit
       v-model="isLoading"
-      titleName="热卖商品"
-      :goodsList="hotGoodsList"
-      :isFinished="true"
+      title-name="热卖商品"
+      :goods-list="hotGoodsList"
+      :is-finished="true"
       @onReachBottom="onReachBottom"
     />
     <Goods
       v-model="isLoading"
-      titleName="为你推荐"
-      :goodsList="goodsList"
-      :isFinished="isFinished"
+      title-name="为你推荐"
+      :goods-list="goodsList"
+      :is-finished="isFinished"
       @onReachBottom="onReachBottom"
     />
     <back-top />
@@ -84,7 +84,7 @@ export default {
         pageSize: this.pageSize,
         pageNum: this.pageNum
       }).then(res => {
-        const { map: { data } } = res
+        const { map: { data }} = res
         this.goodsList = [...this.goodsList, ...data]
         this.isLoading = false
         if (data.length < this.pageSize && this.goodsList.length > 0) {

@@ -15,15 +15,15 @@
       :discount="info.counterPrice"
     />
 
-    <Section @input="isSkuShow = $event" :stockNum="stockNum" :name="name" />
+    <Section :stock-num="stockNum" :name="name" @input="isSkuShow = $event" />
 
     <!-- <Comment :rate="comment.rate" :num="comment.num" :tags="comment.tags" :list="comment.list" /> -->
 
     <Description :description="description" />
 
-    <Sku v-if="isSkuShow" :skuData="skuData" :goods="skuGoods" :initialSku="initialSku" @initSku="initSku($event)" @getNum="getNum" @initSkuNum="initSkuNum($event)" v-model="isSkuShow" />
+    <Sku v-if="isSkuShow" v-model="isSkuShow" :sku-data="skuData" :goods="skuGoods" :initial-sku="initialSku" @initSku="initSku($event)" @getNum="getNum" @initSkuNum="initSkuNum($event)" />
 
-    <Tabbar @input="isSkuShow = $event" ref="tabbar"/>
+    <Tabbar ref="tabbar" @input="isSkuShow = $event" />
     <back-top />
     <Skeleton v-if="isSkeletonShow" />
   </div>
@@ -34,7 +34,7 @@ import { getDetail } from '@/api/detail'
 import Swiper from './modules/Swiper'
 import Overview from './modules/Overview'
 import Section from './modules/Section'
-import Comment from './modules/Comment'
+// import Comment from './modules/Comment'
 import Description from './modules/Description'
 import Tabbar from './modules/Tabbar'
 import Sku from './modules/Sku'
@@ -43,17 +43,17 @@ import _ from 'lodash'
 
 export default {
   name: 'Detail',
-  props: ['goodsId'],
   components: {
     Swiper,
     Overview,
     Section,
-    Comment,
     Description,
     Tabbar,
     Sku,
     Skeleton
   },
+  // eslint-disable-next-line vue/require-prop-types
+  props: ['goodsId'],
   data() {
     return {
       banner: [],
@@ -192,8 +192,6 @@ export default {
             id = specValue.id
           }
         })
-        if (id !== 0) {
-        }
       })
       return id
     }

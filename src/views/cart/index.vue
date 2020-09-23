@@ -12,7 +12,7 @@
       :tag="'123'"
       :tags="['满50减20', 'hot']"
       :price="item.price | yuan"
-      :isChecked="item.checked"
+      :is-checked="item.checked"
       @input="handleItemSelect"
       @handleDelete="handleDelete"
       @changeNum="changeNum"
@@ -45,9 +45,6 @@ export default {
       isSkeletonShow: true
     }
   },
-  mounted() {
-    this.getList()
-  },
   watch: {
     list(newval) {
       let num = 0
@@ -59,6 +56,9 @@ export default {
       })
       this.amount = num * 100
     }
+  },
+  mounted() {
+    this.getList()
   },
   methods: {
     // get list

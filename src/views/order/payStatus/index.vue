@@ -1,18 +1,18 @@
 <template>
   <div class="payment_status">
     <div class="status_top">
-      <van-icon :name="statusIcon" :class="statusClass"/>
-      <div>{{statusText}}</div>
+      <van-icon :name="statusIcon" :class="statusClass" />
+      <div>{{ statusText }}</div>
     </div>
 
-    <div class="status_text" v-if="isSuccess">
+    <div v-if="isSuccess" class="status_text">
       <span class="red">3秒</span>跳转订单
     </div>
-    <div class="status_text" v-else>系统繁忙, 支付遇到问题, 请您稍后再试!</div>
+    <div v-else class="status_text">系统繁忙, 支付遇到问题, 请您稍后再试!</div>
 
     <div class="status_goLink">
       <router-link class="red" :to="{name: 'User'}">查看订单
-        <van-icon name="arrow"/>
+        <van-icon name="arrow" />
       </router-link>
     </div>
   </div>
@@ -20,15 +20,13 @@
 
 <script>
 export default {
-  name: 'payment-status',
+  name: 'PaymentStatus',
 
   props: {
-    status: String
-  },
-  created() {
-    /* setTimeout(() => {
-      this.$router.push({ path: '/user/order/list/0' })
-    }, 3000) */
+    status: {
+      type: String,
+      default: ''
+    }
   },
   data() {
     return {
@@ -46,6 +44,11 @@ export default {
     statusClass() {
       return this.isSuccess ? 'success_icon' : 'fail_icon'
     }
+  },
+  created() {
+    /* setTimeout(() => {
+      this.$router.push({ path: '/user/order/list/0' })
+    }, 3000) */
   },
 
   mounted() {

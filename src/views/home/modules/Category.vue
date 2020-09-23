@@ -1,23 +1,23 @@
 <template>
   <!-- https://www.jianshu.com/p/c7ecd50f2e52 -->
   <div class="home-category">
-    <div class="scroll-wrapper" ref="scroll">
+    <div ref="scroll" class="scroll-wrapper">
       <div class="scroll-content">
-        <div class="scroll-item__wrapper" v-for="(cate,idx) in list" :key="idx">
+        <div v-for="(cate,idx) in list" :key="idx" class="scroll-item__wrapper">
           <div
-            class="scroll-item"
             v-for="(item, index) in cate"
             :key="index"
+            class="scroll-item"
             @click="onNavigate(item.id)"
           >
-            <img :src="item.iconUrl" />
-            <p class="text">{{item.name}}</p>
+            <img :src="item.iconUrl">
+            <p class="text">{{ item.name }}</p>
           </div>
         </div>
       </div>
     </div>
-    <div class="dot-wrapper" v-if="list && list.prev && list.prev.length > 5">
-      <div class="dot" :style="{'transform': `translateX(${rate})`}"></div>
+    <div v-if="list && list.prev && list.prev.length > 5" class="dot-wrapper">
+      <div class="dot" :style="{'transform': `translateX(${rate})`}" />
     </div>
   </div>
 </template>
@@ -28,7 +28,10 @@ import BScroll from '@better-scroll/core'
 export default {
   props: {
     cateList: {
-      type: Array
+      type: Array,
+      default() {
+        return []
+      }
     }
   },
   data() {
@@ -62,9 +65,6 @@ export default {
       return rlt
     }
   },
-  beforeDestroy() {
-    if (this.bs) this.bs.destroy()
-  },
   watch: {
     cateList(val) {
       if (val.length > 5) {
@@ -73,6 +73,9 @@ export default {
         })
       }
     }
+  },
+  beforeDestroy() {
+    if (this.bs) this.bs.destroy()
   },
   methods: {
     // 跳转

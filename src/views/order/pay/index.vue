@@ -7,7 +7,7 @@
     <van-cell-group class="payment_group">
       <van-cell title="订单编号" :value="order.orderSn" />
       <van-cell title="实付金额">
-        <span class="red">{{order.actualPrice | yuan}}</span>
+        <span class="red">{{ order.actualPrice | yuan }}</span>
       </van-cell>
     </van-cell-group>
 
@@ -17,13 +17,13 @@
         <van-cell-group>
           <van-cell>
             <template slot="title">
-              <img src="../../../assets/images/ali_pay.png" alt="支付宝" width="82" height="29" />
+              <img src="../../../assets/images/ali_pay.png" alt="支付宝" width="82" height="29">
             </template>
             <van-radio name="ali" />
           </van-cell>
           <van-cell>
             <template slot="title">
-              <img src="../../../assets/images/wx_pay.png" alt="微信支付" width="113" height="23" />
+              <img src="../../../assets/images/wx_pay.png" alt="微信支付" width="113" height="23">
             </template>
             <van-radio name="wx" />
           </van-cell>
@@ -31,7 +31,7 @@
       </van-radio-group>
     </div>
 
-    <van-button class="pay_submit" @click="pay" type="primary" bottomAction>去支付</van-button>
+    <van-button class="pay_submit" type="primary" bottom-action @click="pay">去支付</van-button>
   </div>
 </template>
 
@@ -41,7 +41,7 @@ import _ from 'lodash'
 import { getLocalStorage, setLocalStorage } from '@/utils/localStorage'
 
 export default {
-  name: 'payment',
+  name: 'Payment',
 
   data() {
     return {
@@ -130,6 +130,7 @@ export default {
                 )
               })
               .catch((err) => {
+                console.log(err)
                 this.$dialog.alert({ message: '支付失败' })
                 this.$router.replace({
                   name: 'PayStatus',
@@ -153,6 +154,7 @@ export default {
               this.$router.push({ path: '/user/order/list/2' })// 跳转到订单列表带配送tab下
             })
             .catch((err) => {
+              console.log(err)
               this.$dialog.alert({ message: '支付失败' })
               this.$router.replace({
                 name: 'PayStatus',
@@ -171,7 +173,7 @@ export default {
       WeixinJSBridge.invoke(
         'getBrandWCPayRequest',
         JSON.parse(data.prepay_data),
-        function (res) {
+        function(res) {
           if (res.err_msg === 'get_brand_wcpay_request:ok') {
             that.$router.replace({
               name: 'paymentStatus',

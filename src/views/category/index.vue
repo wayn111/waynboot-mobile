@@ -11,12 +11,12 @@
         <div class="main">
           <image-pic width="100%" height="85" fit="fill" :src="currentCategory.picUrl" />
           <div class="main__item">
-            <h3 class="main__item__title">{{currentCategory.remark}}</h3>
+            <h3 class="main__item__title">{{ currentCategory.remark }}</h3>
             <div class="main__item__content">
               <van-grid :column-num="3" :border="false">
-                <van-grid-item class="single" @click="onL2CateClick(single.id)" v-for="(single,idx) in subCategoryList" :key="idx">
+                <van-grid-item v-for="(single,idx) in subCategoryList" :key="idx" class="single" @click="onL2CateClick(single.id)">
                   <image-pic fit="contain" :src="single.icon" />
-                  <span>{{single.text}}</span>
+                  <span>{{ single.text }}</span>
                 </van-grid-item>
               </van-grid>
             </div>
