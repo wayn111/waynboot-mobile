@@ -15,7 +15,7 @@ service.interceptors.request.use(
   config => {
     if (store.getters.token) {
       // ['X-Token']是我这里自定义测试而塞到请求头中
-      config.headers.Authorization = getToken()
+      config.headers['Authorization'] = getToken()
     }
     return config
   },
