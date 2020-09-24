@@ -1,7 +1,7 @@
 <template>
   <div class="search-filter">
     <van-dropdown-menu style="flex:1">
-      <van-dropdown-item v-model="value1" :options="option1" />
+      <van-dropdown-item v-model="value1" :options="option1" @change="change1" />
       <van-dropdown-item v-model="value2" :options="option2" />
       <van-dropdown-item v-model="value2" :options="option3" />
     </van-dropdown-menu>
@@ -16,21 +16,24 @@
 export default {
   data() {
     return {
-      value1: 0,
+      value1: '',
       value2: 'a',
       option1: [
-        { text: '综合', value: 0 },
-        { text: '最新上架', value: 1 },
-        { text: '价格最低', value: 2 },
-        { text: '价格最高', value: 3 },
-        { text: '评论最多', value: 4 }
+        { text: '综合', value: '' },
+        { text: '新品上架', value: 'isNew' },
+        { text: '人气推荐', value: 'isHot' }
       ],
       option2: [
-        { text: '默认排序', value: 'a' },
-        { text: '好评排序', value: 'b' },
-        { text: '销量排序', value: 'c' }
+        { text: '销量', value: 'a' },
+        { text: '高', value: 'b' },
+        { text: '低', value: 'c' }
       ],
-      option3: [{ text: '销量', value: 'a' }]
+      option3: [{ text: '价格', value: 'a' }]
+    }
+  },
+  methods: {
+    change1(value) {
+      this.$emit('changeGoods', { search: value })
     }
   }
 }

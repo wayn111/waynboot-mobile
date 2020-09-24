@@ -1,7 +1,7 @@
 <template>
   <div class="search-list">
     <nav-bar v-model="value" @handleSearch="handleSearch" />
-    <filter-bar />
+    <filter-bar @changeGoods="changeGoods($event)" />
 
     <van-list
       v-model="loading"
@@ -14,11 +14,11 @@
         <goods-item
           v-for="(item,idx) in list"
           :key="idx"
-          :img="item.img"
-          :title="item.title"
-          :desc="item.desc"
-          :price="item.price"
-          :discount="item.discount"
+          :img="item.picUrl"
+          :title="item.name"
+          :desc="item.brief"
+          :price="item.retailPrice"
+          :discount="item.counterPrice"
         />
       </div>
     </van-list>
@@ -43,7 +43,10 @@ export default {
       value: '',
       list: [],
       pageSize: 8,
-      pageNo: 1,
+      pageNum: 1,
+      keyword: '',
+      isNew: false,
+      isHot: false,
       loading: false,
       finished: false,
       isSkeletonShow: true
@@ -56,24 +59,28 @@ export default {
       overlay: true,
       duration: 0
     })
-    const { key } = this.$route.query
-    this.value = key
+    const { keyword } = this.$route.query
+    this.value = keyword
+    this.keyword = keyword
     this.getList()
   },
   methods: {
     onReachBottom() {
-      this.pageNo += 1
+      this.pageNum += 1
       this.getList()
     },
     getList() {
       getSearchList({
         pageSize: this.pageSize,
-        pageNo: this.pageNo
-      }).then(res => {
-        const data = res.entry
+        pageNum: this.pageNum,
+        keyword: this.keyword,
+        isNew: this.isNew,
+        isHot: this.isHot
+      }).then((res) => {
+        const data = res.map.goods
         this.list = [...this.list, ...data]
         this.loading = false
-        if (data.length < this.pageNo && this.list.length > 0) {
+        if (data.length < this.pageNum && this.list.length > 0) {
           this.finished = true
         }
         this.$toast.clear()
@@ -83,10 +90,40 @@ export default {
       this.$router.replace({
         path: '/search/list',
         query: {
-          key,
+          keyword: key,
           t: +new Date()
         }
       })
+    },
+    changeGoods(val) {
+      this.reset()
+      if (val['search'] === 'isNew') {
+        this.isNew = true
+      }
+      if (val['search'] === 'isHot') {
+        this.isHot = true
+      }
+      getSearchList({
+        pageSize: this.pageSize,
+        pageNum: this.pageNum,
+        keyword: this.keyword,
+        isNew: this.isNew,
+        isHot: this.isHot
+      }).then((res) => {
+        const data = res.map.goods
+        this.list = [...data]
+        this.loading = false
+        if (data.length < this.pageNum && this.list.length > 0) {
+          this.finished = true
+        }
+        this.$toast.clear()
+      })
+    },
+    reset() {
+      this.pageSize = 8
+      this.pageNum = 1
+      this.isNew = false
+      this.isHot = false
     }
   }
 }

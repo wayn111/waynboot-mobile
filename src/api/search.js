@@ -10,7 +10,7 @@ export function getHotList() {
 export function getSearchList(data) {
   return request({
     url: '/search/result',
-    method: 'post',
-    data
+    method: 'get',
+    params: data
   })
 }
