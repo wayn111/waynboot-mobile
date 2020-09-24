@@ -52,7 +52,10 @@ import {
   RadioGroup,
   Panel,
   Tab,
-  Tabs
+  Tabs,
+  Row,
+  Col,
+  Popup
 } from 'vant'
 
 Vue.use(Toast)
@@ -107,3 +110,6 @@ Vue.use(Toast)
   .use(Panel)
   .use(Tab)
   .use(Tabs)
+  .use(Row)
+  .use(Col)
+  .use(Popup)

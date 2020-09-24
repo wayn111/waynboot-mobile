@@ -13,6 +13,18 @@
     </van-button>
 
     <div class="section__line" />
+    <van-button block @click.native="propsPopup = true">
+      <div class="section__item">
+        <div class="section__item__left">
+          <span class="content">属性</span>
+        </div>
+        <div class="section__item__right">
+          <van-icon name="arrow" />
+        </div>
+      </div>
+    </van-button>
+
+    <div class="section__line" />
     <van-button block @click="handleAddress">
       <div class="section__item">
         <div class="section__item__left">
@@ -39,13 +51,20 @@
         </div>
       </div>
     </van-button>
+    <van-popup v-model="propsPopup" position="bottom">
+      <popup-props :props-str="attr" />
+    </van-popup>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import PopupProps from './Popup-props'
 
 export default {
+  components: {
+    PopupProps
+  },
   props: {
     name: {
       type: String,
@@ -54,10 +73,29 @@ export default {
     stockNum: {
       type: Number,
       default: 4
+    },
+    attr: {
+      type: Array,
+      default() {
+        return []
+      }
+    }
+  },
+  data() {
+    return {
+      propsPopup: false
     }
   },
   computed: {
     ...mapGetters(['selectedAddress'])
+  },
+  watch: {
+    attr(o1) {
+      console.log(o1)
+      this.attr = o1
+    }
+  },
+  mounted() {
   },
   methods: {
     onSelectSku() {

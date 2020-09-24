@@ -15,7 +15,7 @@
       :discount="info.counterPrice"
     />
 
-    <Section :stock-num="stockNum" :name="name" @input="isSkuShow = $event" />
+    <Section :stock-num="stockNum" :name="name" :attr="attributes" @input="isSkuShow = $event" />
 
     <!-- <Comment :rate="comment.rate" :num="comment.num" :tags="comment.tags" :list="comment.list" /> -->
 
@@ -61,6 +61,7 @@ export default {
       info: {},
       name: '',
       stockNum: 1,
+      attributes: [],
       comment: {},
       description: '',
       skuData: {},
@@ -77,6 +78,7 @@ export default {
     getGoodsDetail() {
       getDetail(this.goodsId).then((res) => {
         const goods = res.map
+        this.attributes = goods.attributes
         this.goods = goods
         this.info = goods.info
         this.banner = goods.info.gallery

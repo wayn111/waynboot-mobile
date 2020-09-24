@@ -3,7 +3,7 @@
     <van-dropdown-menu style="flex:1">
       <van-dropdown-item v-model="value1" :options="option1" @change="change1" />
       <van-dropdown-item v-model="value2" :options="option2" />
-      <van-dropdown-item v-model="value2" :options="option3" />
+      <van-dropdown-item v-model="value3" :options="option3" />
     </van-dropdown-menu>
     <div class="filter">
       <span style="font-size:15px;margin-right:2px">筛选</span>
@@ -17,18 +17,19 @@ export default {
   data() {
     return {
       value1: '',
-      value2: 'a',
+      value2: '',
+      value3: '',
       option1: [
         { text: '综合', value: '' },
         { text: '新品上架', value: 'isNew' },
         { text: '人气推荐', value: 'isHot' }
       ],
       option2: [
-        { text: '销量', value: 'a' },
-        { text: '高', value: 'b' },
-        { text: '低', value: 'c' }
+        { text: '销量', value: '' }
       ],
-      option3: [{ text: '价格', value: 'a' }]
+      option3: [
+        { text: '价格', value: '' }
+      ]
     }
   },
   methods: {
