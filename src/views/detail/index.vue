@@ -53,7 +53,12 @@ export default {
     Skeleton
   },
   // eslint-disable-next-line vue/require-prop-types
-  props: ['goodsId'],
+  props: {
+    goodsId: {
+      type: String,
+      default: ''
+    }
+  },
   data() {
     return {
       banner: [],

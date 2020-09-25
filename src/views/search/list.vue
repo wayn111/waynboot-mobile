@@ -14,6 +14,7 @@
         <goods-item
           v-for="(item,idx) in list"
           :key="idx"
+          :goods-id="item.id"
           :img="item.picUrl"
           :title="item.name"
           :desc="item.brief"
