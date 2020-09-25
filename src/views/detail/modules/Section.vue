@@ -51,8 +51,8 @@
         </div>
       </div>
     </van-button>
-    <van-popup v-model="propsPopup" position="bottom">
-      <popup-props :props-str="attr" />
+    <van-popup v-if="isShowAttr" v-model="propsPopup" position="bottom">
+      <popup-props :props-str="attr" @closePopup="closePopup" />
     </van-popup>
   </div>
 </template>
@@ -83,16 +83,17 @@ export default {
   },
   data() {
     return {
-      propsPopup: false
+      propsPopup: false,
+      isShowAttr: false
     }
   },
   computed: {
     ...mapGetters(['selectedAddress'])
   },
   watch: {
-    attr(o1) {
-      console.log(o1)
+    attr(o1, o2) {
       this.attr = o1
+      this.isShowAttr = true
     }
   },
   mounted() {
@@ -105,6 +106,9 @@ export default {
       this.$router.push({
         path: '/address'
       })
+    },
+    closePopup() {
+      this.propsPopup = false
     }
   }
 }
