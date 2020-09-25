@@ -1,15 +1,17 @@
 <template>
   <div class="product">
     <nav-bar :title="category.name">
-      <van-icon name="shopping-cart-o" :color="variables.black" size="18" />
+      <van-icon
+        name="shopping-cart-o"
+        :color="variables.black"
+        :badge="count"
+        size="18"
+        @click="cartClick"
+      />
     </nav-bar>
 
     <div class="banner">
-      <image-pic
-        :src="category.picUrl"
-        width="100%"
-        height="100"
-      />
+      <image-pic :src="category.picUrl" width="100%" height="100" />
     </div>
 
     <div class="main">
@@ -22,7 +24,7 @@
           @load="onLoad"
         >
           <product-item
-            v-for="(item,idx) in list"
+            v-for="(item, idx) in list"
             :key="idx"
             :goods-id="item.id"
             :img="item.picUrl"
@@ -30,7 +32,8 @@
             :desc="item.brief"
             :price="item.retailPrice"
             :discount="item.counterPrice"
-            style="margin-bottom:6px"
+            style="margin-bottom: 6px"
+            @getCartGoodsCount="getCartGoodsCount"
           />
         </van-list>
       </van-pull-refresh>
@@ -42,6 +45,7 @@
 
 <script>
 import { firstCategoryGoods, secondCategoryGoods } from '@/api/product'
+import { getCartGoodsCount } from '@/api/cart'
 import NavBar from '@/components/NavBar'
 import ProductItem from '@/components/ProductItem'
 import Skeleton from './modules/Skeleton'
@@ -69,6 +73,7 @@ export default {
       list: [],
       category: [],
       initFun: '',
+      count: 0,
       pageNo: 1,
       pageSize: 10,
       loading: false,
@@ -83,8 +88,10 @@ export default {
     }
   },
   mounted() {
-    this.initFun = this.categoryLevel === '1' ? firstCategoryGoods : secondCategoryGoods
+    this.initFun =
+      this.categoryLevel === '1' ? firstCategoryGoods : secondCategoryGoods
     this.getProductList()
+    this.getCartGoodsCount()
   },
   methods: {
     getProductList() {
@@ -92,7 +99,7 @@ export default {
         pageNum: this.pageNo,
         pageSize: this.pageSize,
         cateId: this.cateId
-      }).then(res => {
+      }).then((res) => {
         const data = res.map.goods
         this.category = res.map.category
         if (this.refreshing) {
@@ -108,6 +115,14 @@ export default {
         this.isSkeletonShow = false
       })
     },
+    getCartGoodsCount() {
+      getCartGoodsCount()
+        .then((res) => {
+          const { count } = res.map
+          this.count = count
+        })
+        .catch((e) => {})
+    },
     onLoad() {
       this.loading = true
       this.pageNo += 1
@@ -117,6 +132,9 @@ export default {
       this.refreshing = true
       this.pageNo = 1
       this.getProductList()
+    },
+    cartClick() {
+      this.$router.push({ name: 'Cart' })
     }
   }
 }

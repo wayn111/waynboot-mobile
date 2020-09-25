@@ -49,6 +49,7 @@ export default {
           message: '已添加至购物车',
           duration: 1500
         })
+        this.$emit('getCartGoodsCount')
       })
     }
   }
