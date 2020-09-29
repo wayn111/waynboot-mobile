@@ -1,7 +1,7 @@
 <template>
   <div>
     <nav-bar title="购物车" class="nav">
-      <van-icon name="search" size="20" />
+      <van-icon name="search" size="20" @click="onSearch" />
     </nav-bar>
     <div class="nav--placeholder" style="width:100%;height:46px" />
   </div>
@@ -13,6 +13,13 @@ import NavBar from '@/components/NavBar'
 export default {
   components: {
     NavBar
+  },
+  methods: {
+    onSearch() {
+      this.$router.push({
+        path: '/search'
+      })
+    }
   }
 }
 </script>
