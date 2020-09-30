@@ -9,7 +9,7 @@
       :thumb="item.picUrl"
       :title="item.goodsName"
       :desc="item.specifications.join(' ')"
-      :tag="'123'"
+      :tag="item.tag"
       :tags="['满50减20', 'hot']"
       :price="item.price | yuan"
       :is-checked="item.checked"

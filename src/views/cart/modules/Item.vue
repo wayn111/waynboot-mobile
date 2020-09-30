@@ -8,7 +8,7 @@
     />
     <van-swipe-cell style="width:100%" :before-close="beforeClose">
       <van-card :tag="tag" :price="price" :desc="desc" :title="title" :thumb="thumb">
-        <template #tags>
+        <!-- <template #tags>
           <van-tag
             v-for="(item,idx) in tags"
             :key="idx"
@@ -16,7 +16,7 @@
             type="danger"
             style="margin-right:4px"
           >{{ item }}</van-tag>
-        </template>
+        </template> -->
         <template #footer>
           <van-stepper
             v-model.number="value"
