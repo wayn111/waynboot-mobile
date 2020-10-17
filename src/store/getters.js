@@ -2,8 +2,8 @@ const getters = {
   // base info
   id: state => state.user.id,
   name: state => state.user.name,
-  userInfo: state => state.user.userInfo,
   token: state => state.user.token,
+  userInfo: state => state.user.userInfo,
 
   // address
   addressList: state => state.address.addressList,

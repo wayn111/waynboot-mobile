@@ -26,6 +26,15 @@ const routes = [
       title: '登录'
     }
   },
+  // 注册
+  {
+    path: '/registry',
+    name: 'Registry',
+    component: () => import('@/views/auth/registry'),
+    meta: {
+      title: '注册'
+    }
+  },
   // 分类
   {
     path: '/category',

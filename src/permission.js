@@ -3,7 +3,7 @@ import store from './store'
 import { Toast } from 'vant'
 import { getToken } from '@/utils/auth' // get token from cookie
 
-const whiteList = ['/login'] // 白名单
+const whiteList = ['/login', '/registry'] // 白名单
 
 router.beforeEach(async(to, from, next) => {
   // 设置标题

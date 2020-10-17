@@ -21,3 +21,11 @@ export function logout() {
     method: 'post'
   })
 }
+
+export function setRegistry(data) {
+  return request({
+    url: '/registry',
+    method: 'post',
+    data
+  })
+}

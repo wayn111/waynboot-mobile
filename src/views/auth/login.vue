@@ -14,7 +14,13 @@
         name="手机号"
         label="手机号"
         placeholder="请输入手机号"
-        :rules="[{validator:checkPhoneNum, required: true, message:'请填写正确的手机号！'}]"
+        :rules="[
+          {
+            validator: checkPhone,
+            required: true,
+            message: '请填写正确的手机号！',
+          },
+        ]"
       />
 
       <van-field
@@ -23,22 +29,13 @@
         required
         center
         clearable
-        name="手机号"
-        label="验证码"
-        placeholder="请输入短信验证码"
-        :rules="[{ required: true, message: '请填写正确的验证码！' }]"
-      >
-        <van-button
-          slot="button"
-          size="small"
-          plain
-          type="info"
-          native-type="button"
-          @click.stop="form.password = 1234"
-        >发送验证码</van-button>
-      </van-field>
+        name="密码"
+        label="密码"
+        placeholder="请输入密码"
+        :rules="[{ required: true, message: '请填写密码！' }]"
+      />
 
-      <div style="margin: 36px;">
+      <div style="margin: 36px">
         <van-button
           round
           block
@@ -47,6 +44,16 @@
           loading-text="登录中..."
           native-type="submit"
         >提交</van-button>
+
+        <van-button
+          style="margin-top: 10px"
+          plain
+          round
+          block
+          type="info"
+          native-type="button"
+          to="/registry"
+        >注册</van-button>
       </div>
     </van-form>
   </div>
@@ -74,7 +81,7 @@ export default {
   },
   methods: {
     // 校检手机号
-    checkPhoneNum(num) {
+    checkPhone(num) {
       if (num === 123456789) return true
       const reg = /^[1][3,4,5,7,8][0-9]{9}$/
       if (reg.test(num)) {
