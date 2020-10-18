@@ -102,11 +102,10 @@ export default {
             duration: 2000,
             onOpened: () => {
               location.href = this.redirect
-              this.loading = false
             }
           })
         })
-        .catch(() => {
+        .finally(() => {
           this.loading = false
         })
     }

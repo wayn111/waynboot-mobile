@@ -43,7 +43,6 @@ export default {
   },
   methods: {
     onSave(value) {
-      console.log('保存地址', value)
       addAddress(value).then(res => {
         this.$toast.success('保存成功')
         this.$router.go(-1)

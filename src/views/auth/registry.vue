@@ -136,11 +136,11 @@ export default {
         password: '',
         confirmPassword: '',
         mailcode: '',
-        captcha: ''
+        code: '',
+        key: ''
       },
       loading: false,
-      captchaImg: '',
-      captchaKey: ''
+      captchaImg: ''
     }
   },
   computed: {
@@ -229,7 +229,7 @@ export default {
   img {
     vertical-align: middle;
     position: relative;
-    top: -2.467vw;;
+    top: -2.467vw;
   }
 }
 </style>
