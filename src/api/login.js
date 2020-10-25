@@ -9,8 +9,9 @@ export function getCaptcha() {
 
 export function getMailCode(data) {
   return request({
-    url: '/home/index',
+    url: '/sendEmailCode',
     method: 'post',
-    data
+    data,
+    timeout: 20000
   })
 }

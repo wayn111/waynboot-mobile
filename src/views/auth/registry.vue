@@ -67,9 +67,9 @@
         :rules="[{ required: true, message: '请再次输入密码确认!' }]"
       />
 
-      <!-- <van-field
-        v-model="form.mailcode"
-        type="number"
+      <van-field
+        v-model="form.emailCode"
+        type="text"
         required
         center
         clearable
@@ -84,9 +84,10 @@
           plain
           type="info"
           native-type="button"
+          :disabled="disabled"
           @click.stop="getMailCode"
-        >发送验证码</van-button>
-      </van-field> -->
+        >{{ btnText }}</van-button>
+      </van-field>
 
       <van-field
         v-model="form.code"
@@ -135,10 +136,13 @@ export default {
         email: '',
         password: '',
         confirmPassword: '',
-        mailcode: '',
+        emailCode: '',
+        emailKey: '',
         code: '',
         key: ''
       },
+      disabled: false,
+      totalCount: 0,
       loading: false,
       captchaImg: ''
     }
@@ -146,7 +150,11 @@ export default {
   computed: {
     variables() {
       return variables
+    },
+    btnText() {
+      return this.totalCount !== 0 ? `${this.totalCount}秒后获取` : '获取验证码'
     }
+
   },
   mounted() {
     this.getCaptcha()
@@ -161,23 +169,28 @@ export default {
     },
     // 获取邮箱验证码
     getMailCode() {
-      if (!this.form.mailsid) {
-        localStorage.setItem('mailsid', this.form.mailsid)
-      }
       const { email } = this.form
       if (!email || !this.checkEmail(email)) {
         this.$toast.fail('请先输入正确的邮箱地址')
         return
       }
-      getMailCode({ email: this.form.email, mailsid: this.form.mailsid }).then(
-        (res) => {
-          this.$notify({
-            type: 'success',
-            message: '邮箱验证码已发送',
-            duration: 2000
-          })
+      this.disabled = true
+      this.totalCount = 60
+      this.interval = setInterval(() => {
+        this.totalCount--
+        if (this.totalCount === 0) {
+          clearInterval(this.interval)
+          this.disabled = false
         }
-      )
+      }, 1000)
+      getMailCode({ email }).then((res) => {
+        this.form.emailKey = res.map.key
+        this.$notify({
+          type: 'success',
+          message: '邮箱验证码已发送',
+          duration: 2000
+        })
+      })
     },
     // 校检邮箱
     checkEmail(email) {
