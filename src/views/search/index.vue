@@ -6,7 +6,7 @@
 </template>
 
 <script>
-// import { getHotList } from '@/api/search'
+import { getHotList } from '@/api/search'
 import NavBar from './modules/NavBar'
 import SearchWords from './modules/Words'
 
@@ -27,7 +27,10 @@ export default {
   },
   methods: {
     getHot() {
-      this.hotList = ['衣服', '手机', '三体书籍三体书籍', '鞋子', '箱包']
+      getHotList().then(res => {
+        this.hotList = res.map.data
+      }).catch(e => {})
+      // this.hotList = ['衣服', '手机', '三体书籍三体书籍', '鞋子', '箱包']
     },
     handleSearch(value) {
       this.$router.push({

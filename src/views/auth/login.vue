@@ -25,7 +25,7 @@
 
       <van-field
         v-model="form.password"
-        type="number"
+        type="password"
         required
         center
         clearable
