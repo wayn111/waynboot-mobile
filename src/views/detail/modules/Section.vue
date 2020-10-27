@@ -1,6 +1,24 @@
 <template>
   <div class="section">
-    <van-button block @click="onSelectSku">
+    <div class="item_cell_group">
+      <van-cell-group>
+        <van-cell
+          title="规格"
+          is-link
+          :value="name + ' ' + stockNum + ' 个'"
+          @click.native="onSelectSku"
+        />
+        <van-cell title="属性" is-link @click.native="propsPopup = true" />
+        <van-cell
+          title="送至"
+          is-link
+          :value="selectedAddress.address || '北京市东城区'"
+          @click="handleAddress"
+        />
+        <van-cell title="运费" value="88元" />
+      </van-cell-group>
+    </div>
+    <!-- <van-button block @click="onSelectSku">
       <div class="section__item">
         <div class="section__item__left">
           <span class="title">已选</span>
@@ -29,7 +47,9 @@
       <div class="section__item">
         <div class="section__item__left">
           <span class="title">送至</span>
-          <span class="content">{{ selectedAddress.address || '北京市 东城区' }}</span>
+          <span class="content">{{
+            selectedAddress.address || "北京市 东城区"
+          }}</span>
         </div>
         <div class="section__item__right">
           <van-icon name="arrow" />
@@ -41,7 +61,11 @@
     <van-button block>
       <div class="section__item section__item--icon">
         <div class="section__item__left">
-          <p v-for="(item,idx) in ['panda自营','panda发货','七天无理由退款']" :key="idx" class="icon--wrapper">
+          <p
+            v-for="(item, idx) in ['panda自营', 'panda发货', '七天无理由退款']"
+            :key="idx"
+            class="icon--wrapper"
+          >
             <svg-icon icon-class="good" :width="16" :height="16" />
             <span>{{ item }}</span>
           </p>
@@ -50,7 +74,7 @@
           <van-icon name="arrow" />
         </div>
       </div>
-    </van-button>
+    </van-button> -->
     <van-popup v-if="isShowAttr" v-model="propsPopup" position="bottom">
       <popup-props :props-str="attr" @closePopup="closePopup" />
     </van-popup>
@@ -96,8 +120,7 @@ export default {
       this.isShowAttr = true
     }
   },
-  mounted() {
-  },
+  mounted() {},
   methods: {
     onSelectSku() {
       this.$emit('input', true)
@@ -132,7 +155,10 @@ export default {
   // border-radius: 6px;
   margin-top: 24px;
   background: #fff;
-  .section__item {
+  .van-cell__value {
+    min-width: 80%;
+  }
+  /* .section__item {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -170,6 +196,6 @@ export default {
     height: 1px;
     background: #f5f5f5;
     margin: 0 auto;
-  }
+  } */
 }
 </style>

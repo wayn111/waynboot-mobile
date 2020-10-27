@@ -1,6 +1,6 @@
 <template>
   <div class="comment">
-    <div class="title">
+    <!-- <div class="title">
       <van-button block>
         <div class="comment__item">
           <div class="comment__item__left">
@@ -14,11 +14,20 @@
         </div>
       </van-button>
       <div class="comment__line" />
+    </div> -->
+    <div class="item_cell_group">
+      <van-cell :value="'好评率' + rate" is-link>
+        <!-- 使用 title 插槽来自定义标题 -->
+        <template #title>
+          <span>评论</span>
+          <span class="custom-num">{{ num }}</span>
+        </template>
+      </van-cell>
     </div>
 
     <div class="tags">
       <van-tag
-        v-for="(item,idx) in tags"
+        v-for="(item, idx) in tags"
         :key="idx"
         class="tags__item"
         :color="variables.red"
@@ -28,7 +37,7 @@
 
     <div class="main">
       <comment-item
-        v-for="(item,idx) in list"
+        v-for="(item, idx) in list"
         :key="idx"
         :avatar="item.avatar"
         :name="item.name"
@@ -36,10 +45,15 @@
         :score="item.score"
         :desc="item.desc"
         :imgs="item.imgs"
-        style="margin-top:12px"
+        style="margin-top: 12px"
       />
       <div class="main__btn">
-        <van-button :color="variables.gray" plain round size="small">查看全部评价</van-button>
+        <van-button
+          :color="variables.gray"
+          plain
+          round
+          size="small"
+        >查看全部评价</van-button>
       </div>
     </div>
   </div>
@@ -107,7 +121,11 @@ export default {
       margin: 14px 8px 0 0;
     }
   }
-
+  .custom-num {
+    margin-left: 8px;
+    font-size: 5px;
+    font-weight: 100;
+  }
   .main {
     padding: 0 24px;
     .main__btn {
