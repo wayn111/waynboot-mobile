@@ -43,11 +43,12 @@ export default {
     return {
       value: '',
       list: [],
-      pageSize: 8,
+      pageSize: 10,
       pageNum: 1,
       keyword: '',
       isNew: false,
       isHot: false,
+      isPrice: false,
       loading: false,
       finished: false,
       isSkeletonShow: true
@@ -76,7 +77,8 @@ export default {
         pageNum: this.pageNum,
         keyword: this.keyword,
         isNew: this.isNew,
-        isHot: this.isHot
+        isHot: this.isHot,
+        isPrice: this.isPrice
       }).then((res) => {
         const data = res.map.goods
         this.list = [...this.list, ...data]
@@ -100,16 +102,24 @@ export default {
       this.reset()
       if (val['search'] === 'isNew') {
         this.isNew = true
-      }
-      if (val['search'] === 'isHot') {
+      } else if (val['search'] === 'isHot') {
         this.isHot = true
+      } else if (val['search'] === 'price') {
+        this.isPrice = true
+        this.orderBy = val['orderBy']
+      } else if (val['search'] === 'cancelPrice') {
+        this.isPrice = false
+        this.orderBy = ''
       }
+
       getSearchList({
         pageSize: this.pageSize,
         pageNum: this.pageNum,
         keyword: this.keyword,
         isNew: this.isNew,
-        isHot: this.isHot
+        isHot: this.isHot,
+        isPrice: this.isPrice,
+        orderBy: this.orderBy
       }).then((res) => {
         const data = res.map.goods
         this.list = [...data]
@@ -121,7 +131,7 @@ export default {
       })
     },
     reset() {
-      this.pageSize = 8
+      this.pageSize = 10
       this.pageNum = 1
       this.isNew = false
       this.isHot = false

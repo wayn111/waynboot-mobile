@@ -2,9 +2,16 @@
   <div class="search-filter">
     <van-dropdown-menu style="flex:1">
       <van-dropdown-item v-model="value1" :options="option1" @change="change1" />
-      <van-dropdown-item v-model="value2" :options="option2" />
-      <van-dropdown-item v-model="value3" :options="option3" />
+      <!-- <van-dropdown-item v-model="value2" :options="option2" />
+      <van-dropdown-item v-model="value3" :options="option3" /> -->
     </van-dropdown-menu>
+    <div class="filter">
+      <span style="font-size:15px;margin-right:2px">销量</span>
+    </div>
+    <div class="filter" @click="changeFaIcon">
+      <span style="font-size:15px;margin-right:2px">价格</span>
+      <font-awesome-icon :icon="faDefault" size="3x" />
+    </div>
     <div class="filter">
       <span style="font-size:15px;margin-right:2px">筛选</span>
       <van-icon size="12" name="filter-o" />
@@ -17,25 +24,39 @@ export default {
   data() {
     return {
       value1: '',
-      value2: '',
-      value3: '',
       option1: [
         { text: '综合', value: '' },
         { text: '新品上架', value: 'isNew' },
         { text: '人气推荐', value: 'isHot' }
       ],
-      option2: [
-        { text: '销量', value: '' }
-      ],
-      option3: [
-        { text: '价格', value: '' }
-      ]
+      faDefault: ['fas', 'sort'],
+      faSort: ['fas', 'sort'],
+      faSortUp: ['fas', 'sort-up'],
+      faSortDown: ['fas', 'sort-down'],
+      faCount: 0
     }
   },
   methods: {
     change1(value) {
       this.$emit('changeGoods', { search: value })
+    },
+    changeFaIcon() {
+      this.faCount++
+      if (this.faCount === 3) {
+        this.faCount = 0
+      }
+      if (this.faCount === 0) {
+        this.$emit('changeGoods', { search: 'cancelPrice' })
+        this.faDefault = this.faSort
+      } else if (this.faCount === 1) {
+        this.$emit('changeGoods', { search: 'price', orderBy: 'asc' })
+        this.faDefault = this.faSortUp
+      } else if (this.faCount === 2) {
+        this.faDefault = this.faSortDown
+        this.$emit('changeGoods', { search: 'price', orderBy: 'desc' })
+      }
     }
+
   }
 }
 </script>

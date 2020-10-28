@@ -14,6 +14,8 @@ import './permission'
 
 // import vant
 import '@/components/Vant'
+// import fontAwesome
+import '@/components/fontAwesome'
 // register common components globally
 import '@/components/common'
 import filters from '@/filter'

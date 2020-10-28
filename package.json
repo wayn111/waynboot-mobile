@@ -10,6 +10,10 @@
   },
   "dependencies": {
     "@better-scroll/core": "^2.0.4",
+    "@fortawesome/fontawesome-svg-core": "^1.2.32",
+    "@fortawesome/free-brands-svg-icons": "^5.15.1",
+    "@fortawesome/free-solid-svg-icons": "^5.15.1",
+    "@fortawesome/vue-fontawesome": "^2.0.0",
     "axios": "^0.19.2",
     "core-js": "^3.6.4",
     "dayjs": "^1.8.36",
