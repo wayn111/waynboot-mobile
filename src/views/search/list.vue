@@ -49,6 +49,7 @@ export default {
       isNew: false,
       isHot: false,
       isPrice: false,
+      isSales: false,
       loading: false,
       finished: false,
       isSkeletonShow: true
@@ -78,7 +79,8 @@ export default {
         keyword: this.keyword,
         isNew: this.isNew,
         isHot: this.isHot,
-        isPrice: this.isPrice
+        isPrice: this.isPrice,
+        isSales: this.isSales
       }).then((res) => {
         const data = res.map.goods
         this.list = [...this.list, ...data]
@@ -107,6 +109,8 @@ export default {
       } else if (val['search'] === 'price') {
         this.isPrice = true
         this.orderBy = val['orderBy']
+      } else if (val['search'] === 'isSales') {
+        this.isSales = true
       } else if (val['search'] === 'cancelPrice') {
         this.isPrice = false
         this.orderBy = ''
@@ -119,6 +123,7 @@ export default {
         isNew: this.isNew,
         isHot: this.isHot,
         isPrice: this.isPrice,
+        isSales: this.isSales,
         orderBy: this.orderBy
       }).then((res) => {
         const data = res.map.goods
@@ -135,6 +140,8 @@ export default {
       this.pageNum = 1
       this.isNew = false
       this.isHot = false
+      this.isPrice = false
+      this.isSales = false
       this.finished = false
     }
   }

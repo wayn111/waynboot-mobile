@@ -5,7 +5,7 @@
       <!-- <van-dropdown-item v-model="value2" :options="option2" />
       <van-dropdown-item v-model="value3" :options="option3" /> -->
     </van-dropdown-menu>
-    <div class="filter">
+    <div class="filter" @click="chageSales">
       <span style="font-size:15px;margin-right:2px">销量</span>
     </div>
     <div class="filter" @click="changeFaIcon">
@@ -55,6 +55,9 @@ export default {
         this.faDefault = this.faSortDown
         this.$emit('changeGoods', { search: 'price', orderBy: 'desc' })
       }
+    },
+    chageSales() {
+      this.$emit('changeGoods', { search: 'isSales' })
     }
 
   }
