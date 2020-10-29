@@ -135,6 +135,7 @@ export default {
       this.pageNum = 1
       this.isNew = false
       this.isHot = false
+      this.finished = false
     }
   }
 }
