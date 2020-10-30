@@ -55,7 +55,8 @@ import {
   Tabs,
   Row,
   Col,
-  Popup
+  Popup,
+  Switch
 } from 'vant'
 
 Vue.use(Toast)
@@ -113,3 +114,5 @@ Vue.use(Toast)
   .use(Row)
   .use(Col)
   .use(Popup)
+  .use(Switch)
+

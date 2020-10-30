@@ -1,6 +1,6 @@
 <template>
   <div class="search-filter">
-    <van-dropdown-menu style="flex:1">
+    <van-dropdown-menu style="flex:1.2">
       <van-dropdown-item v-model="value1" :options="option1" @change="change1" />
       <!-- <van-dropdown-item v-model="value2" :options="option2" />
       <van-dropdown-item v-model="value3" :options="option3" /> -->
@@ -12,10 +12,20 @@
       <span style="font-size:15px;margin-right:2px">价格</span>
       <font-awesome-icon :icon="faDefault" size="3x" />
     </div>
-    <div class="filter">
-      <span style="font-size:15px;margin-right:2px">筛选</span>
-      <van-icon size="12" name="filter-o" />
-    </div>
+    <van-dropdown-menu style="flex:0.5">
+      <van-dropdown-item ref="item" title="筛选">
+        <van-cell center title="新品">
+          <template #right-icon>
+            <van-switch v-model="switch1" size="24" />
+          </template>
+        </van-cell>
+        <van-cell center title="热品">
+          <template #right-icon>
+            <van-switch v-model="switch2" size="24" />
+          </template>
+        </van-cell>
+      </van-dropdown-item>
+    </van-dropdown-menu>
   </div>
 </template>
 
@@ -24,10 +34,13 @@ export default {
   data() {
     return {
       value1: '',
+      switch1: false,
+      switch2: false,
       option1: [
-        { text: '综合', value: '' },
-        { text: '新品上架', value: 'isNew' },
-        { text: '人气推荐', value: 'isHot' }
+        { text: '综合推荐', value: '' },
+        { text: '评论数高低', value: 'commentSort' }
+        // { text: '新品上架', value: 'isNew' },
+        // { text: '人气推荐', value: 'isHot' }
       ],
       faDefault: ['fas', 'sort'],
       faSort: ['fas', 'sort'],
@@ -58,6 +71,9 @@ export default {
     },
     chageSales() {
       this.$emit('changeGoods', { search: 'isSales' })
+    },
+    onConfirm() {
+
     }
 
   }
