@@ -50,6 +50,8 @@ export default {
       isHot: false,
       isPrice: false,
       isSales: false,
+      filterNew: false,
+      filterHot: false,
       loading: false,
       finished: false,
       isSkeletonShow: true
@@ -80,7 +82,9 @@ export default {
         isNew: this.isNew,
         isHot: this.isHot,
         isPrice: this.isPrice,
-        isSales: this.isSales
+        isSales: this.isSales,
+        filterNew: this.filterNew,
+        filterHot: this.filterHot
       }).then((res) => {
         const data = res.map.goods
         this.list = [...this.list, ...data]
@@ -102,6 +106,7 @@ export default {
     },
     changeGoods(val) {
       this.reset()
+      // 排序
       if (val['search'] === 'isNew') {
         this.isNew = true
       } else if (val['search'] === 'isHot') {
@@ -115,6 +120,17 @@ export default {
         this.isPrice = false
         this.orderBy = ''
       }
+      // 筛选
+      if (val['search'] === 'filterNew') {
+        this.filterNew = true
+      } else if (val['search'] === 'notFilterNew') {
+        this.filterNew = false
+      }
+      if (val['search'] === 'filterHot') {
+        this.filterHot = true
+      } else if (val['search'] === 'notFilterHot') {
+        this.filterHot = false
+      }
 
       getSearchList({
         pageSize: this.pageSize,
@@ -124,7 +140,9 @@ export default {
         isHot: this.isHot,
         isPrice: this.isPrice,
         isSales: this.isSales,
-        orderBy: this.orderBy
+        orderBy: this.orderBy,
+        filterNew: this.filterNew,
+        filterHot: this.filterHot
       }).then((res) => {
         const data = res.map.goods
         this.list = [...data]

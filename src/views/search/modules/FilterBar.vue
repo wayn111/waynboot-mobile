@@ -1,6 +1,6 @@
 <template>
   <div class="search-filter">
-    <van-dropdown-menu style="flex:1.2">
+    <van-dropdown-menu style="flex:1">
       <van-dropdown-item v-model="value1" :options="option1" @change="change1" />
       <!-- <van-dropdown-item v-model="value2" :options="option2" />
       <van-dropdown-item v-model="value3" :options="option3" /> -->
@@ -16,12 +16,12 @@
       <van-dropdown-item ref="item" title="筛选">
         <van-cell center title="新品">
           <template #right-icon>
-            <van-switch v-model="switch1" size="24" />
+            <van-switch v-model="switch1" size="24" @change="filterNew" />
           </template>
         </van-cell>
         <van-cell center title="热品">
           <template #right-icon>
-            <van-switch v-model="switch2" size="24" />
+            <van-switch v-model="switch2" size="24" @change="filterHot" />
           </template>
         </van-cell>
       </van-dropdown-item>
@@ -33,12 +33,12 @@
 export default {
   data() {
     return {
-      value1: '',
+      value1: 'isHot',
       switch1: false,
       switch2: false,
       option1: [
-        { text: '综合推荐', value: '' },
-        { text: '评论数高低', value: 'commentSort' }
+        { text: '综合推荐', value: 'isHot' }
+        // { text: '评分', value: '' }
         // { text: '新品上架', value: 'isNew' },
         // { text: '人气推荐', value: 'isHot' }
       ],
@@ -72,8 +72,19 @@ export default {
     chageSales() {
       this.$emit('changeGoods', { search: 'isSales' })
     },
-    onConfirm() {
-
+    filterNew(val) {
+      if (val) {
+        this.$emit('changeGoods', { search: 'filterNew' })
+      } else {
+        this.$emit('changeGoods', { search: 'notFilterNew' })
+      }
+    },
+    filterHot(val) {
+      if (val) {
+        this.$emit('changeGoods', { search: 'filterHot' })
+      } else {
+        this.$emit('changeGoods', { search: 'notFilterHot' })
+      }
     }
 
   }
