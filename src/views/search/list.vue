@@ -105,7 +105,18 @@ export default {
       })
     },
     changeGoods(val) {
-      this.reset()
+      // 筛选
+      if (val['search'] === 'filterNew') {
+        this.filterNew = val['val']
+      }
+      if (val['search'] === 'filterHot') {
+        this.filterHot = val['val']
+      }
+      // 存在筛选条件时，不过滤排序条件
+      if (val['search'] !== 'filterNew' && val['search'] !== 'filterHot') {
+        this.reset()
+      }
+
       // 排序
       if (val['search'] === 'isNew') {
         this.isNew = true
@@ -119,17 +130,6 @@ export default {
       } else if (val['search'] === 'cancelPrice') {
         this.isPrice = false
         this.orderBy = ''
-      }
-      // 筛选
-      if (val['search'] === 'filterNew') {
-        this.filterNew = true
-      } else if (val['search'] === 'notFilterNew') {
-        this.filterNew = false
-      }
-      if (val['search'] === 'filterHot') {
-        this.filterHot = true
-      } else if (val['search'] === 'notFilterHot') {
-        this.filterHot = false
       }
 
       getSearchList({

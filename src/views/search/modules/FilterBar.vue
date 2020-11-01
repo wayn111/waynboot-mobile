@@ -33,14 +33,13 @@
 export default {
   data() {
     return {
-      value1: 'isHot',
+      value1: '',
       switch1: false,
       switch2: false,
       option1: [
-        { text: '综合推荐', value: 'isHot' }
-        // { text: '评分', value: '' }
-        // { text: '新品上架', value: 'isNew' },
-        // { text: '人气推荐', value: 'isHot' }
+        { text: '综合推荐', value: '' },
+        { text: '新品上架', value: 'isNew' },
+        { text: '人气推荐', value: 'isHot' }
       ],
       faDefault: ['fas', 'sort'],
       faSort: ['fas', 'sort'],
@@ -74,16 +73,16 @@ export default {
     },
     filterNew(val) {
       if (val) {
-        this.$emit('changeGoods', { search: 'filterNew' })
+        this.$emit('changeGoods', { search: 'filterNew', val: true })
       } else {
-        this.$emit('changeGoods', { search: 'notFilterNew' })
+        this.$emit('changeGoods', { search: 'filterNew', val: false })
       }
     },
     filterHot(val) {
       if (val) {
-        this.$emit('changeGoods', { search: 'filterHot' })
+        this.$emit('changeGoods', { search: 'filterHot', val: true })
       } else {
-        this.$emit('changeGoods', { search: 'notFilterHot' })
+        this.$emit('changeGoods', { search: 'filterHot', val: false })
       }
     }
 
