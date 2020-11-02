@@ -108,9 +108,11 @@ export default {
       // 筛选
       if (val['search'] === 'filterNew') {
         this.filterNew = val['val']
+        this.pageNum = 1
       }
       if (val['search'] === 'filterHot') {
         this.filterHot = val['val']
+        this.pageNum = 1
       }
       // 存在筛选条件时，不过滤排序条件
       if (val['search'] !== 'filterNew' && val['search'] !== 'filterHot') {
