@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function getHotList() {
   return request({
-    url: '/search/hotList',
+    url: '/search/hotKeywords',
     method: 'get'
   })
 }
