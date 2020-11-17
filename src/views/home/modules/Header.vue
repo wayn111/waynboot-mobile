@@ -47,7 +47,7 @@ export default {
   background: #fff;
   padding: 24px;
   .search {
-    margin: 0 16px 0 0;
+    margin: 0 0 0 0;
     display: flex;
     align-items: center;
     font-size: 26px;
