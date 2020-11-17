@@ -1,7 +1,13 @@
 <template>
   <div class="goods-item" @click="onNavigate">
     <div class="pic">
-      <image-pic align="center" width="90" height="100" :src="img" />
+      <image-pic
+        fill="cover"
+        align="center"
+        width="90"
+        height="100"
+        :src="img"
+      />
     </div>
     <p class="title">{{ title }}</p>
     <p class="desc">{{ desc }}</p>
@@ -49,7 +55,8 @@ export default {
     @include text-ellipsis;
   }
   .desc {
-    padding-bottom: 14px;
+    padding: 14px;
+    padding-top: 0;
     font-size: $small;
     color: $gray;
     text-align: center;

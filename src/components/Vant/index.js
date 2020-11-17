@@ -56,7 +56,10 @@ import {
   Row,
   Col,
   Popup,
-  Switch
+  Switch,
+  Empty,
+  Sticky,
+  ShareSheet
 } from 'vant'
 
 Vue.use(Toast)
@@ -115,4 +118,7 @@ Vue.use(Toast)
   .use(Col)
   .use(Popup)
   .use(Switch)
+  .use(Empty)
+  .use(Sticky)
+  .use(ShareSheet)
 

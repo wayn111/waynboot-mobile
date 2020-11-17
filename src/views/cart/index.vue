@@ -19,6 +19,7 @@
     />
     <Tabbar :amount="amount" :value="isAllSelect" @input="handleAllSelect" />
     <Skeleton v-if="isSkeletonShow" />
+    <van-empty v-if="list && list.length <=0 " description="购物车里没有内容" />
   </div>
 </template>
 

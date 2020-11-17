@@ -150,15 +150,12 @@ const routes = [
       title: '订单支付'
     }
   },
-  // 订单支付状态显示
+  // 支付状态
   {
-    path: '/order/payStatus/:status',
+    path: '/order/payStatus',
     name: 'PayStatus',
     props: true,
-    component: () => import('@/views/order/payStatus'),
-    meta: {
-      title: '订单支付状态'
-    }
+    component: () => import('@/views/order/payStatus')
   }
 ]
 

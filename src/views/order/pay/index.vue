@@ -117,7 +117,7 @@ export default {
           } else {
             orderH5pay({ orderId: this.orderId })
               .then((res) => {
-                const data = res.data.data
+                const data = res.map.data
                 window.location.replace(
                   data.mwebUrl +
                     '&redirect_url=' +
@@ -131,7 +131,7 @@ export default {
               })
               .catch((err) => {
                 console.log(err)
-                this.$dialog.alert({ message: '支付失败' })
+                // this.$dialog.alert({ message: '支付失败' })
                 this.$router.replace({
                   name: 'PayStatus',
                   params: {
@@ -144,18 +144,15 @@ export default {
           // todo : alipay
           testPayNotify(this.orderId)
             .then((res) => {
-              this.$dialog.alert({ message: '支付成功' })
-              /* this.$router.replace({
+              this.$router.replace({
                 name: 'PayStatus',
                 params: {
                   status: 'success'
                 }
-              }) */
-              this.$router.push({ path: '/user/order/list/2' })// 跳转到订单列表带配送tab下
+              })
             })
             .catch((err) => {
               console.log(err)
-              this.$dialog.alert({ message: '支付失败' })
               this.$router.replace({
                 name: 'PayStatus',
                 params: {

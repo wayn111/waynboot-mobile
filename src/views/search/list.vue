@@ -23,6 +23,7 @@
         />
       </div>
     </van-list>
+    <van-empty v-if="list && list.length <=0 " description="没有搜索到商品" />
   </div>
 </template>
 

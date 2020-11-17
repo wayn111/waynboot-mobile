@@ -45,7 +45,7 @@
         :score="item.score"
         :desc="item.desc"
         :imgs="item.imgs"
-        style="margin-top: 12px"
+        style="margin-top:12px"
       />
       <div class="main__btn">
         <van-button

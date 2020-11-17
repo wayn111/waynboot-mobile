@@ -1,18 +1,24 @@
 <template>
   <div class="search-nav-bar">
-    <van-icon size="16" name="arrow-left" style="padding:12px 0 12px 12px" @click="$router.back()" />
+    <van-icon
+      size="16"
+      name="arrow-left"
+      style="padding: 12px 0 12px 12px"
+      @click="$router.back()"
+    />
     <van-search
       v-model="keyword"
-      style="width:100%"
+      style="width: 100%"
       placeholder="请输入搜索关键词"
       show-action
       clearable
       autofocus
+      shape="round"
       @search="onSearch"
       @cancel="$router.back()"
     >
       <template #action>
-        <van-button round type="primary" size="mini" :color="variables.red" @click="onSearch">搜索</van-button>
+        <div @click="onSearch">搜索</div>
       </template>
     </van-search>
   </div>

@@ -3,14 +3,14 @@
     <div class="home-header">
       <!-- <image-pic width="28px" height="28px" :src="require('@/assets/logo.png')" /> -->
       <van-button block class="search" size="small" @click="onSearch">
-        <span style="color:#8e8e8e;margin-right:6px">
+        <span style="color: #8e8e8e; margin-right: 6px">
           <svg-icon icon-class="search" :width="15" :height="15" />
         </span>
         <span>搜索商品名称</span>
       </van-button>
-      <span style="color:#8e8e8e" @click="onUser">
+      <!-- <span style="color: #8e8e8e" @click="onUser">
         <svg-icon icon-class="user" :width="18" :height="18" />
-      </span>
+      </span> -->
     </div>
     <div class="placeholder" />
   </div>
@@ -54,6 +54,7 @@ export default {
     color: #8e8e8ec9;
     background: #f5f5f5;
     line-height: 10px;
+    border-radius: 25px;
   }
 }
 .placeholder {

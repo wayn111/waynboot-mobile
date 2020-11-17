@@ -1,98 +1,32 @@
 <template>
-  <div class="payment_status">
-    <div class="status_top">
-      <van-icon :name="statusIcon" :class="statusClass" />
-      <div>{{ statusText }}</div>
-    </div>
-
-    <div v-if="isSuccess" class="status_text">
-      <span class="red">3秒</span>跳转订单
-    </div>
-    <div v-else class="status_text">系统繁忙, 支付遇到问题, 请您稍后再试!</div>
-
-    <div class="status_goLink">
-      <router-link class="red" :to="{name: 'User'}">查看订单
-        <van-icon name="arrow" />
-      </router-link>
-    </div>
+  <div class="order-status">
+    <Header :status="status" />
+    <Share />
   </div>
 </template>
 
 <script>
-export default {
-  name: 'PaymentStatus',
+import Header from './modules/Header'
+import Share from './modules/Share'
 
+export default {
+  name: 'OrderStatus',
+  components: {
+    Header,
+    Share
+  },
   props: {
     status: {
       type: String,
       default: ''
     }
-  },
-  data() {
-    return {
-      isSuccess: true
-    }
-  },
-
-  computed: {
-    statusText() {
-      return this.isSuccess ? '支付成功' : '支付失败'
-    },
-    statusIcon() {
-      return this.isSuccess ? 'checked' : 'fail'
-    },
-    statusClass() {
-      return this.isSuccess ? 'success_icon' : 'fail_icon'
-    }
-  },
-  created() {
-    /* setTimeout(() => {
-      this.$router.push({ path: '/user/order/list/0' })
-    }, 3000) */
-  },
-
-  mounted() {
-    this.isSuccess = this.status === 'success'
   }
 }
 </script>
 
-<style lang="scss" scopd>
-@import "@/styles/variables.scss";
-
-.payment_status {
-  padding-top: 5vw;
-  box-sizing: border-box;
-  background-color: #fff;
-  text-align: center;
-}
-
-.status_top {
-  margin-bottom: 5vw;
-  i {
-    margin-bottom: 3vw;
-  }
-  > div {
-    font-size: 6vw;
-  }
-}
-
-.status_text {
-  color: $font-color-gray;
-  margin-bottom: 8vw;
-}
-
-.status_icon {
-  font-size: 8vw;
-}
-
-i.success_icon {
-  @extend .status_icon;
-  color: #06bf04;
-}
-
-i.fail_icon {
-  @extend .status_icon;
-  color: #f44;
+<style lang="scss" scoped>
+.order-status {
+  min-height: 100vh;
+  background: #f5f5f5;
 }
 </style>

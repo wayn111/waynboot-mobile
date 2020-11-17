@@ -1,6 +1,6 @@
 <template>
   <div class="product-item" @click="onClick">
-    <image-pic :src="img" width="100" height="100" />
+    <image-pic :src="img" width="90" height="90" />
     <div class="desc">
       <div class="desc__top">
         <h3 class="desc__top__title">{{ title }}</h3>
@@ -72,27 +72,29 @@ export default {
     width: 510px;
     .desc__top {
       .desc__top__title {
-        font-size: $normal;
+        font-size: $small;
         color: $black;
-        @include text-multiple-ellipsis;
+        @include text-ellipsis;
       }
       .desc__top__info {
-        font-size: $small;
+        min-height: 60px;
+        font-size: $mini;
         color: $gray;
-        margin-top: 10px;
-        @include text-ellipsis;
+        margin-top: 8px;
+        line-height: 30px;
+        @include text-multiple-ellipsis;
       }
     }
     .desc__bottom {
       display: flex;
-      align-items: center;
+      align-items: flex-end;
       justify-content: space-between;
       .desc__bottom__info {
-        margin-top: 15px;
+        margin-top: 10px;
         .price {
           .price--new {
             color: $red;
-            font-size: $normal;
+            font-size: $small;
             margin-right: 10px;
           }
           .price--old {
@@ -101,22 +103,9 @@ export default {
             text-decoration: line-through;
           }
         }
-        .tag {
+        .progress {
           width: 300px;
-          .van-tag {
-            font-size: 4px;
-            padding: 0.2em 1em;
-            border-radius: 0.6em;
-          }
-        }
-        .sale {
-          width: 300px;
-          margin-top: 16px;
-          font-size: $mini;
-          color: $gray;
-          .praise__rate {
-            margin-left: 2vw;
-          }
+          margin-top: 8px;
         }
       }
       .desc__bottom__btn {

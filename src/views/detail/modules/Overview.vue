@@ -33,6 +33,7 @@ export default {
     font-size: $small;
     color: $gray;
     margin-top: 12px;
+    line-height: 36px;
     text-align: justify;
   }
   .price {
