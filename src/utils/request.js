@@ -14,8 +14,7 @@ const service = axios.create({
 service.interceptors.request.use(
   config => {
     if (store.getters.token) {
-      // ['Authorization']是我这里自定义测试而塞到请求头中
-      config.headers['Authorization'] = getToken()
+      config.headers.Authorization = getToken()
     }
     return config
   },
@@ -30,7 +29,7 @@ service.interceptors.response.use(
   response => {
     const res = response.data
 
-    // 与后端约定的错误码
+    // 返回码不正确
     if (res.code !== 200) {
       Toast.fail(res.msg)
       // 现约定 50001:无效token 50002:token过期
