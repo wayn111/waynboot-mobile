@@ -103,9 +103,23 @@ export default {
             text-decoration: line-through;
           }
         }
-        .progress {
+
+        .tag {
           width: 300px;
-          margin-top: 8px;
+          .van-tag {
+            font-size: 4px;
+            padding: 0.2em 1em;
+            border-radius: 0.6em;
+          }
+        }
+        .sale {
+          width: 300px;
+          margin-top: 16px;
+          font-size: $mini;
+          color: $gray;
+          .praise__rate {
+            margin-left: 2vw;
+          }
         }
       }
       .desc__bottom__btn {
