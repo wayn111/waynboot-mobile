@@ -9,7 +9,7 @@
     <van-search
       v-model="keyword"
       style="width: 100%"
-      placeholder="请输入搜索关键词"
+      :placeholder="defaultSearch"
       show-action
       clearable
       autofocus
@@ -32,6 +32,10 @@ export default {
     value: {
       type: String,
       default: ''
+    },
+    defaultSearch: {
+      type: String,
+      default: ''
     }
   },
   computed: {
@@ -47,9 +51,13 @@ export default {
       }
     }
   },
+  // watch: {
+  //   defaultSearch(val1, val2) {
+  //   }
+  // },
   methods: {
     onSearch() {
-      const key = this.keyword.trim()
+      const key = this.keyword.trim() || this.defaultSearch.trim()
       if (!key) {
         this.$toast('请输入要搜索内容')
         return

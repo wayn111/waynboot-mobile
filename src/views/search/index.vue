@@ -1,6 +1,6 @@
 <template>
   <div class="search">
-    <nav-bar v-model="value" @handleSearch="handleSearch" />
+    <nav-bar v-model="value" :default-search="defaultSearch" @handleSearch="handleSearch" />
     <search-words :hot-list="hotList" />
   </div>
 </template>
@@ -19,6 +19,7 @@ export default {
   data() {
     return {
       value: '',
+      defaultSearch: '',
       hotList: []
     }
   },
@@ -29,6 +30,7 @@ export default {
     getHot() {
       getHotList().then(res => {
         this.hotList = res.map.data
+        this.defaultSearch = res.map.default
       }).catch(e => {})
       // this.hotList = ['衣服', '手机', '三体书籍三体书籍', '鞋子', '箱包']
     },
