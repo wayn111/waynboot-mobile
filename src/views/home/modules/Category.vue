@@ -8,7 +8,7 @@
             v-for="(item, index) in cate"
             :key="index"
             class="scroll-item"
-            @click="onNavigate(item.id)"
+            @click="onNavigate(item)"
           >
             <img :src="item.iconUrl">
             <p class="text">{{ item.name }}</p>
@@ -81,7 +81,7 @@ export default {
     // 跳转
     onNavigate(cateId) {
       this.$router.push({
-        path: `/product/1/${cateId}`
+        path: `/product/1/${cateId.id}`
       })
     },
     // 初始化
