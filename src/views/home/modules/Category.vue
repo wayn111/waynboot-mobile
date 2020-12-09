@@ -79,10 +79,16 @@ export default {
   },
   methods: {
     // 跳转
-    onNavigate(cateId) {
+    onNavigate(item) {
+      if (item.jumpType === 2) {
+        return
+      }
       this.$router.push({
-        path: `/product/1/${cateId.id}`
+        path: `/diamondGoodsList/${item.id}`
       })
+      /* this.$router.push({
+        path: `/product/1/${item.id}`
+      }) */
     },
     // 初始化
     init() {

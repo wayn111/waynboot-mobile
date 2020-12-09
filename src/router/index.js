@@ -84,6 +84,17 @@ const routes = [
       keepAlive: true
     }
   },
+  // 金刚位跳转商品列表
+  {
+    path: '/diamondGoodsList/:diamondId',
+    name: 'Product',
+    props: true,
+    component: () => import('@/views/diamondGoodsList'),
+    meta: {
+      title: '商品列表',
+      keepAlive: true
+    }
+  },
   // 商品详情
   {
     path: '/detail/:goodsId',
