@@ -73,7 +73,7 @@ export default {
           if (isWeixin) {
             orderPrepay({ orderId: this.orderId })
               .then((res) => {
-                const data = res.data.data
+                const data = res.map.result
                 const prepayData = JSON.stringify({
                   appId: data.appId,
                   timeStamp: data.timeStamp,
@@ -171,6 +171,7 @@ export default {
         'getBrandWCPayRequest',
         JSON.parse(data.prepay_data),
         function(res) {
+          console.log(res)
           if (res.err_msg === 'get_brand_wcpay_request:ok') {
             that.$router.replace({
               name: 'paymentStatus',
