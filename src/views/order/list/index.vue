@@ -65,7 +65,7 @@
                   v-if="el.handleOption.pay"
                   size="small"
                   type="danger"
-                  @click.stop="toPay(el.id)"
+                  @click.stop="toPay(el.orderSn, el.actualPrice)"
                 >去支付</van-button>
                 <van-button
                   v-if="el.handleOption.refund"
@@ -205,8 +205,8 @@ export default {
         .catch(() => {})
     },
     commentOrder(id) {},
-    toPay(id) {
-      this.$router.push({ name: 'OrderPay', params: { orderId: id }})
+    toPay(orderSn, actualPrice) {
+      this.$router.push({ name: 'OrderPay', params: { orderSn, actualPrice }})
     },
     handleTabClick() {
       this.page = 0

@@ -4,12 +4,17 @@
       <van-icon name="shop-o" />
       <span class="title__name">熊猫商城自营</span>
     </h3>
-    <div v-for="(item,idx) in goodsList" :key="idx" class="item">
+    <div v-for="(item, idx) in goodsList" :key="idx" class="item">
       <image-pic width="80" height="80" fit="fill" :src="item.picUrl" />
       <div class="item__main">
-        <p class="item__main__desc van-multi-ellipsis--l2">{{ item.goodsName }}</p>
+        <p class="item__main__desc van-multi-ellipsis--l2">
+          {{ item.goodsName }}
+        </p>
         <p class="item__main__attr">
-          <span v-for="(specification, index) in item.specifications" :key="index">{{ specification }}</span>
+          <span
+            v-for="(specification, index) in item.specifications"
+            :key="index"
+          >{{ specification }}</span>
         </p>
       </div>
       <div class="item__price">
@@ -33,7 +38,7 @@
     </van-cell-group>
 
     <van-submit-bar
-      :price="amount * 100 "
+      :price="amount * 100"
       label="总计："
       button-text="提交订单"
       :disabled="false"
@@ -82,8 +87,11 @@ export default {
       const message = this.message
       const userId = this.id
       submit({ cartIdArr, addressId, userId, message }).then((res) => {
-        const { orderId } = res.map
-        this.$router.push({ name: 'OrderPay', params: { orderId }})
+        const { orderSn, actualPrice } = res.map
+        this.$router.push({
+          name: 'OrderPay',
+          params: { orderSn, actualPrice }
+        })
       })
     }
   }

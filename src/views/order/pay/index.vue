@@ -2,12 +2,14 @@
   <div class="payment">
     <nav-bar title="购物车" />
     <!-- closeable 模式，在右侧显示关闭按钮 -->
-    <van-notice-bar mode="closeable">请在半小时内完成付款，否则系统自动取消订单</van-notice-bar>
+    <van-notice-bar
+      mode="closeable"
+    >请在半小时内完成付款，否则系统自动取消订单</van-notice-bar>
 
     <van-cell-group class="payment_group">
-      <van-cell title="订单编号" :value="order.orderSn" />
+      <van-cell title="订单编号" :value="orderSn" />
       <van-cell title="实付金额">
-        <span class="red">{{ order.actualPrice | yuan }}</span>
+        <span class="red">{{ actualPrice | yuan }}</span>
       </van-cell>
     </van-cell-group>
 
@@ -17,13 +19,23 @@
         <van-cell-group>
           <van-cell>
             <template slot="title">
-              <img src="../../../assets/images/ali_pay.png" alt="支付宝" width="82" height="29">
+              <img
+                src="../../../assets/images/ali_pay.png"
+                alt="支付宝"
+                width="82"
+                height="29"
+              >
             </template>
             <van-radio name="ali" />
           </van-cell>
           <van-cell>
             <template slot="title">
-              <img src="../../../assets/images/wx_pay.png" alt="微信支付" width="113" height="23">
+              <img
+                src="../../../assets/images/wx_pay.png"
+                alt="微信支付"
+                width="113"
+                height="23"
+              >
             </template>
             <van-radio name="wx" />
           </van-cell>
@@ -31,12 +43,21 @@
       </van-radio-group>
     </div>
 
-    <van-button class="pay_submit" type="primary" bottom-action @click="pay">去支付</van-button>
+    <van-button
+      class="pay_submit"
+      type="primary"
+      bottom-action
+      @click="pay"
+    >去支付</van-button>
   </div>
 </template>
 
 <script>
-import { orderDetail, orderPrepay, orderH5pay, testPayNotify } from '@/api/order'
+import {
+  orderPrepay,
+  orderH5pay,
+  testPayNotify
+} from '@/api/order'
 import _ from 'lodash'
 import { getLocalStorage, setLocalStorage } from '@/utils/localStorage'
 
@@ -46,92 +67,110 @@ export default {
   data() {
     return {
       payWay: 'wx',
-      order: {},
-      orderId: 0
+      orderSn: undefined,
+      actualPrice: 0
     }
   },
   created() {
-    if (_.has(this.$route.params, 'orderId')) {
-      this.orderId = this.$route.params.orderId
-      this.getOrder(this.orderId)
+    if (_.has(this.$route.params, 'orderSn')) {
+      this.orderSn = this.$route.params.orderSn
+      this.actualPrice = this.$route.params.actualPrice
     }
   },
   methods: {
-    getOrder(orderId) {
-      orderDetail({ orderId }).then((res) => {
-        this.order = res.map.data
-      })
-    },
     pay() {
-      this.$dialog.alert({
-        message:
-          '你选择了' + (this.payWay === 'wx' ? '微信支付' : '支付宝支付')
-      }).then(() => {
-        if (this.payWay === 'wx') {
-          const ua = navigator.userAgent.toLowerCase()
-          const isWeixin = ua.indexOf('micromessenger') !== -1
-          if (isWeixin) {
-            orderPrepay({ orderId: this.orderId })
-              .then((res) => {
-                const data = res.map.result
-                const prepayData = JSON.stringify({
-                  appId: data.appId,
-                  timeStamp: data.timeStamp,
-                  nonceStr: data.nonceStr,
-                  package: data.packageValue,
-                  signType: 'MD5',
-                  paySign: data.paySign
-                })
-                setLocalStorage({ prepay_data: prepayData })
+      this.$dialog
+        .alert({
+          message:
+            '你选择了' + (this.payWay === 'wx' ? '微信支付' : '支付宝支付')
+        })
+        .then(() => {
+          if (this.payWay === 'wx') {
+            const ua = navigator.userAgent.toLowerCase()
+            const isWeixin = ua.indexOf('micromessenger') !== -1
+            if (isWeixin) {
+              orderPrepay({ orderSn: this.orderSn })
+                .then((res) => {
+                  const data = res.map.result
+                  const prepayData = JSON.stringify({
+                    appId: data.appId,
+                    timeStamp: data.timeStamp,
+                    nonceStr: data.nonceStr,
+                    package: data.packageValue,
+                    signType: 'MD5',
+                    paySign: data.paySign
+                  })
+                  setLocalStorage({ prepay_data: prepayData })
 
-                if (typeof WeixinJSBridge === 'undefined') {
-                  if (document.addEventListener) {
-                    document.addEventListener(
-                      'WeixinJSBridgeReady',
-                      this.onBridgeReady,
-                      false
-                    )
-                  } else if (document.attachEvent) {
-                    document.attachEvent(
-                      'WeixinJSBridgeReady',
-                      this.onBridgeReady
-                    )
-                    document.attachEvent(
-                      'onWeixinJSBridgeReady',
-                      this.onBridgeReady
-                    )
-                  }
-                } else {
-                  this.onBridgeReady()
-                }
-              })
-              .catch((err) => {
-                this.$dialog.alert({ message: err.map.msg })
-                this.$router.replace({
-                  name: 'paymentStatus',
-                  params: {
-                    status: 'failed'
+                  if (typeof WeixinJSBridge === 'undefined') {
+                    if (document.addEventListener) {
+                      document.addEventListener(
+                        'WeixinJSBridgeReady',
+                        this.onBridgeReady,
+                        false
+                      )
+                    } else if (document.attachEvent) {
+                      document.attachEvent(
+                        'WeixinJSBridgeReady',
+                        this.onBridgeReady
+                      )
+                      document.attachEvent(
+                        'onWeixinJSBridgeReady',
+                        this.onBridgeReady
+                      )
+                    }
+                  } else {
+                    this.onBridgeReady()
                   }
                 })
-              })
+                .catch((err) => {
+                  this.$dialog.alert({ message: err.map.msg })
+                  this.$router.replace({
+                    name: 'paymentStatus',
+                    params: {
+                      status: 'failed'
+                    }
+                  })
+                })
+            } else {
+              orderH5pay({ orderSn: this.orderSn })
+                .then((res) => {
+                  const data = res.map.data
+                  window.location.replace(
+                    data.mwebUrl +
+                      '&redirect_url=' +
+                      encodeURIComponent(
+                        window.location.origin +
+                          '/#/?orderSn=' +
+                          this.orderSn +
+                          '&tip=yes'
+                      )
+                  )
+                })
+                .catch((err) => {
+                  console.log(err)
+                  // this.$dialog.alert({ message: '支付失败' })
+                  this.$router.replace({
+                    name: 'PayStatus',
+                    params: {
+                      status: 'failed'
+                    }
+                  })
+                })
+            }
           } else {
-            orderH5pay({ orderId: this.orderId })
+            // todo : alipay
+            testPayNotify(this.orderSn)
               .then((res) => {
-                const data = res.map.data
-                window.location.replace(
-                  data.mwebUrl +
-                    '&redirect_url=' +
-                    encodeURIComponent(
-                      window.location.origin +
-                        '/#/?orderId=' +
-                        this.orderId +
-                        '&tip=yes'
-                    )
-                )
+                this.$router.replace({
+                  name: 'PayStatus',
+                  params: {
+                    status: 'success'
+                  }
+                })
               })
               .catch((err) => {
                 console.log(err)
-                // this.$dialog.alert({ message: '支付失败' })
                 this.$router.replace({
                   name: 'PayStatus',
                   params: {
@@ -140,28 +179,7 @@ export default {
                 })
               })
           }
-        } else {
-          // todo : alipay
-          testPayNotify(this.orderId)
-            .then((res) => {
-              this.$router.replace({
-                name: 'PayStatus',
-                params: {
-                  status: 'success'
-                }
-              })
-            })
-            .catch((err) => {
-              console.log(err)
-              this.$router.replace({
-                name: 'PayStatus',
-                params: {
-                  status: 'failed'
-                }
-              })
-            })
-        }
-      })
+        })
     },
     onBridgeReady() {
       const that = this
@@ -198,7 +216,6 @@ export default {
       )
     }
   }
-
 }
 </script>
 
@@ -209,11 +226,11 @@ $mb2vw: 2vw;
   background: #f5f5f5;
 
   .van-notice-bar {
-    margin-bottom: $mb2vw
+    margin-bottom: $mb2vw;
   }
 
   .payment_group {
-    margin-bottom: $mb2vw
+    margin-bottom: $mb2vw;
   }
 
   .pay_submit {
