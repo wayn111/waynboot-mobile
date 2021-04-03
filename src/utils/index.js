@@ -1,4 +1,4 @@
-// 制保留2位小数，如：2，会在2后面补上00.即2.00
+// 只保留2位小数，如：2，会在2后面补上00.即2.00
 export function toDecimal2(x) {
   var f = parseFloat(x)
   if (isNaN(f)) {

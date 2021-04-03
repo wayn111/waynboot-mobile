@@ -1,14 +1,15 @@
 
 <template>
   <div class="user-info">
-    <image-pic width="50" height="50" :src="userInfo.avatar" />
+    <van-icon name="setting-o" class="user__set" @click="toUserSetting()" />
+    <image-pic width="50" height="50" round :src="userInfo.avatar" />
     <div class="main">
       <div class="main__title">
         <h3 class="name">{{ userInfo.username }}</h3>
       </div>
       <div class="main__id" @click="doCopy(userInfo.id)">
         <span class="code">用户id：{{ userInfo.id }}</span>
-        <span style="color:#fff">
+        <span style="color: #fff">
           <svg-icon icon-class="copy" :width="13" :height="13" />
         </span>
       </div>
@@ -29,22 +30,25 @@ export default {
   methods: {
     doCopy(val) {
       this.$copyText(val).then(
-        e => {
+        (e) => {
           // success
           this.$toast.success('Id复制成功')
         },
-        e => {
+        (e) => {
           // fail
           console.log(e)
         }
       )
+    },
+    toUserSetting() {
+      this.$router.push({ name: 'UserSetting' })
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import "@/styles/variables.scss";
+@import '@/styles/variables.scss';
 
 .user-info {
   display: flex;
@@ -52,13 +56,20 @@ export default {
   padding: 60px 24px 50px 24px;
   background: $red;
   border-radius: 100% 100% 100% 100% / 0% 0% 16% 16%;
+  .user__set {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: #fff;
+    font-size: 50px;
+  }
   .main {
     margin-left: 18px;
     .main__title {
       display: flex;
       flex-direction: row;
       align-items: center;
-      margin-top: 6px;
+      // margin-top: 6px;
       .name {
         font-size: $large;
         font-weight: 500;

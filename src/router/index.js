@@ -66,6 +66,16 @@ const routes = [
       showTab: true
     }
   },
+  // 用户设置
+  {
+    path: '/userSetting',
+    name: 'UserSetting',
+    component: () => import('@/views/userSetting'),
+    meta: {
+      title: '设置',
+      showTab: true
+    }
+  },
   // 订单列表
   {
     path: '/user/order/list/:active',

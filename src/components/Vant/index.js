@@ -59,7 +59,8 @@ import {
   Switch,
   Empty,
   Sticky,
-  ShareSheet
+  ShareSheet,
+  Uploader
 } from 'vant'
 
 Vue.use(Toast)
@@ -121,4 +122,5 @@ Vue.use(Toast)
   .use(Empty)
   .use(Sticky)
   .use(ShareSheet)
+  .use(Uploader)
 
