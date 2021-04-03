@@ -137,9 +137,9 @@ export default {
         padding: 0 25px 24px 25px;
         img {
           display: block;
-          width: 88px;
-          height: 88px;
-          border-radius: 18%;
+          width: 100px;
+          height: 100px;
+          border-radius: 50%;
           overflow: hidden;
           background: #f5f5f5;
           margin: 0 auto;

@@ -1,0 +1,55 @@
+//商品卡片
+.van-card__footer {
+	width: 100%;
+	padding-left: 130px;
+	box-sizing: border-box;
+}
+
+div.van-card {
+	font-size: $font-size-normal;
+	background-color: #fff;
+}
+
+div.van-card__footer {
+	font-size: 12px;	
+	color: $font-color-gray;
+}
+
+//cell
+.van-cell__title{
+	vertical-align: middle;
+}
+
+//商品详情
+.item_detail .van-picker__cancel {
+	color: #000;
+}
+
+.item_detail .van-picker__confirm {
+	color: $red;
+}
+
+//购物车
+.tab-cart > .card-goods .van-checkbox {
+	padding-left: 10px;
+	box-sizing: border-box;
+}
+
+.tab-cart > .card-goods .van-card {
+	flex: 1;
+}
+.tab-cart .van-card:not(:first-child){
+	margin-top: 0;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+//设置昵称
+.set_nickname .van-field__control{
+	text-align: right
+}
+
+//商品列表
+.item_list .van-tab--disabled{
+	color: #000;
+}

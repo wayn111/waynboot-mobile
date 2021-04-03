@@ -87,7 +87,7 @@ const routes = [
   // 金刚位跳转商品列表
   {
     path: '/diamondGoodsList/:diamondId',
-    name: 'Product',
+    name: 'Diamand',
     props: true,
     component: () => import('@/views/diamondGoodsList'),
     meta: {

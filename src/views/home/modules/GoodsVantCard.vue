@@ -1,22 +1,24 @@
 <template>
   <div class="home-goods">
-    <van-cell :title="titleName" is-link to="index" :value="'更多' + titleName" />
+    <Title :name="titleName" style="background: #fff" />
+
     <van-list
       v-model="loading"
-      :finished="true"
+      :finished="isFinished"
+      finished-text="没有更多了"
       :immediate-check="false"
       @load="onReachBottom"
     >
       <div class="main">
-        <goods-item
-          v-for="(item,idx) in goodsList"
-          :key="idx"
-          :goods-id="item.id"
-          :img="item.picUrl"
-          :title="item.name"
+        <van-card
+          v-for="(item, i) in goodsList"
+          :key="i"
           :desc="item.brief"
+          :title="item.name"
+          :thumb="item.picUrl"
           :price="item.retailPrice"
-          :discount="item.counterPrice"
+          :origin-price="item.counterPrice"
+          @click="itemClick(item.id)"
         />
       </div>
     </van-list>
@@ -24,12 +26,11 @@
 </template>
 
 <script>
-// import Title from './Title'
-import GoodsItem from '@/components/GoodsItem'
+import Title from './Title'
 
 export default {
   components: {
-    GoodsItem
+    Title
   },
   model: {
     prop: 'isLoading'
@@ -46,6 +47,10 @@ export default {
       default: ''
     },
     isLoading: {
+      type: Boolean,
+      default: false
+    },
+    isFinished: {
       type: Boolean,
       default: false
     }
@@ -73,12 +78,6 @@ export default {
   margin-top: 24px;
   .main {
     background: #fff;
-    box-sizing: border-box;
-    padding: 0 10px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    flex-wrap: wrap;
   }
 }
 </style>

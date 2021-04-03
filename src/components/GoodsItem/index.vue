@@ -4,20 +4,20 @@
       <image-pic
         fill="cover"
         align="center"
-        width="90"
-        height="100"
+        width="180"
+        height="180"
         :src="img"
       />
     </div>
     <p class="title">{{ title }}</p>
-    <p class="desc">{{ desc }}</p>
+    <!-- <p class="desc">{{ desc }}</p> -->
     <div class="num">
       <span class="num__now">¥{{ price }}</span>
       <span class="num__old">¥{{ discount }}</span>
     </div>
-    <div class="btn-wrapper">
+    <!-- <div class="btn-wrapper">
       <van-button class="btn" size="small">立即购买</van-button>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -45,7 +45,7 @@ export default {
   .pic {
     display: block;
     padding: 14px;
-    background: #f5f5f5;
+    // background: #f5f5f5;
   }
   .title {
     padding: 14px;
