@@ -70,7 +70,6 @@ const actions = {
         })
     })
   },
-
   // 重置token
   resetToken({ commit }) {
     return new Promise(resolve => {

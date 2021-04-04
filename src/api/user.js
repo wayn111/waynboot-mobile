@@ -29,3 +29,7 @@ export function setRegistry(data) {
     data
   })
 }
+
+export function uploadAvatar(data) {
+  return request.formDataPost('/user/uploadAvatar', data)
+}

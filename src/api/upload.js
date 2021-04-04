@@ -12,9 +12,5 @@ export function fileUpload(data) {
 }
 
 export function base64uploadFile(data) {
-  return request({
-    url: '/common/base64uploadFile',
-    method: 'post',
-    data
-  })
+  return request.formDataPost('/common/base64uploadFile', data)
 }

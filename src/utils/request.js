@@ -1,4 +1,5 @@
 import axios from 'axios'
+import qs from 'qs'
 import { Toast, Dialog } from 'vant'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
@@ -55,5 +56,21 @@ service.interceptors.response.use(
     return Promise.reject(error)
   }
 )
+
+/**
+ * 使用 application/x-www-form-urlencoded format
+ * @param {*} url
+ * @param {*} postData
+ * @returns
+ */
+service.formDataPost = function(url, postData) {
+  const options = {
+    method: 'POST',
+    headers: { 'content-type': 'application/x-www-form-urlencoded' },
+    data: qs.stringify(postData),
+    url
+  }
+  return service(options)
+}
 
 export default service

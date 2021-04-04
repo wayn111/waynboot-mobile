@@ -25,8 +25,8 @@ Vue.use(filters)
 
 // mock in online
 if (process.env.NODE_ENV === 'production') {
-  const { mockXHR } = require('../mock')
-  mockXHR()
+  // const { mockXHR } = require('../mock')
+  // mockXHR()
 }
 
 Vue.config.productionTip = false
