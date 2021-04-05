@@ -72,7 +72,57 @@ const routes = [
     name: 'UserSetting',
     component: () => import('@/views/userSetting'),
     meta: {
-      title: '设置',
+      title: '用户设置',
+      showTab: true
+    }
+  },
+  // 用户设置-昵称
+  {
+    path: '/userSetting/nickname',
+    name: 'UserSetNickname',
+    component: () => import('@/views/userSetting/nickname'),
+    meta: {
+      title: '设置昵称',
+      showTab: true
+    }
+  },
+  // 用户设置-生日
+  {
+    path: '/userSetting/birthday',
+    name: 'UserSetBirthday',
+    component: () => import('@/views/userSetting/birthday'),
+    meta: {
+      title: '设置生日',
+      showTab: true
+    }
+  },
+  // 用户设置-性别
+  {
+    path: '/userSetting/gender',
+    name: 'UserSetGender',
+    component: () => import('@/views/userSetting/gender'),
+    meta: {
+      title: '设置性别',
+      showTab: true
+    }
+  },
+  // 用户设置-邮箱
+  {
+    path: '/userSetting/email',
+    name: 'UserSetMobile',
+    component: () => import('@/views/userSetting/email'),
+    meta: {
+      title: '设置邮箱',
+      showTab: true
+    }
+  },
+  // 用户设置-手机
+  {
+    path: '/userSetting/mobile',
+    name: 'UserSetMobile',
+    component: () => import('@/views/userSetting/mobile'),
+    meta: {
+      title: '设置手机号',
       showTab: true
     }
   },

@@ -1,6 +1,6 @@
 <template>
   <div class="address-edit">
-    <nav-bar title="编辑地址" />
+    <nav-bar :title="$route.meta.title" />
 
     <van-address-edit
       :address-info="addressInfo"

@@ -7,6 +7,14 @@ export function getInfo() {
   })
 }
 
+export function profile(data) {
+  return request({
+    url: '/user/profile',
+    method: 'post',
+    data
+  })
+}
+
 export function login(data) {
   return request({
     url: '/login',
@@ -33,3 +41,4 @@ export function setRegistry(data) {
 export function uploadAvatar(data) {
   return request.formDataPost('/user/uploadAvatar', data)
 }
+

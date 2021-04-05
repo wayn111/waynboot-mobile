@@ -1,6 +1,6 @@
 <template>
   <div class="order_list">
-    <nav-bar title="订单列表">
+    <nav-bar :title="$route.meta.title">
       <span style="color:#333">
         <svg-icon icon-class="share" :width="15" :height="15" />
       </span>

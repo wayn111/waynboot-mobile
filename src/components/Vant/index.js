@@ -60,7 +60,9 @@ import {
   Empty,
   Sticky,
   ShareSheet,
-  Uploader
+  Uploader,
+  DatetimePicker,
+  Picker
 } from 'vant'
 
 Vue.use(Toast)
@@ -123,4 +125,6 @@ Vue.use(Toast)
   .use(Sticky)
   .use(ShareSheet)
   .use(Uploader)
+  .use(DatetimePicker)
+  .use(Picker)
 

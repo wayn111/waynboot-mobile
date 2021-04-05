@@ -1,6 +1,6 @@
 <template>
   <div class="order-confirm">
-    <nav-bar title="确认订单" />
+    <nav-bar :title="$route.meta.title" />
 
     <van-contact-card
       :type="contact.type"

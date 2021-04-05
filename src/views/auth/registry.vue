@@ -1,7 +1,7 @@
 
 <template>
   <div class="registration">
-    <nav-bar title="用户注册">
+    <nav-bar :title="$route.meta.title">
       <van-icon :color="variables.black" size="18" />
     </nav-bar>
 

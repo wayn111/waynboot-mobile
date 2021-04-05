@@ -1,6 +1,6 @@
 <template>
   <div class="detail">
-    <nav-bar title="商品详情">
+    <nav-bar :title="$route.meta.title">
       <span style="color:#333">
         <svg-icon icon-class="share" :width="15" :height="15" />
       </span>

@@ -1,6 +1,6 @@
 <template>
   <div class="payment">
-    <nav-bar title="购物车" />
+    <nav-bar :title="$route.meta.title" />
     <!-- closeable 模式，在右侧显示关闭按钮 -->
     <van-notice-bar
       mode="closeable"

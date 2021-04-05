@@ -1,6 +1,6 @@
 <template>
   <div class="address-list">
-    <nav-bar title="我的地址" />
+    <nav-bar :title="$route.meta.title" />
 
     <van-address-list
       v-model="defaultId"
