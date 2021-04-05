@@ -68,6 +68,11 @@ export default {
   methods: {
     onReachBottom() {
       this.$emit('onReachBottom')
+    },
+    itemClick(goodsId) {
+      this.$router.push({
+        path: `/detail/${goodsId}`
+      })
     }
   }
 }

@@ -241,7 +241,14 @@ const routes = [
 ]
 
 const router = new VueRouter({
-  scrollBehavior: () => ({ y: 0 }),
+  // 记录上个页面的滚动位置
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return { x: 0, y: 0 }
+    }
+  },
   routes
 })
 
