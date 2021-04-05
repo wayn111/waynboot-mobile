@@ -5,8 +5,8 @@
     <p class="desc">{{ desc }}</p>
 
     <div class="price">
-      <span class="price__new">¥{{ price }}</span>
-      <span class="price__old">¥{{ discount }}</span>
+      <span class="price__new">¥{{ price | yuan }}</span>
+      <span class="price__old">¥{{ discount | yuan }}</span>
     </div>
   </div>
 </template>
