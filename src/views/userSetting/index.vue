@@ -41,7 +41,11 @@
         is-link
         @click="showBirthday = true"
       />
-      <van-cell title="密码设置" to="/user/information/setPassword" is-link />
+      <van-cell
+        title="密码设置"
+        to="/userSetting/password"
+        is-link
+      />
       <van-cell
         title="手机号"
         to="/userSetting/mobile"

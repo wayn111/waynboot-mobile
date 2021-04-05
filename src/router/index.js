@@ -126,6 +126,16 @@ const routes = [
       showTab: true
     }
   },
+  // 用户设置-密码
+  {
+    path: '/userSetting/password',
+    name: 'UserSetPassword',
+    component: () => import('@/views/userSetting/password'),
+    meta: {
+      title: '设置密码',
+      showTab: true
+    }
+  },
   // 订单列表
   {
     path: '/user/order/list/:active',

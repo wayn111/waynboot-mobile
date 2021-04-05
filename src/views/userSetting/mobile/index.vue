@@ -13,6 +13,7 @@
 
 <script>
 import { profile } from '@/api/user'
+import { Valid } from '@/utils/index'
 
 export default {
   data() {
@@ -28,8 +29,12 @@ export default {
       this.mobile = this.$store.getters.userInfo.mobile
     },
     saveNick() {
+      if (Valid.checkPhone(this.mobile) === false) {
+        this.$toast.fail('请输入正确的手机号')
+        return
+      }
       profile({ mobile: this.mobile }).then((res) => {
-        this.$dialog.alert({ message: '保存成功' }).then(() => {
+        this.$dialog.alert({ message: '保存成功' }).then(async() => {
           await this.$store.dispatch('user/getInfo')
           this.$router.go(-1)
         })

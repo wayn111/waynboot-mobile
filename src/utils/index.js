@@ -19,6 +19,17 @@ export function toDecimal2(x) {
   return s
 }
 
+export const Valid = class Valid {
+  static checkPhone(num) {
+    if (num === 123456789) return true
+    const reg = /^[1][3,4,5,7,8][0-9]{9}$/
+    if (reg.test(num)) {
+      return true
+    }
+    return false
+  }
+}
+
 export function str2date(str, format) {
   return dayjs(str, format)
 }

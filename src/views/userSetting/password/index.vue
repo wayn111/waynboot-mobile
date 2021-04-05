@@ -1,115 +1,122 @@
 <template>
   <div>
-    <van-cell-group>
-
+    <nav-bar :title="$route.meta.title" />
+    <van-form @submit="onSubmit">
       <van-field
+        v-model="form.password"
         label="新密码"
-        v-model="password"
         type="password"
         placeholder="请输入新密码"
+        :rules="[{ required: true, message: '请填写新密码' }]"
+      />
+      <van-field
+        v-model="form.confirmPassword"
+        label="确认密码"
+        type="password"
+        placeholder="请输入确认密码"
+        :rules="[{ required: true, message: '请填写确认密码' }]"
       />
 
-			<van-field
-				label="验证码"
-				v-model="code"
-				@click-icon="getCode"
-				placeholder="请输入验证码">
-
-				<span slot="icon"
-					class="verifi_code red"
-					:class="{verifi_code_counting: counting}"
-					@click="getCode">
-					<countdown v-if="counting" :time="60000" @end="countdownend">
-					  <template slot-scope="props">{{ +props.seconds || 60 }}秒后获取</template>
-					</countdown>
-					<span v-else>获取验证码</span>
-				</span>
-			</van-field>
-    </van-cell-group>
-
-    <div class="bottom_btn">
-      <van-button size="large" type="danger" @click="modifypassword">保存</van-button>
-    </div>
+      <van-field
+        v-model="form.emailCode"
+        label="验证码"
+        placeholder="请输入邮箱验证码"
+        :rules="[{ required: true, message: '请填写验证码' }]"
+      >
+        <van-button
+          slot="button"
+          size="small"
+          plain
+          type="info"
+          native-type="button"
+          :disabled="disabled"
+          @click.stop="getMailCode"
+        >{{ btnText }}</van-button>
+      </van-field>
+      <div style="margin: 16px">
+        <van-button round block type="info" native-type="submit">提交</van-button>
+      </div>
+    </van-form>
   </div>
 </template>
 
-
 <script>
-import { authCaptcha, authReset, authLogout } from '@/api/api';
-import { removeLocalStorage } from '@/utils/local-storage';
-import { Field } from 'vant';
+import { updatePassword, getMailCode } from '@/api/user'
+import { mapGetters } from 'vuex'
 
 export default {
   data: () => ({
-    password: '',
-    mobile: '',
-    code: '',
-    counting: false
+    form: {
+      password: '',
+      confirmPassword: '',
+      emailCode: null,
+      emailKey: null
+    },
+    disabled: false,
+    totalCount: 0
   }),
-
+  computed: {
+    ...mapGetters(['userInfo']),
+    btnText() {
+      return this.totalCount !== 0 ? `${this.totalCount}秒后获取` : '获取验证码'
+    }
+  },
   methods: {
-    modifypassword() {
-      if (this.passwordValid()) {
-        authReset({
-          password: this.password,
-          mobile: this.mobile,
-          code: this.code
-        })
-        .then(() => {
-          this.$dialog.alert({ message: '保存成功, 请重新登录.' })
-          authLogout();
-        });
-      }
-    },
-    passwordValid() {
-      return true;
-    },
-    getCode() {
-      if(this.mobile === ''){
-        this.$toast.fail('请输入号码');
+    onSubmit() {
+      if (!this.passwordValid()) {
+        this.$toast.fail('两次密码不一致')
         return
       }
-
-      if (!this.counting) {
-        authCaptcha({
-          mobile: this.mobile,
-          type: 'change-password'
-        }).then(() => {
-          this.$toast.success('发送成功');
-          this.counting = true;
-        }).catch(error => {
-          this.$toast.fail(error.data.errmsg);
-          this.counting = false;
+      updatePassword(this.form).then(() => {
+        this.$dialog.alert({ message: '保存成功, 请重新登录.' }).then(() => {
+          this.$store.dispatch('user/resetToken').then(() => {
+            location.reload()
+          })
         })
-
-      }
+      })
     },
-  },
-
-  components: {
-    [Field.name]: Field
+    passwordValid() {
+      return this.form.password === this.form.confirmPassword
+    },
+    // 获取邮箱验证码
+    getMailCode() {
+      const email = this.userInfo.email
+      this.disabled = true
+      this.totalCount = 60
+      this.interval = setInterval(() => {
+        this.totalCount--
+        if (this.totalCount === 0) {
+          clearInterval(this.interval)
+          this.disabled = false
+        }
+      }, 1000)
+      getMailCode({ email }).then((res) => {
+        this.form.emailKey = res.map.key
+        this.$notify({
+          type: 'success',
+          message: '邮箱验证码已发送',
+          duration: 2000
+        })
+      })
+    }
   }
-};
+}
 </script>
 
-
 <style lang="scss" scoped>
-@import '../../../../assets/scss/var';
-@import '../../../../assets/scss/mixin';
 .bottom_btn {
   padding: 30px 15px 0 15px;
 }
 
 .verifi_code {
-  @include one-border;
   padding-left: 10px;
   &::after {
     border-bottom: 0;
-    border-left: 1px solid $border-color;
+    border-left: 1px solid lightgray;
   }
 
   &_counting {
-    color: $font-color-gray;
+    color: lightgray;
   }
 }
 </style>

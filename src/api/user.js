@@ -38,7 +38,23 @@ export function setRegistry(data) {
   })
 }
 
+export function updatePassword(data) {
+  return request({
+    url: '/user/updatePassword',
+    method: 'post',
+    data
+  })
+}
+
 export function uploadAvatar(data) {
   return request.formDataPost('/user/uploadAvatar', data)
 }
 
+export function getMailCode(data) {
+  return request({
+    url: '/user/sendEmailCode',
+    method: 'post',
+    data,
+    timeout: 20000
+  })
+}

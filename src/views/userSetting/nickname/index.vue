@@ -28,6 +28,10 @@ export default {
       this.nickName = this.$store.getters.userInfo.nickname
     },
     saveNick() {
+      if (!this.nickName) {
+        this.$toast.fail('昵称不能为空')
+        return
+      }
       profile({ nickname: this.nickName }).then((res) => {
         this.$dialog.alert({ message: '保存成功' }).then(async() => {
           await this.$store.dispatch('user/getInfo')
