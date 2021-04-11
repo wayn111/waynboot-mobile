@@ -16,7 +16,7 @@
       <div class="comment__line" />
     </div> -->
     <div class="item_cell_group">
-      <van-cell :value="rate != 0? '好评率' + rate + '%' : ''" is-link>
+      <van-cell :value="rate != 0? '好评率' + rate + '%' : ''" is-link :to="`/detail/comment/${goodsId}/0`">
         <!-- 使用 title 插槽来自定义标题 -->
         <template #title>
           <span>评论</span>
@@ -31,9 +31,9 @@
         :key="idx"
         class="tags__item"
         :color="variables.red"
+        @click="itemClick(idx)"
       >{{ item }}</van-tag>
     </div>
-
     <div class="main">
       <comment-item
         v-for="(item, idx) in list"
@@ -44,7 +44,7 @@
         :score="item.star"
         :desc="item.content"
         :imgs="item.picUrls"
-        style="margin-top:12px"
+        style="margin-top:6px"
       />
       <div class="main__btn">
         <van-button
@@ -52,6 +52,7 @@
           plain
           round
           size="small"
+          @click="itemClick(0)"
         >查看全部评价</van-button>
       </div>
     </div>
@@ -67,10 +68,17 @@ export default {
     CommentItem
   },
   // eslint-disable-next-line vue/require-prop-types
-  props: ['rate', 'num', 'tags', 'list'],
+  props: ['rate', 'num', 'tags', 'list', 'goodsId'],
   computed: {
     variables() {
       return variables
+    }
+  },
+  methods: {
+    itemClick(tagType) {
+      this.$router.push({
+        path: `/detail/comment/${this.goodsId}/${tagType}`
+      })
     }
   }
 }
@@ -80,7 +88,7 @@ export default {
 @import "@/styles/variables.scss";
 
 .comment {
-  margin-top: 24px;
+  // margin-top: 6px;
   background: #fff;
   .title {
     .comment__item {
@@ -119,7 +127,7 @@ export default {
     .tags__item {
       margin: 0 24px 0 0;
       padding: 6px 12px;
-      border-radius: 20px;
+      border-radius: 18px;
     }
   }
   .custom-num {

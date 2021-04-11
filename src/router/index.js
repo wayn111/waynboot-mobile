@@ -176,6 +176,16 @@ const routes = [
       keepAlive: true
     }
   },
+  // 商品评论
+  {
+    path: '/detail/comment/:goodsId/:tagType',
+    name: 'Detail',
+    props: true,
+    component: () => import('@/views/detail/comment'),
+    meta: {
+      title: '商品评论'
+    }
+  },
   // 地址管理
   {
     path: '/address',

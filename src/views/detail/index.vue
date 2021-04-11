@@ -27,6 +27,7 @@
       :num="comment.num"
       :tags="comment.tags"
       :list="comment.list"
+      :goods-id="goodsId"
     />
 
     <Description :description="description" />
@@ -131,7 +132,7 @@ export default {
           `有图(${commentTagNum.hasPictureNum})`
         ]
       }
-      this.comment.list = res1.map.page.records.slice(0, 3)
+      this.comment.list = res1.map.page.records.slice(0, 2)
     },
     skuAdapter() {
       const tree = this.setSkuTree()
