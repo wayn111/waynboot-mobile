@@ -1,7 +1,7 @@
 <template>
   <div class="detail">
     <nav-bar :title="$route.meta.title">
-      <span style="color:#333">
+      <span style="color: #333">
         <svg-icon icon-class="share" :width="15" :height="15" />
       </span>
     </nav-bar>
@@ -15,13 +15,32 @@
       :discount="info.counterPrice"
     />
 
-    <Section :stock-num="stockNum" :name="name" :attr="attributes" @input="isSkuShow = $event" />
+    <Section
+      :stock-num="stockNum"
+      :name="name"
+      :attr="attributes"
+      @input="isSkuShow = $event"
+    />
 
-    <Comment :rate="comment.rate" :num="comment.num" :tags="comment.tags" :list="comment.list" />
+    <Comment
+      :rate="comment.rate"
+      :num="comment.num"
+      :tags="comment.tags"
+      :list="comment.list"
+    />
 
     <Description :description="description" />
 
-    <Sku v-if="isSkuShow" v-model="isSkuShow" :sku-data="skuData" :goods="skuGoods" :initial-sku="initialSku" @initSku="initSku($event)" @getNum="getNum" @initSkuNum="initSkuNum($event)" />
+    <Sku
+      v-if="isSkuShow"
+      v-model="isSkuShow"
+      :sku-data="skuData"
+      :goods="skuGoods"
+      :initial-sku="initialSku"
+      @initSku="initSku($event)"
+      @getNum="getNum"
+      @initSkuNum="initSkuNum($event)"
+    />
 
     <Tabbar ref="tabbar" @input="isSkuShow = $event" />
     <back-top />
@@ -31,6 +50,7 @@
 
 <script>
 import { getDetail } from '@/api/detail'
+import { getCommentList, getCommentTagNum } from '@/api/comment'
 import Swiper from './modules/Swiper'
 import Overview from './modules/Overview'
 import Section from './modules/Section'
@@ -79,6 +99,7 @@ export default {
   },
   mounted() {
     this.getGoodsDetail()
+    this.getCommentInfo()
   },
   methods: {
     getGoodsDetail() {
@@ -91,48 +112,26 @@ export default {
         this.description = goods.info.picUrl
         this.skuAdapter()
         this.isSkeletonShow = false
-        this.comment = {
-          rate: '99%',
-          num: '10万+',
-          tags: [
-            '品质一流',
-            '图文清晰',
-            '印刷上乘',
-            '质地上乘',
-            '优美详细'
-          ],
-          list: [
-            {
-              avatar:
-                    'http://storage.360buyimg.com/i.imageUpload/6a645f3437323632613465313233613831353834393333353237363232_sma.jpg',
-              time: 1585537881825,
-              score: 5,
-              name: 'Ewall&熊猫',
-              desc:
-                    '收到货就赶紧打开看起来了，之前看过电子版的看完之后感到意犹未尽，前两天突然想再看一遍于是决定买实体书认真读一遍。',
-              imgs: [
-                'http://img30.360buyimg.com/shaidan/s128x96_jfs/t1/91400/14/15534/116833/5e723705E6e97e5a3/012d7444f8ccbcea.jpg',
-                'http://img30.360buyimg.com/shaidan/s128x96_jfs/t1/91314/13/15486/245367/5e723706E663c43aa/abb31350cdadf56d.jpg',
-                'http://img30.360buyimg.com/shaidan/s128x96_jfs/t1/103902/15/15108/267864/5e703d09E6603898f/4d91ad6fab4f76e0.jpg'
-              ]
-            },
-            {
-              avatar:
-                    'http://img11.360buyimg.com/jdphoto/s40x40_jfs/t1/25255/18/10701/1678/5c89f892E78c04688/684d63c0d68e39b1.png',
-              time: 1585537881825,
-              score: 2,
-              name: '张三',
-              desc:
-                    '很好很好很好！久仰大名，如雷贯耳的刘慈欣的大作，终于在京东上买到了，用了3000京豆后，才39元到手，高兴😃。包装很好很好很好很好！纸张很好，印刷清晰，岁数大了看着也不累，很好。一直都在京东买东西，十几年了，京东的服务一直很好！快递更是给力，小哥很棒！',
-              imgs: [
-                'http://img30.360buyimg.com/shaidan/s128x96_jfs/t1/110454/9/7862/139882/5e61d739E6a4360d2/a2dc1ac0d8f680a9.jpg',
-                'http://img30.360buyimg.com/shaidan/s128x96_jfs/t1/98014/37/12422/125922/5e478009E5acab40d/dbf006d20d040c8b.jpg',
-                'http://img30.360buyimg.com/shaidan/s128x96_jfs/t1/93964/32/13999/287674/5e61d73bE7e2430bd/de2bcdb6ab83f037.jpg'
-              ]
-            }
-          ]
-        }
       })
+    },
+    async getCommentInfo() {
+      const res = await getCommentTagNum({ goodsId: this.goodsId })
+      const res1 = await getCommentList({ tagType: 0, goodsId: this.goodsId })
+      const commentTagNum = res.map.commentTagNum
+      let goodsRate = Math.ceil(commentTagNum.goodsNum / commentTagNum.totalNum * 100)
+      goodsRate = isNaN(goodsRate) ? 0 : goodsRate
+      this.comment = {
+        rate: goodsRate,
+        num: `${commentTagNum.totalNum}`,
+        tags: [
+          `全部(${commentTagNum.totalNum})`,
+          `好评(${commentTagNum.goodsNum})`,
+          `中评(${commentTagNum.middleNum})`,
+          `差评(${commentTagNum.badNum})`,
+          `有图(${commentTagNum.hasPictureNum})`
+        ]
+      }
+      this.comment.list = res1.map.page.records.slice(0, 3)
     },
     skuAdapter() {
       const tree = this.setSkuTree()
@@ -156,7 +155,6 @@ export default {
         picture: this.goods.info.picUrl,
         specificationList: this.goods.specificationList,
         productList: this.goods.productList
-
       }
     },
     getNum() {
