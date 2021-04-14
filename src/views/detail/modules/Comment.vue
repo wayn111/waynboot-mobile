@@ -16,7 +16,11 @@
       <div class="comment__line" />
     </div> -->
     <div class="item_cell_group">
-      <van-cell :value="rate != 0? '好评率' + rate + '%' : ''" is-link :to="`/detail/comment/${goodsId}/0`">
+      <van-cell
+        :value="rate != 0 ? '好评率' + rate + '%' : ''"
+        is-link
+        :to="`/detail/comment/${goodsId}/0`"
+      >
         <!-- 使用 title 插槽来自定义标题 -->
         <template #title>
           <span>评论</span>
@@ -30,7 +34,6 @@
         v-for="(item, idx) in tags"
         :key="idx"
         class="tags__item"
-        :color="variables.red"
         @click="itemClick(idx)"
       >{{ item }}</van-tag>
     </div>
@@ -44,7 +47,7 @@
         :score="item.star"
         :desc="item.content"
         :imgs="item.picUrls"
-        style="margin-top:6px"
+        style="margin-top: 4px"
       />
       <div class="main__btn">
         <van-button
@@ -85,10 +88,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "@/styles/variables.scss";
+@import '@/styles/variables.scss';
 
 .comment {
-  // margin-top: 6px;
   background: #fff;
   .title {
     .comment__item {
@@ -125,6 +127,8 @@ export default {
     flex-wrap: wrap;
     padding: 12px 24px;
     .tags__item {
+      color: #ad0000;
+      background-color: #ffe1e1;
       margin: 0 24px 0 0;
       padding: 6px 12px;
       border-radius: 18px;

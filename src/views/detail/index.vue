@@ -125,7 +125,7 @@ export default {
         rate: goodsRate,
         num: `${commentTagNum.totalNum}`,
         tags: [
-          `全部(${commentTagNum.totalNum})`,
+          `全部`,
           `好评(${commentTagNum.goodsNum})`,
           `中评(${commentTagNum.middleNum})`,
           `差评(${commentTagNum.badNum})`,

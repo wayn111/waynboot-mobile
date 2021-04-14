@@ -109,7 +109,7 @@ const routes = [
   // 用户设置-邮箱
   {
     path: '/userSetting/email',
-    name: 'UserSetMobile',
+    name: 'UserSetEmail',
     component: () => import('@/views/userSetting/email'),
     meta: {
       title: '设置邮箱',
@@ -179,7 +179,7 @@ const routes = [
   // 商品评论
   {
     path: '/detail/comment/:goodsId/:tagType',
-    name: 'Detail',
+    name: 'Comment',
     props: true,
     component: () => import('@/views/detail/comment'),
     meta: {

@@ -6,7 +6,7 @@
         v-for="(item, idx) in tags"
         :key="idx"
         class="tags__item"
-        :color="variables.red"
+        :plain="idx == type"
         @click="tagList(idx)"
       >{{ item }}</van-tag>
     </div>
@@ -27,7 +27,7 @@
           :desc="item.content"
           :imgs="item.picUrls"
           :goods-id="goodsId"
-          style="margin-top: 12px"
+          style="margin-top: 4px"
         />
       </div>
     </van-list>
@@ -35,7 +35,6 @@
 </template>
 <script>
 import CommentItem from '@/components/CommentItem'
-import variables from '@/styles/variables.scss'
 import { getCommentList, getCommentTagNum } from '@/api/comment'
 
 export default {
@@ -64,12 +63,8 @@ export default {
       pageNum: 1
     }
   },
-  computed: {
-    variables() {
-      return variables
-    }
-  },
   created() {
+    this.type = this.tagType
     this.getCommentTagNum()
   },
   methods: {
@@ -78,7 +73,7 @@ export default {
       const commentTagNum = res.map.commentTagNum
       this.totalNum = commentTagNum.totalNum
       this.tags = [
-        `全部(${commentTagNum.totalNum})`,
+        `全部`,
         `好评(${commentTagNum.goodsNum})`,
         `中评(${commentTagNum.middleNum})`,
         `差评(${commentTagNum.badNum})`,
@@ -92,7 +87,9 @@ export default {
         tagType: this.type,
         goodsId: this.goodsId
       })
-      const { map: { page }} = res
+      const {
+        map: { page }
+      } = res
       this.list = [...this.list, ...page.records]
       this.loading = false
       // 数据全部加载完成
@@ -112,63 +109,25 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-@import '@/styles/variables.scss';
 
 .comment {
-  margin-top: 24px;
+  // margin-top: 24px;
   background: #fff;
-  .title {
-    .comment__item {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      .comment__item__left {
-        font-size: $small;
-        .title {
-          color: $black;
-          margin-right: 16px;
-        }
-        .content {
-          color: $red;
-        }
-      }
-      .comment__item__right {
-        display: flex;
-        align-items: center;
-        color: $gray;
-        font-size: $mini;
-      }
-    }
-    .comment__line {
-      width: 700px;
-      height: 1px;
-      background: #f5f5f5;
-      margin: 0 auto;
-    }
-  }
 
   .tags {
     display: flex;
     flex-wrap: wrap;
     padding: 12px 24px;
     .tags__item {
+      color: #ad0000;
+      background-color: #ffe1e1;
       margin: 0 24px 0 0;
       padding: 6px 12px;
       border-radius: 18px;
     }
   }
-  .custom-num {
-    margin-left: 8px;
-    font-size: 5px;
-    font-weight: 100;
-  }
   .main {
     padding: 0 24px;
-    .main__btn {
-      display: flex;
-      justify-content: center;
-      padding: 24px;
-    }
   }
 }
 </style>

@@ -83,12 +83,12 @@ export default {
 
 .comment-item-component {
   border-top: 1px solid rgb(236, 231, 231);
-  padding: 12px 0 10px 0;
+  padding: 15px 0 10px 0;
   .title {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 0 10px 0;
+    padding: 0px 0 18px 0;
     .title__left {
       display: flex;
       align-items: center;
