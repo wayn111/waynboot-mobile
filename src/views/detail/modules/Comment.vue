@@ -46,6 +46,7 @@
         :time="item.createTime"
         :score="item.star"
         :desc="item.content"
+        :reply="item.adminContent"
         :imgs="item.picUrls"
         style="margin-top: 4px"
       />
