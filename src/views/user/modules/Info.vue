@@ -2,7 +2,9 @@
 <template>
   <div class="user-info">
     <van-icon name="setting-o" class="user__set" @click="toUserSetting()" />
-    <image-pic width="50" height="50" round :src="userInfo.avatar" />
+    <div class="userImg">
+      <img :src="userInfo.avatar">
+    </div>
     <div class="main">
       <div class="main__title">
         <h3 class="name">{{ userInfo.nickname }}</h3>
@@ -56,6 +58,13 @@ export default {
   padding: 60px 24px 50px 24px;
   background: $red;
   border-radius: 100% 100% 100% 100% / 0% 0% 16% 16%;
+  .userImg {
+    img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+    }
+  }
   .user__set {
     position: absolute;
     top: 20px;

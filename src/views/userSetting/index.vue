@@ -5,13 +5,7 @@
       <van-cell title="头像" class="cell_middle">
         <van-uploader :after-read="afterRead">
           <div class="user_avatar_upload">
-            <image-pic
-              v-if="userInfo.avatar"
-              width="50"
-              height="50"
-              round
-              :src="userInfo.avatar"
-            />
+            <img v-if="userInfo.avatar" :src="userInfo.avatar">
             <van-icon v-else class-prefix="iconfont" name="camera" />
           </div>
         </van-uploader>
@@ -41,11 +35,7 @@
         is-link
         @click="showBirthday = true"
       />
-      <van-cell
-        title="密码设置"
-        to="/userSetting/password"
-        is-link
-      />
+      <van-cell title="密码设置" to="/userSetting/password" is-link />
       <van-cell
         title="手机号"
         to="/userSetting/mobile"
@@ -157,15 +147,15 @@ export default {
 <style lang="scss" scoped>
 .user_information {
   .user_avatar_upload {
-    position: relative;
-    top: 10px;
     width: 100px;
     height: 100px;
-    border: 1px solid #e5e5e5;
-    border-radius: 50%;
     img {
-      max-width: 100%;
-      max-height: 100%;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      // 设置图片垂直居中
+      display: inline-block;
+      vertical-align: middle;
     }
     i {
       position: absolute;
