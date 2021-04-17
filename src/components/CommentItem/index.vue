@@ -34,6 +34,9 @@
           style="margin-right: 8px"
         />
       </div>
+      <div v-if="reply" class="admin-reply">
+        <span>管理员回复：</span>{{ reply }}
+      </div>
     </div>
   </div>
 </template>
@@ -60,6 +63,10 @@ export default {
       default: 0
     },
     desc: {
+      type: String,
+      default: ''
+    },
+    reply: {
       type: String,
       default: ''
     },
@@ -111,6 +118,14 @@ export default {
       display: flex;
       flex-direction: row;
       margin-top: 8px;
+    }
+    .admin-reply{
+      font-size: 10px;
+      margin-top: 18px;
+      line-height: 34px;
+        span{
+          color: #e26262;
+        }
     }
   }
 }

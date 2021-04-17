@@ -25,6 +25,7 @@
           :time="item.createTime"
           :score="item.star"
           :desc="item.content"
+          :reply="item.adminContent"
           :imgs="item.picUrls"
           :goods-id="goodsId"
           style="margin-top: 4px"
