@@ -43,7 +43,7 @@ export default {
     // 对于使用了keep-alive的组件
     // 使用activated这个生命周期钩子刷新地址
     // 在页面加载时读取sessionStorage里的状态信息
-    if (sessionStorage.getItem('contact')) {
+    if (!this.selectedAddress.id && sessionStorage.getItem('contact')) {
       this['address/SET_SELECTED_ADDRESS'](JSON.parse(sessionStorage.getItem('contact')))
       sessionStorage.removeItem('contact')
     }

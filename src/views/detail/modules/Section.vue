@@ -12,7 +12,7 @@
         <van-cell
           title="送至"
           is-link
-          :value="selectedAddress.address || '北京市东城区'"
+          :value="selectedAddress.address || '选择收货地址'"
           @click="handleAddress"
         />
         <van-cell title="运费" value="88元" />
