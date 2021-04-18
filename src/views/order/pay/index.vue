@@ -66,9 +66,11 @@ export default {
 
   data() {
     return {
-      payWay: 'wx',
+      payWay: 'ali',
       orderSn: undefined,
-      actualPrice: 0
+      actualPrice: 0,
+      retryCount: 3,
+      retryInterval: 1500
     }
   },
   created() {
@@ -160,26 +162,40 @@ export default {
             }
           } else {
             // todo : alipay
-            testPayNotify(this.orderSn)
-              .then((res) => {
-                this.$router.replace({
-                  name: 'PayStatus',
-                  params: {
-                    status: 'success'
-                  }
-                })
-              })
-              .catch((err) => {
-                console.log(err)
-                this.$router.replace({
-                  name: 'PayStatus',
-                  params: {
-                    status: 'failed'
-                  }
-                })
-              })
+            this.$toast.loading({
+              duration: 0, // 持续展示 toast
+              forbidClick: true,
+              message: '支付中，请稍后'
+            })
+            this.testPayNotify()
           }
         })
+    },
+    async testPayNotify() {
+      try {
+        await testPayNotify(this.orderSn)
+        this.$toast.clear()
+        this.$router.replace({
+          name: 'PayStatus',
+          params: {
+            status: 'success'
+          }
+        })
+      } catch (error) {
+        setTimeout(async() => {
+          this.retryCount--
+          if (this.retryCount > 0) {
+            await this.testPayNotify()
+          } else {
+            this.$router.replace({
+              name: 'PayStatus',
+              params: {
+                status: 'failed'
+              }
+            })
+          }
+        }, this.retryInterval)
+      }
     },
     onBridgeReady() {
       const that = this
