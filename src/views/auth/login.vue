@@ -99,8 +99,11 @@ export default {
           this.$notify({
             type: 'success',
             message: '登录成功',
-            duration: 2000,
+            duration: 1000,
             onOpened: () => {
+              location.href = this.redirect
+            },
+            onClose: () => {
               location.href = this.redirect
             }
           })
