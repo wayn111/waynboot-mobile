@@ -10,13 +10,11 @@
 
     <div class="header__btn">
       <router-link
-        tag="p"
         class="header__btn__item"
         to="/"
         replace
       >返回首页</router-link>
       <router-link
-        tag="p"
         class="header__btn__item"
         :to="`/user/order/list/${orderStatus}`"
         replace
