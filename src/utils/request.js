@@ -32,7 +32,10 @@ service.interceptors.response.use(
 
     // 返回码不正确
     if (res.code !== 200) {
-      Toast.fail(res.msg)
+      // 5001订单不存在
+      if (res.code !== 5001) {
+        Toast.fail(res.msg)
+      }
       // 现约定 50001:无效token 50002:token过期
       if (res.code === 50001 || res.code === 50002) {
         Dialog.alert({

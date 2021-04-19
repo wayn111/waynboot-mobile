@@ -19,7 +19,8 @@
         </template> -->
         <template #footer>
           <van-stepper
-            v-model.number="value"
+            :value="value"
+            :default-value="value"
             theme="round"
             button-size="20"
             integer
@@ -129,9 +130,17 @@ export default {
       }
     },
     onChange(value) {
+      if (!value) {
+        return
+      }
+      // 防止重复调用接口
+      if (value === this.value) {
+        return
+      }
       // 注意此时修改 value 后会再次触发 change 事件
       changeNumber(this.index, value)
         .then((res) => {
+          this.value = value
           this.$emit('changeNum', this.index, Number(value))
         })
         .catch()
