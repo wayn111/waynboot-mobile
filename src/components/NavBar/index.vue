@@ -34,6 +34,11 @@ export default {
   },
   methods: {
     onClickLeft() {
+      // if (this.$route.name === 'OrderList') {
+      //   this.$router.push({ 'name': 'User' })
+      // } else {
+      //   this.$router.go(-1)
+      // }
       this.$router.go(-1)
     }
   }

@@ -13,11 +13,13 @@
         tag="p"
         class="header__btn__item"
         to="/"
+        replace
       >返回首页</router-link>
       <router-link
         tag="p"
         class="header__btn__item"
-        :to="`/user/order/list/` + orderStatus"
+        :to="`/user/order/list/${orderStatus}`"
+        replace
       >查看订单</router-link>
     </div>
   </div>
