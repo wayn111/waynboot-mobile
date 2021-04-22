@@ -1,7 +1,7 @@
 {
-  "name": "panda-mall",
-  "version": "2.0.1",
-  "author": "Ewall&熊猫",
+  "name": "wayn-mall",
+  "version": "2.1.1",
+  "author": "Ewall&熊猫 and wayn",
   "scripts": {
     "dev": "cross-env NODE_ENV=development vue-cli-service serve",
     "build": "cross-env NODE_ENV=production vue-cli-service build",
@@ -67,6 +67,6 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Ewall1106/mall"
+    "url": "https://github.com/wayn111/waynboot-mobile"
   }
 }
