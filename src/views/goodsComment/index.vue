@@ -74,7 +74,8 @@ export default {
     async afterRead(file) {
       this.$toast.loading({
         message: '正在上传...',
-        forbidClick: true
+        forbidClick: true,
+        overlay: true
       })
       if (!(file instanceof Array)) {
         file = [file]
