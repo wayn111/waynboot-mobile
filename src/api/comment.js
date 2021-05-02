@@ -1,5 +1,13 @@
 import request from '@/utils/request'
 
+export function addComment(data) {
+  return request({
+    url: '/comment',
+    method: 'post',
+    data
+  })
+}
+
 export function getCommentList(data) {
   return request.formDataPost('/comment/list', data)
 }

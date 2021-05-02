@@ -29,9 +29,10 @@
           :key="idx"
           :src="item"
           fit="cover"
-          width="60"
-          height="70"
+          width="90"
+          height="90"
           style="margin-right: 8px"
+          @click.native="onClick(idx)"
         />
       </div>
       <div v-if="reply" class="admin-reply">
@@ -43,6 +44,7 @@
 
 <script>
 import variables from '@/styles/variables.scss'
+import { ImagePreview } from 'vant'
 
 export default {
   props: {
@@ -81,6 +83,11 @@ export default {
     variables() {
       return variables
     }
+  },
+  methods: {
+    onClick(index) {
+      ImagePreview(this.imgs, index)
+    }
   }
 }
 </script>
@@ -118,14 +125,15 @@ export default {
       display: flex;
       flex-direction: row;
       margin-top: 8px;
+      overflow: scroll;
     }
-    .admin-reply{
+    .admin-reply {
       font-size: 10px;
       margin-top: 18px;
       line-height: 34px;
-        span{
-          color: #e26262;
-        }
+      span {
+        color: #e26262;
+      }
     }
   }
 }

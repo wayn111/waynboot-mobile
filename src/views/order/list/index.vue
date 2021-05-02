@@ -1,7 +1,7 @@
 <template>
   <div class="order_list">
     <nav-bar :title="$route.meta.title">
-      <span style="color:#333">
+      <span style="color: #333">
         <svg-icon icon-class="share" :width="15" :height="15" />
       </span>
     </nav-bar>
@@ -15,7 +15,11 @@
       animated
       @click="handleTabClick"
     >
-      <van-tab v-for="(tabTitle, index) in tabTitles" :key="index" :title="tabTitle">
+      <van-tab
+        v-for="(tabTitle, index) in tabTitles"
+        :key="index"
+        :title="tabTitle"
+      >
         <van-pull-refresh
           v-model="refreshing"
           style="min-height: calc(100vh - 84px)"
@@ -35,12 +39,12 @@
               :status="el.orderStatusText"
             >
               <van-card
-                v-for="(goods, goodsI) in el.goodsList"
-                :key="goodsI"
+                v-for="(goods, goodsIndex) in el.goodsList"
+                :key="goodsIndex"
                 :title="goods.goodsName"
                 :num="goods.number"
                 :thumb="goods.picUrl"
-                @click.native="toOrderDetail(goods.id)"
+                @click.native="toOrderDetail(goods.goodsId)"
               >
                 <div slot="desc">
                   <div class="desc">
@@ -48,12 +52,23 @@
                       v-for="(spec, idx) in goods.specifications"
                       :key="idx"
                       plain
-                      style="margin-right:6px;"
+                      style="margin-right: 6px"
                     >{{ spec }}</van-tag>
                   </div>
                 </div>
+                <template #footer>
+                  <van-button
+                    v-if="goods.comment == 0"
+                    size="mini"
+                    @click.stop="commentGoods(goods.id, goods.goodsId)"
+                  >去评价</van-button>
+                </template>
               </van-card>
-              <div class="total">合计: {{ el.actualPrice | yuan }}（含运费{{ el.post_fee | yuan }}）</div>
+              <div class="total">
+                合计: {{ el.actualPrice | yuan }}（含运费{{
+                  el.post_fee | yuan
+                }}）
+              </div>
 
               <div slot="footer" class="footer_btn">
                 <van-button
@@ -84,11 +99,6 @@
                   size="small"
                   @click.stop="delOrder(el.id)"
                 >删除订单</van-button>
-                <van-button
-                  v-if="el.handleOption.comment"
-                  size="small"
-                  @click.stop="commentOrder(el.id)"
-                >去评价</van-button>
               </div>
             </van-panel>
           </van-list>
@@ -204,7 +214,11 @@ export default {
         })
         .catch(() => {})
     },
-    commentOrder(id) {},
+    commentGoods(orderGoodsId, goodsId) {
+      this.$router.push({
+        path: `/goodsComment/${orderGoodsId}/${goodsId}`
+      })
+    },
     toPay(orderSn, actualPrice) {
       this.$router.push({ name: 'OrderPay', params: { orderSn, actualPrice }})
     },

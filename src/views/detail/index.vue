@@ -110,7 +110,7 @@ export default {
         this.goods = goods
         this.info = goods.info
         this.banner = goods.info.gallery
-        this.description = goods.info.picUrl
+        this.description = goods.info.detail
         this.skuAdapter()
         this.isSkeletonShow = false
       })

@@ -247,6 +247,16 @@ const routes = [
     name: 'PayStatus',
     props: true,
     component: () => import('@/views/order/payStatus')
+  },
+  // 评论页面
+  {
+    path: '/goodsComment/:orderGoodsId/:goodsId',
+    name: 'GoodsComment',
+    props: true,
+    component: () => import('@/views/goodsComment'),
+    meta: {
+      title: '商品评论'
+    }
   }
 ]
 

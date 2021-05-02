@@ -103,6 +103,10 @@ export default {
       this.currentDate = new Date(dayJs.year(), dayJs.month(), dayJs.date())
     },
     async afterRead(file) {
+      this.$toast.loading({
+        message: '正在上传...',
+        forbidClick: true
+      })
       const uploadRes = await base64uploadFile({
         base64content: file.content,
         filename: file.file.name
