@@ -89,25 +89,6 @@
         >{{ btnText }}</van-button>
       </van-field>
 
-      <van-field
-        v-model="form.code"
-        type="text"
-        required
-        center
-        clearable
-        name="图形验证码"
-        maxlength="4"
-        label="图形验证码"
-        placeholder="请输入图形验证码"
-        :rules="[{ required: true, message: '请输入正确的图形验证码！' }]"
-      >
-        <template #button>
-          <div class="regist-code">
-            <img :src="captchaImg" @click="getCaptcha">
-          </div>
-        </template>
-      </van-field>
-
       <div style="margin: 36px">
         <van-button
           round
@@ -124,7 +105,7 @@
 
 <script>
 import variables from '@/styles/variables.scss'
-import { getCaptcha, getMailCode } from '@/api/login'
+import { getMailCode } from '@/api/login'
 import { setRegistry } from '@/api/user'
 
 export default {
@@ -138,13 +119,11 @@ export default {
         confirmPassword: '',
         emailCode: '',
         emailKey: '',
-        code: '',
         key: ''
       },
       disabled: false,
       totalCount: 0,
-      loading: false,
-      captchaImg: ''
+      loading: false
     }
   },
   computed: {
@@ -157,16 +136,8 @@ export default {
 
   },
   mounted() {
-    this.getCaptcha()
   },
   methods: {
-    // 获取图形验证码
-    getCaptcha() {
-      getCaptcha().then((res) => {
-        this.captchaImg = res.map.image
-        this.form.key = res.map.key
-      })
-    },
     // 获取邮箱验证码
     getMailCode() {
       const { email } = this.form
