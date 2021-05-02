@@ -58,7 +58,7 @@
                 </div>
                 <template #footer>
                   <van-button
-                    v-if="goods.comment == 0"
+                    v-if="el.handleOption.comment && goods.comment == 0"
                     size="mini"
                     @click.stop="commentGoods(goods.id, goods.goodsId)"
                   >去评价</van-button>
