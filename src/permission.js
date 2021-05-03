@@ -2,8 +2,9 @@ import router from './router'
 import store from './store'
 import { Toast } from 'vant'
 import { getToken } from '@/utils/auth' // get token from cookie
+import { pathMatcher } from '@/utils/index'
 
-const whiteList = ['/login', '/registry'] // 白名单
+const whiteList = ['/login', '/registry', '/', '/index', '/category', '/detail/**', '/diamondGoodsList/**'] // 白名单
 
 router.beforeEach(async(to, from, next) => {
   // 设置标题
@@ -26,20 +27,18 @@ router.beforeEach(async(to, from, next) => {
           await store.dispatch('user/getInfo')
           next()
         } catch (error) {
-          if (whiteList.indexOf(to.path) !== -1) {
+          if (pathMatcher(whiteList, to.path)) {
             next()
           } else {
             // 清空token重新去登录
             await store.dispatch('user/resetToken')
-            Toast.fail('出错了')
             next(`/login?redirect=${encodeURIComponent(location.href)}`)
           }
         }
       }
     }
   } else {
-    if (whiteList.indexOf(to.path) !== -1) {
-      // 白名单没有token也直接放行
+    if (pathMatcher(whiteList, to.path)) {
       next()
     } else {
       // 反之则去登录页面

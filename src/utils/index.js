@@ -33,3 +33,23 @@ export const Valid = class Valid {
 export function str2date(str, format) {
   return dayjs(str, format)
 }
+
+export function pathMatcher(matcherArr, path) {
+  let flag = false
+  matcherArr.forEach(item => {
+    if (item.indexOf(path) > -1) {
+      flag = true
+      return
+    }
+    if (item.indexOf('**') > -1) {
+      const newLocal = item.indexOf('**')
+      const matcher = item.substr(0, newLocal)
+      const target = path.substr(0, newLocal)
+      if (matcher === target) {
+        flag = true
+        return
+      }
+    }
+  })
+  return flag
+}
