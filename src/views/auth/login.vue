@@ -65,8 +65,8 @@ export default {
   data() {
     return {
       form: {
-        mobile: 13617159841,
-        password: 123456
+        mobile: undefined,
+        password: undefined
       },
       loading: false
     }
