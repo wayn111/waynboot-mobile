@@ -21,9 +21,9 @@ import '@/components/fontAwesome'
 import '@/components/common'
 import filters from '@/filter'
 // 引入fastclick
-import FastClick from 'fastclick'
+// import FastClick from 'fastclick'
 
-FastClick.attach(document.body)
+// FastClick.attach(document.body)
 
 Vue.use(filters)
 
