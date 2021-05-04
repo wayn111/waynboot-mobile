@@ -1,6 +1,9 @@
 ## waynboot-mall项目
 
-waynboot-mall是一套全部开源的微商城项目，包含一个运营后台、h5商城和后台接口。实现了一个商城所需的首页展示、商品分类、商品详情、商品搜索、加入购物车、结算下单、订单状态流转等一系列功能。技术上基于Springboot2.0，整合了Redis、RabbitMQ、ElasticSearch等常用中间件不断完善中。
+waynboot-mall是一套全部开源的微商城项目，包含一个运营后台、h5商城和后台接口。
+实现了一个商城所需的首页展示、商品分类、商品详情、sku详情、商品搜索、加入购物车、结算下单、订单状态流转、商品评论等一系列功能。
+技术上基于Springboot2.0，整合了Redis、RabbitMQ、ElasticSearch等常用中间件，
+贴近生产环境实际经验开发而来不断完善、优化、改进中。
 
 [后台接口项目](https://github.com/wayn111/waynboot-mall)  
 [运营后台项目](https://github.com/wayn111/waynboot-mall)  
