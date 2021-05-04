@@ -141,7 +141,11 @@ const routes = [
     path: '/user/order/list/:active',
     name: 'OrderList',
     props: true,
-    component: () => import('@/views/order/list')
+    component: () => import('@/views/order/list'),
+    meta: {
+      title: '订单列表',
+      showTab: true
+    }
   },
   // 商品列表
   {

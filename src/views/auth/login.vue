@@ -1,8 +1,8 @@
 <template>
   <div class="login-container">
     <div class="header">
-      <img class="header__logo" src="@/assets/logo.png" alt="logo">
-      <p class="header__title">panda-mall</p>
+      <img class="header__logo" src="@/assets/logo4.png" alt="logo">
+      <!-- <p class="header__title">waynboot-mall</p> -->
     </div>
 
     <van-form class="form" @submit="onSubmit">
@@ -126,8 +126,8 @@ export default {
 
     .header__logo {
       display: block;
-      width: 150px;
-      height: 150px;
+      // width: 150px;
+      // height: 150px;
       padding-top: 80px;
     }
     .header__title {
@@ -141,7 +141,7 @@ export default {
   .form {
     // background: red;
     padding: 24px;
-    margin-top: 50px;
+    // margin-top: 50px;
   }
 }
 </style>
