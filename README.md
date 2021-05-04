@@ -69,7 +69,7 @@ npm run dev
 - 注册一个账号
 - 登陆
 
-演示地址：http://mall.wayn.ltd
+演示地址：http://www.wayn.ltd
 
 ## 演示图
 
