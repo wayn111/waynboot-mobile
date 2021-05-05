@@ -115,6 +115,7 @@ npm run dev
 ## waynboot-mall交流群
 
 QQ群：<a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=Mvf4HO4EhdXlfh0OLIq5I8wDIjRj6DlT&jump_from=webapi"><img border="0" src="https://pub.idqqimg.com/wpa/images/group.png" alt="waynboot-mall交流群" title="waynboot-mall交流群"></a>
+有问题可以先提issue😁
 
 ## 感谢
 
