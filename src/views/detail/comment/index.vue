@@ -123,7 +123,7 @@ export default {
       color: #ad0000;
       background-color: #ffe1e1;
       margin: 0 24px 0 0;
-      padding: 6px 12px;
+      padding: 10px 16px;
       border-radius: 18px;
     }
   }

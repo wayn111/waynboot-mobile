@@ -9,7 +9,7 @@
           height="25"
           style="margin-right: 6px"
         />
-        <span style="margin-right: 6px">{{ name }}</span>
+        <span class="comment_name">{{ name }}</span>
         <van-rate
           v-model="score"
           :size="15"
@@ -107,16 +107,24 @@ export default {
       display: flex;
       align-items: center;
       color: $black;
-      font-size: $mini;
+      font-size: $small;
+      .comment_name {
+        margin: 0 10px 0 6px;
+        max-width: 180px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        -o-text-overflow: ellipsis;
+        white-space: nowrap;
+      }
     }
     .title__right {
       color: $gray;
-      font-size: $mini;
+      font-size: $small;
     }
   }
   .desc {
     .desc__text {
-      font-size: $mini;
+      font-size: $small;
       color: $black;
       line-height: 38px;
       text-align: justify;
@@ -128,7 +136,7 @@ export default {
       overflow: scroll;
     }
     .admin-reply {
-      font-size: 10px;
+      font-size: $small;
       margin-top: 18px;
       line-height: 34px;
       span {
