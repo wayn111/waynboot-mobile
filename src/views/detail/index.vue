@@ -87,7 +87,10 @@ export default {
       goods: {},
       info: {},
       name: '',
+      // 规格默认选择个数
       stockNum: 1,
+      // 产品集合库存总数
+      totalStockNum: 0,
       attributes: [],
       comment: {},
       description: '',
@@ -111,6 +114,11 @@ export default {
         this.info = goods.info
         this.banner = goods.info.gallery
         this.description = goods.info.detail
+        this.totalStockNum = goods.productList.reduce(function(o1, o2) {
+          // sum2 前两个数的和
+          return ((o1.number || 0) + (o2.number || 0))
+        }, 0)
+        console.log('总库存：', this.totalStockNum)
         this.skuAdapter()
         this.isSkeletonShow = false
       })
@@ -119,7 +127,9 @@ export default {
       const res = await getCommentTagNum({ goodsId: this.goodsId })
       const res1 = await getCommentList({ tagType: 0, goodsId: this.goodsId })
       const commentTagNum = res.map.commentTagNum
-      let goodsRate = Math.ceil(commentTagNum.goodsNum / commentTagNum.totalNum * 100)
+      let goodsRate = Math.ceil(
+        (commentTagNum.goodsNum / commentTagNum.totalNum) * 100
+      )
       goodsRate = isNaN(goodsRate) ? 0 : goodsRate
       this.comment = {
         rate: goodsRate,
@@ -139,7 +149,7 @@ export default {
       const list = this.setSkuList()
       const skuInfo = {
         price: parseInt(this.goods.info.retailPrice), // 未选择规格时的价格
-        stock_num: 100, // TODO 总库存
+        stock_num: this.totalStockNum, // 总库存
         collection_id: '', // 无规格商品skuId取collection_id，否则取所选sku组合对应的id
         none_sku: false, // 是否无规格商品
         hide_stock: false
@@ -221,9 +231,8 @@ export default {
       _.each(this.goods.productList, (v) => {
         var skuListObj = {}
         _.each(v.specifications, (specificationName, index) => {
-          skuListObj['s' + (~~index + 1)] = this.findSpecValueIdByName(
-            specificationName
-          )
+          skuListObj['s' + (~~index + 1)] =
+            this.findSpecValueIdByName(specificationName)
         })
 
         skuListObj.price = v.price * 100
