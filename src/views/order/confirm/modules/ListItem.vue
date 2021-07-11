@@ -50,13 +50,17 @@
 <script>
 import { getCheckedGoods } from '@/api/cart'
 import { mapGetters } from 'vuex'
-import { submit } from '@/api/order'
+import { submit, searchResult } from '@/api/order'
 export default {
   data() {
     return {
       message: '',
       amount: 0,
-      goodsList: []
+      goodsList: [],
+      orderSn: undefined,
+      actualPrice: 0,
+      retryCount: 3, // 查询订单结果次数
+      retryInterval: 1500 // 查询间隔
     }
   },
   computed: {
@@ -86,20 +90,44 @@ export default {
       })
       const message = this.message
       const userId = this.id
+      this.$toast.loading({
+        duration: 0, // 持续展示 toast
+        forbidClick: true,
+        message: '下单中，请稍后'
+      })
       submit({ cartIdArr, addressId, userId, message }).then((res) => {
         const { orderSn, actualPrice } = res.map
+        this.orderSn = orderSn
+        this.actualPrice = actualPrice
+        this.searchResult()
+      })
+    },
+    async searchResult() {
+      try {
+        await searchResult(this.orderSn)
+        this.$toast.clear()
         this.$router.push({
           name: 'OrderPay',
-          params: { orderSn, actualPrice }
+          params: { orderSn: this.orderSn, actualPrice: this.actualPrice }
         })
-      })
+      } catch (error) {
+        console.log('下单失败', error)
+        setTimeout(async() => {
+          this.retryCount--
+          if (this.retryCount > 0) {
+            await this.searchResult(this.orderSn)
+          } else {
+            this.$toast.fail('抱歉，创建订单失败！')
+          }
+        }, this.retryInterval)
+      }
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import "@/styles/variables.scss";
+@import '@/styles/variables.scss';
 
 .list-item {
   box-sizing: border-box;

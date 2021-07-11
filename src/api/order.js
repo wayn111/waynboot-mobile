@@ -38,9 +38,9 @@ export function orderH5pay(data) {
   })
 }
 
-export function testPayNotify(orderId) {
+export function searchResult(orderId) {
   return request({
-    url: '/order/testPayNotify/' + orderId,
+    url: '/order/searchResult/' + orderId + '?t=' + new Date().getTime(),
     method: 'get'
   })
 }

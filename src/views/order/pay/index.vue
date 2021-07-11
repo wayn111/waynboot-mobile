@@ -53,11 +53,7 @@
 </template>
 
 <script>
-import {
-  orderPrepay,
-  orderH5pay,
-  testPayNotify
-} from '@/api/order'
+import { orderPrepay, orderH5pay } from '@/api/order'
 import _ from 'lodash'
 import { getLocalStorage, setLocalStorage } from '@/utils/localStorage'
 
@@ -68,9 +64,7 @@ export default {
     return {
       payWay: 'ali',
       orderSn: undefined,
-      actualPrice: 0,
-      retryCount: 3,
-      retryInterval: 1500
+      actualPrice: 0
     }
   },
   created() {
@@ -90,8 +84,9 @@ export default {
           if (this.payWay === 'wx') {
             const ua = navigator.userAgent.toLowerCase()
             const isWeixin = ua.indexOf('micromessenger') !== -1
+            // JSAPI调起支付API
             if (isWeixin) {
-              orderPrepay({ orderSn: this.orderSn })
+              orderPrepay({ orderSn: this.orderSn, payType: 1 })
                 .then((res) => {
                   const data = res.map.result
                   const prepayData = JSON.stringify({
@@ -128,14 +123,15 @@ export default {
                 .catch((err) => {
                   this.$dialog.alert({ message: err.map.msg })
                   this.$router.replace({
-                    name: 'paymentStatus',
+                    name: 'PayStatus',
                     params: {
                       status: 'failed'
                     }
                   })
                 })
             } else {
-              orderH5pay({ orderSn: this.orderSn })
+              // h5支付
+              orderH5pay({ orderSn: this.orderSn, payType: 1 })
                 .then((res) => {
                   const data = res.map.data
                   window.location.replace(
@@ -167,35 +163,27 @@ export default {
               forbidClick: true,
               message: '支付中，请稍后'
             })
-            this.testPayNotify()
+            orderH5pay({ orderSn: this.orderSn, payType: 2 })
+              .then((res) => {
+                this.$toast.clear()
+                this.$router.replace({
+                  name: 'PayStatus',
+                  params: {
+                    status: 'success'
+                  }
+                })
+              })
+              .catch((err) => {
+                console.log(err)
+                this.$router.replace({
+                  name: 'PayStatus',
+                  params: {
+                    status: 'failed'
+                  }
+                })
+              })
           }
         })
-    },
-    async testPayNotify() {
-      try {
-        await testPayNotify(this.orderSn)
-        this.$toast.clear()
-        this.$router.replace({
-          name: 'PayStatus',
-          params: {
-            status: 'success'
-          }
-        })
-      } catch (error) {
-        setTimeout(async() => {
-          this.retryCount--
-          if (this.retryCount > 0) {
-            await this.testPayNotify()
-          } else {
-            this.$router.replace({
-              name: 'PayStatus',
-              params: {
-                status: 'failed'
-              }
-            })
-          }
-        }, this.retryInterval)
-      }
     },
     onBridgeReady() {
       const that = this
@@ -208,21 +196,21 @@ export default {
           console.log(res)
           if (res.err_msg === 'get_brand_wcpay_request:ok') {
             that.$router.replace({
-              name: 'paymentStatus',
+              name: 'PayStatus',
               params: {
                 status: 'success'
               }
             })
           } else if (res.err_msg === 'get_brand_wcpay_request:cancel') {
             that.$router.replace({
-              name: 'paymentStatus',
+              name: 'PayStatus',
               params: {
                 status: 'cancel'
               }
             })
           } else {
             that.$router.replace({
-              name: 'paymentStatus',
+              name: 'PayStatus',
               params: {
                 status: 'failed'
               }
