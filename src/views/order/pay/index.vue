@@ -84,7 +84,7 @@ export default {
           if (this.payWay === 'wx') {
             const ua = navigator.userAgent.toLowerCase()
             const isWeixin = ua.indexOf('micromessenger') !== -1
-            // 微信支付
+            // 微信jsapi支付
             if (isWeixin) {
               orderPrepay({ orderSn: this.orderSn, payType: 1 })
                 .then((res) => {
@@ -130,7 +130,7 @@ export default {
                   })
                 })
             } else {
-              // h5支付
+              // 微信h5支付
               orderH5pay({ orderSn: this.orderSn, payType: 1 })
                 .then((res) => {
                   const data = res.map.data
@@ -157,7 +157,7 @@ export default {
                 })
             }
           } else {
-            // 支付宝支付
+            // 支付宝手机网站支付
             this.$toast.loading({
               duration: 0, // 持续展示 toast
               forbidClick: true,
