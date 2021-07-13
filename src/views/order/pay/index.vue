@@ -21,12 +21,22 @@
             <template slot="title">
               <img
                 src="../../../assets/images/ali_pay.png"
-                alt="支付宝"
+                alt="测试支付"
                 width="82"
                 height="29"
               >
             </template>
-            <van-radio name="ali" />
+            <van-radio name="test" />
+          </van-cell>
+          <template slot="title">
+            <img
+              src="../../../assets/images/ali_pay.png"
+              alt="支付宝"
+              width="82"
+              height="29"
+            >
+          </template>
+          <van-radio name="ali" />
           </van-cell>
           <van-cell>
             <template slot="title">
@@ -156,7 +166,7 @@ export default {
                   })
                 })
             }
-          } else {
+          } else if (this.payWay === 'ali') {
             // 支付宝手机网站支付
             this.$toast.loading({
               duration: 0, // 持续展示 toast
@@ -166,6 +176,31 @@ export default {
             orderH5pay({ orderSn: this.orderSn, payType: 2 })
               .then((res) => {
                 this.alipayClientCall(res.map.form)
+              })
+              .catch((err) => {
+                console.log(err)
+                this.$router.replace({
+                  name: 'PayStatus',
+                  params: {
+                    status: 'failed'
+                  }
+                })
+              })
+          } else {
+            // 测试支付
+            this.$toast.loading({
+              duration: 0, // 持续展示 toast
+              forbidClick: true,
+              message: '支付中，请稍后'
+            })
+            orderH5pay({ orderSn: this.orderSn, payType: 3 })
+              .then((res) => {
+                this.$router.replace({
+                  name: 'PayStatus',
+                  params: {
+                    status: 'success'
+                  }
+                })
               })
               .catch((err) => {
                 console.log(err)
