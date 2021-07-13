@@ -84,7 +84,7 @@ export default {
           if (this.payWay === 'wx') {
             const ua = navigator.userAgent.toLowerCase()
             const isWeixin = ua.indexOf('micromessenger') !== -1
-            // JSAPI调起支付API
+            // 微信支付
             if (isWeixin) {
               orderPrepay({ orderSn: this.orderSn, payType: 1 })
                 .then((res) => {
@@ -157,7 +157,7 @@ export default {
                 })
             }
           } else {
-            // todo : alipay
+            // 支付宝支付
             this.$toast.loading({
               duration: 0, // 持续展示 toast
               forbidClick: true,
@@ -165,13 +165,7 @@ export default {
             })
             orderH5pay({ orderSn: this.orderSn, payType: 2 })
               .then((res) => {
-                this.$toast.clear()
-                this.$router.replace({
-                  name: 'PayStatus',
-                  params: {
-                    status: 'success'
-                  }
-                })
+                this.alipayClientCall(res.map.form)
               })
               .catch((err) => {
                 console.log(err)
@@ -184,6 +178,17 @@ export default {
               })
           }
         })
+    },
+    /**
+     * 通过提交form表单唤起支付宝客户端支付
+     */
+    alipayClientCall(form) {
+      const div = document.createElement('div')
+      console.log('我是后端返回的数据:' + form)
+      div.innerHTML = form
+      document.body.appendChild(div)
+      console.log('punchout_form:' + document.forms.punchout_form)
+      document.forms.punchout_form.submit()
     },
     onBridgeReady() {
       const that = this
