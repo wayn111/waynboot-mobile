@@ -19,24 +19,20 @@
         <van-cell-group>
           <van-cell>
             <template slot="title">
+              <p style="font-size: 17px">测试支付方式</p>
+            </template>
+            <van-radio name="test" />
+          </van-cell>
+          <van-cell>
+            <template slot="title">
               <img
                 src="../../../assets/images/ali_pay.png"
-                alt="测试支付"
+                alt="支付宝"
                 width="82"
                 height="29"
               >
             </template>
-            <van-radio name="test" />
-          </van-cell>
-          <template slot="title">
-            <img
-              src="../../../assets/images/ali_pay.png"
-              alt="支付宝"
-              width="82"
-              height="29"
-            >
-          </template>
-          <van-radio name="ali" />
+            <van-radio name="ali" />
           </van-cell>
           <van-cell>
             <template slot="title">
@@ -72,7 +68,7 @@ export default {
 
   data() {
     return {
-      payWay: 'ali',
+      payWay: 'test',
       orderSn: undefined,
       actualPrice: 0
     }

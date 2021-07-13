@@ -59,8 +59,8 @@ export default {
       goodsList: [],
       orderSn: undefined,
       actualPrice: 0,
-      retryCount: 3, // 查询订单结果次数
-      retryInterval: 1500 // 查询间隔
+      retryCount: 5, // 查询订单结果次数
+      retryInterval: 500 // 查询间隔
     }
   },
   computed: {
