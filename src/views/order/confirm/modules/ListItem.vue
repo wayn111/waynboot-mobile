@@ -59,8 +59,8 @@ export default {
       goodsList: [],
       orderSn: undefined,
       actualPrice: 0,
-      retryCount: 5, // 查询订单结果次数
-      retryInterval: 500 // 查询间隔
+      retryCount: 6, // 查询订单结果次数
+      retryInterval: 300 // 查询间隔
     }
   },
   computed: {
@@ -95,13 +95,19 @@ export default {
         forbidClick: true,
         message: '下单中，请稍后'
       })
+      this.retryCount = 6
       submit({ cartIdArr, addressId, userId, message }).then((res) => {
         const { orderSn, actualPrice } = res.map
         this.orderSn = orderSn
         this.actualPrice = actualPrice
-        this.searchResult()
+        setTimeout(() => {
+          this.searchResult()
+        }, this.retryInterval)
       })
     },
+    /**
+     * 查询下单是否成功
+     */
     async searchResult() {
       try {
         await searchResult(this.orderSn)
