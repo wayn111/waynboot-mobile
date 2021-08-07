@@ -12,7 +12,6 @@
       swipeable
       offset-top="46"
       type="line"
-      animated
       @click="handleTabClick"
     >
       <van-tab
@@ -29,9 +28,12 @@
             v-model="loading"
             :finished="finished"
             :immediate-check="false"
-            finished-text="没有更多了"
             @load="getOrderList"
           >
+            <van-empty
+              v-if="orderListEmptyShow"
+              description="您还没有相关订单"
+            />
             <van-panel
               v-for="(el, i) in orderList"
               :key="i"
@@ -134,7 +136,8 @@ export default {
       refreshing: false,
       page: 0,
       limit: 10,
-      loading: false,
+      loading: true,
+      orderListEmptyShow: false,
       finished: false
     }
   },
@@ -146,15 +149,17 @@ export default {
     init() {
       this.page = 0
       this.orderList = []
-      this.getOrderList()
+      this.getOrderList(true)
     },
     // 下拉刷新
     onRefresh() {
       this.refreshing = true
       this.pageNum = 1
-      this.getOrderList()
+      this.getOrderList(true)
     },
-    getOrderList() {
+    getOrderList(init) {
+      this.loading = true
+      this.orderListEmptyShow = false
       this.page++
       orderList({
         showType: this.activeIndex,
@@ -166,6 +171,9 @@ export default {
         this.loading = false
         this.refreshing = false
         this.finished = res.map.page >= res.map.pages
+        if (init && res.map.data.length <= 0) {
+          this.orderListEmptyShow = true
+        }
       })
     },
     delOrder(id) {
@@ -225,7 +233,7 @@ export default {
     handleTabClick() {
       this.page = 0
       this.orderList = []
-      this.getOrderList()
+      this.getOrderList(true)
     },
     toOrderDetail(id) {
       this.$router.push({
