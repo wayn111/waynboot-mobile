@@ -34,9 +34,9 @@ service.interceptors.response.use(
     // 返回码不正确
     if (res.code !== 200) {
       // 5001订单不存在
-      if (res.code !== 5001) {
-        Toast.fail(res.msg)
-      }
+      // if (res.code !== 5001) {
+      //   Toast.fail(res.msg)
+      // }
       // 401未登陆
       if (res.code === 401) {
         Dialog.alert({
