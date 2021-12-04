@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie'
 
-const key = 'MallToken'
+const key = 'token'
 
 export function getToken() {
   return Cookies.get(key)

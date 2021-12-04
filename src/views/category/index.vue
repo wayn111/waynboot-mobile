@@ -57,9 +57,16 @@ export default {
       })
     },
     getCategoryContent() {
+      this.$toast.loading({
+        message: '加载中...',
+        overlay: true,
+        duration: 0,
+        forbidClick: true
+      })
       getCategoryContent({
         id: this.categoryList[this.active].id
       }).then((res) => {
+        this.$toast.clear()
         const { currentCategory, subCategoryList } = res.map
         this.currentCategory = currentCategory
         this.subCategoryList = subCategoryList

@@ -72,7 +72,33 @@ export default {
     CommentItem
   },
   // eslint-disable-next-line vue/require-prop-types
-  props: ['rate', 'num', 'tags', 'list', 'goodsId'],
+  // props: ['rate', 'num', 'tags', 'list', 'goodsId'],
+  props: {
+    rate: {
+      type: Number,
+      default: 0
+    },
+    num: {
+      type: String,
+      default: ''
+    },
+    tags: {
+      type: Array,
+      default() {
+        return []
+      }
+    },
+    list: {
+      type: Array,
+      default() {
+        return []
+      }
+    },
+    goodsId: {
+      type: String,
+      default: ''
+    }
+  },
   computed: {
     variables() {
       return variables

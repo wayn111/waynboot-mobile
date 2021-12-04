@@ -31,8 +31,8 @@ router.beforeEach(async(to, from, next) => {
             next()
           } else {
             // 清空token重新去登录
-            await store.dispatch('user/resetToken')
-            next(`/login?redirect=${encodeURIComponent(location.href)}`)
+            // await store.dispatch('user/resetToken')
+            // next(`/login?redirect=${encodeURIComponent(location.href)}`)
           }
         }
       }
