@@ -34,17 +34,17 @@
               v-if="orderListEmptyShow"
               description="您还没有相关订单"
             />
-            <van-panel
-              v-for="(el, i) in orderList"
-              :key="i"
-              :title="'订单编号: ' + el.orderSn"
-              :status="el.orderStatusText"
-            >
+            <div v-for="(el, i) in orderList" :key="i" class="order-item">
+              <div class="order-title">
+                <div class="order-sn">订单编号: {{ el.orderSn }}</div>
+                <div class="order-staus">{{ el.orderStatusText }}</div>
+              </div>
               <van-card
                 v-for="(goods, goodsIndex) in el.goodsList"
                 :key="goodsIndex"
                 :title="goods.goodsName"
                 :num="goods.number"
+                :price="goods.price"
                 :thumb="goods.picUrl"
                 @click.native="toOrderDetail(goods.goodsId)"
               >
@@ -75,34 +75,39 @@
               <div slot="footer" class="footer_btn">
                 <van-button
                   v-if="el.handleOption.cancel"
+                  round
                   size="small"
                   @click.stop="cancelOrder(el.id)"
                 >取消订单</van-button>
                 <van-button
                   v-if="el.handleOption.pay"
+                  round
                   size="small"
                   type="danger"
                   @click.stop="toPay(el.orderSn, el.actualPrice)"
                 >去支付</van-button>
                 <van-button
                   v-if="el.handleOption.refund"
+                  round
                   size="small"
                   type="danger"
                   @click.stop="refundOrder(el.id)"
                 >退款</van-button>
                 <van-button
                   v-if="el.handleOption.confirm"
+                  round
                   size="small"
                   type="danger"
                   @click.stop="confirmOrder(el.id)"
                 >确认收货</van-button>
                 <van-button
                   v-if="el.handleOption.delete"
+                  round
                   size="small"
                   @click.stop="delOrder(el.id)"
                 >删除订单</van-button>
               </div>
-            </van-panel>
+            </div>
           </van-list>
         </van-pull-refresh>
       </van-tab>
@@ -258,31 +263,36 @@ export default {
 <style lang="scss" scoped>
 .order_list {
   background: #f5f5f5;
-  .list-item {
-    width: 700px;
-    margin: 0 auto;
-    margin-top: 12px;
-    border-radius: 10px;
-    overflow: hidden;
-    background: #fff;
-  }
-  .van-panel {
-    margin-top: 20px;
-  }
-
-  .van-card {
+  .order-item {
     background-color: #fff;
-  }
+    margin: 20px 5px;
+    border-radius: 15px;
+    .order-title {
+      display: flex;
+      justify-content: space-between;
+      padding: 15px 10px;
+      .order-sn {
+        text-align: left;
+      }
+      .order-staus {
+        text-align: right;
+      }
+    }
+    .van-card {
+      background-color: #fff;
+    }
 
-  .total {
-    text-align: right;
-    padding: 10px;
-  }
+    .total {
+      text-align: right;
+      padding: 10px;
+    }
 
-  .footer_btn {
-    text-align: right;
-    .van-button {
-      margin-left: 10px;
+    .footer_btn {
+      text-align: right;
+      padding: 10px;
+      .van-button {
+        margin-left: 10px;
+      }
     }
   }
 }

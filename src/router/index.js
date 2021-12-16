@@ -245,6 +245,16 @@ const routes = [
       title: '订单支付'
     }
   },
+  // 订单详情
+  {
+    path: '/order/detail/:goodsId',
+    name: 'OrderDetail',
+    props: true,
+    component: () => import('@/views/order/detail'),
+    meta: {
+      title: '订单详情'
+    }
+  },
   // 支付状态
   {
     path: '/order/payStatus',
