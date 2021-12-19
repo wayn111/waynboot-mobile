@@ -15,11 +15,10 @@ export function statusCount() {
   })
 }
 
-export function orderDetail(data) {
+export function orderDetail(orderSn) {
   return request({
-    url: '/order/info',
-    method: 'post',
-    data
+    url: `/order/detail/${orderSn}`,
+    method: 'get'
   })
 }
 
@@ -80,3 +79,4 @@ export function orderConfirm(orderId) {
     method: 'post'
   })
 }
+

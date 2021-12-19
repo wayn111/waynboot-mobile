@@ -34,7 +34,12 @@
               v-if="orderListEmptyShow"
               description="您还没有相关订单"
             />
-            <div v-for="(el, i) in orderList" :key="i" class="order-item">
+            <div
+              v-for="(el, i) in orderList"
+              :key="i"
+              class="order-item"
+              @click="toOrderDetail(el.orderSn)"
+            >
               <div class="order-title">
                 <div class="order-sn">订单编号: {{ el.orderSn }}</div>
                 <div class="order-staus">{{ el.orderStatusText }}</div>
@@ -84,20 +89,20 @@
                   round
                   size="small"
                   type="danger"
+                  plain
                   @click.stop="toPay(el.orderSn, el.actualPrice)"
                 >去支付</van-button>
                 <van-button
                   v-if="el.handleOption.refund"
                   round
                   size="small"
-                  type="danger"
                   @click.stop="refundOrder(el.id)"
-                >退款</van-button>
+                >退款/售后</van-button>
                 <van-button
                   v-if="el.handleOption.confirm"
                   round
+                  plain
                   size="small"
-                  type="danger"
                   @click.stop="confirmOrder(el.id)"
                 >确认收货</van-button>
                 <van-button
@@ -159,7 +164,7 @@ export default {
     // 下拉刷新
     onRefresh() {
       this.refreshing = true
-      this.pageNum = 1
+      this.page = 0
       this.getOrderList(true)
     },
     getOrderList(init) {
@@ -240,9 +245,10 @@ export default {
       this.orderList = []
       this.getOrderList(true)
     },
-    toOrderDetail(id) {
+    toOrderDetail(orderSn) {
+      debugger
       this.$router.push({
-        path: `/detail/${id}`
+        path: `/order/detail/${orderSn}`
       })
     }
   }
@@ -270,7 +276,7 @@ export default {
     .order-title {
       display: flex;
       justify-content: space-between;
-      padding: 15px 10px;
+      padding: 25px 20px;
       .order-sn {
         text-align: left;
       }
@@ -292,6 +298,7 @@ export default {
       padding: 10px;
       .van-button {
         margin-left: 10px;
+        min-width: 70px;
       }
     }
   }

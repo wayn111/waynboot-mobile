@@ -247,7 +247,7 @@ const routes = [
   },
   // 订单详情
   {
-    path: '/order/detail/:goodsId',
+    path: '/order/detail/:orderSn',
     name: 'OrderDetail',
     props: true,
     component: () => import('@/views/order/detail'),
