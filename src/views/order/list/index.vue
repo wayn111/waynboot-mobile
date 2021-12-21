@@ -175,7 +175,8 @@ export default {
         showType: this.activeIndex,
         pageNum: this.page,
         pageSize: this.limit,
-        sortName: 'updateTime,createTime'
+        sortName: 'updateTime,createTime',
+        sortOrder: 'desc'
       }).then((res) => {
         this.orderList.push(...res.map.data)
         this.loading = false
@@ -246,7 +247,6 @@ export default {
       this.getOrderList(true)
     },
     toOrderDetail(orderSn) {
-      debugger
       this.$router.push({
         path: `/order/detail/${orderSn}`
       })
