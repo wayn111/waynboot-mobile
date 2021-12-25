@@ -1,19 +1,23 @@
 <template>
   <div class="order_detail">
+    <div v-if="loading" class="loading">
+      <van-loading type="spinner">加载中...</van-loading>
+    </div>
     <nav-bar :title="$route.meta.title">
       <span style="color: #333">
         <svg-icon icon-class="share" :width="15" :height="15" />
       </span>
     </nav-bar>
-    <div>
+    <div class="order-detail">
       <div>订单编号: {{ orderInfo.orderSn }}</div>
-      <div>订单状态: {{ orderInfo.orderStatus }}</div>
+      <div>订单状态: {{ orderInfo.orderStatusText }}</div>
       <div>下单时间: {{ orderInfo.createTime }}</div>
-      <div>支付方式: {{ orderInfo.payType }}</div>
+      <div>支付方式: {{ orderInfo.payTypeText }}</div>
       <div>支付时间: {{ orderInfo.payTime }}</div>
       <div>订单金额: {{ orderInfo.orderPrice | yuan }}</div>
       <div>实付金额: {{ orderInfo.actualPrice | yuan }}</div>
       <div>收货地址: {{ orderInfo.address }}</div>
+      <div>用户留言: {{ orderInfo.message }}</div>
       <van-card
         v-for="(goods, goodsIndex) in orderInfo.orderGoodsVOList"
         :key="goodsIndex"
@@ -22,7 +26,28 @@
         :price="goods.price"
         :thumb="goods.picUrl"
         @click.native="toOrderDetail(goods.goodsId)"
-      /></div>
+      >
+        <div slot="desc">
+          <div class="desc">
+            <van-tag
+              v-for="(spec, idx) in goods.specifications"
+              :key="idx"
+              plain
+              style="margin-right: 6px"
+            >{{ spec }}</van-tag>
+          </div>
+        </div>
+        <template #footer>
+          <van-button
+            v-if="orderInfo.order_status == 401 && goods.comment == 0"
+            size="mini"
+            round
+            plain
+            @click.stop="commentGoods(goods.id, goods.goodsId)"
+          >去评价</van-button>
+        </template>
+      </van-card>
+    </div>
   </div>
 </template>
 <script>
@@ -37,7 +62,8 @@ export default {
   },
   data() {
     return {
-      orderInfo: []
+      orderInfo: [],
+      loading: true
     }
   },
   mounted() {
@@ -46,15 +72,44 @@ export default {
   },
   methods: {
     orderDetail() {
-      orderDetail(this.orderSn).then(res => {
-        debugger
-        this.orderInfo = res.map.order
-      })
+      orderDetail(this.orderSn)
+        .then((res) => {
+          this.orderInfo = res.map.order
+        })
+        .finally((res) => {
+          this.loading = false
+        })
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-
+.loading {
+  position: fixed;
+  z-index: 9999;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.order-detail {
+  padding: 10px 10px 20px 40px;
+  > div:nth-child(-n + 9) {
+    margin-top: 15px;
+  }
+  van-card {
+    margin-top: 20px;
+  }
+  .van-card__footer {
+    text-align: right;
+    .van-button {
+      margin-left: 10px;
+      min-width: 70px;
+      height: 32px;
+    }
+  }
+}
 </style>

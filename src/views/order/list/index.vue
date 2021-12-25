@@ -51,7 +51,6 @@
                 :num="goods.number"
                 :price="goods.price"
                 :thumb="goods.picUrl"
-                @click.native="toOrderDetail(goods.goodsId)"
               >
                 <div slot="desc">
                   <div class="desc">
@@ -271,7 +270,7 @@ export default {
   background: #f5f5f5;
   .order-item {
     background-color: #fff;
-    margin: 20px 5px;
+    margin: 15px 5px;
     border-radius: 15px;
     .order-title {
       display: flex;
