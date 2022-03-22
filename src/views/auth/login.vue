@@ -74,7 +74,7 @@ export default {
   watch: {
     $route: {
       handler(route) {
-        this.redirect = (route.query && route.query.redirect) || '/'
+        this.redirect = (route.query && route.query.redirect) || process.env.VUE_APP_BASE_PATH
       },
       immediate: true
     }
@@ -92,6 +92,7 @@ export default {
     // 提交
     onSubmit() {
       this.loading = true
+      console.log(process.env.VUE_APP_BASE_PATH)
       this.$store
         .dispatch('user/login', this.form)
         .then(() => {
