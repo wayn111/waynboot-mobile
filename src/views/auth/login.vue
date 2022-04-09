@@ -109,6 +109,9 @@ export default {
             }
           })
         })
+        .catch((e) => {
+          this.$toast.fail(e.message)
+        })
         .finally(() => {
           this.loading = false
         })
