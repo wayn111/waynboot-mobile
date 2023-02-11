@@ -72,7 +72,7 @@ npm run dev
 - 注册一个账号
 - 登陆
 
-演示地址：http://mall.wayn.xin/mall
+演示地址：http://121.4.124.33/mall
 
 ## 演示图
 
