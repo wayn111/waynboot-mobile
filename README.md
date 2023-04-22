@@ -27,6 +27,8 @@ waynboot-mall是一套全部开源的微商城项目，包含一个运营后台�
 
 <img src="images/wx-mp-code.png" width = "100" />
 
+---
+
 ## 文件目录
 ```javascript
 |-- public                // public
