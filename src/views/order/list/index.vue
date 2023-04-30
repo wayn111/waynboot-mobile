@@ -164,6 +164,7 @@ export default {
     onRefresh() {
       this.refreshing = true
       this.page = 0
+      this.orderList = []
       this.getOrderList(true)
     },
     getOrderList(init) {
