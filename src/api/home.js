@@ -11,7 +11,15 @@ export function getGoodsList(query) {
 export function getHomeData(data) {
   return request({
     url: '/home/index',
-    method: 'post',
+    method: 'get',
+    data
+  })
+}
+
+export function getMallConfig(data) {
+  return request({
+    url: '/home/mallConfig',
+    method: 'get',
     data
   })
 }

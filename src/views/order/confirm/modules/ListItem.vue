@@ -2,7 +2,7 @@
   <div class="list-item">
     <h3 class="title">
       <van-icon name="shop-o" />
-      <span class="title__name">熊猫商城自营</span>
+      <span class="title__name">商城自营</span>
     </h3>
     <div v-for="(item, idx) in goodsList" :key="idx" class="item">
       <image-pic width="80" height="80" fit="fill" :src="item.picUrl" />
@@ -24,10 +24,10 @@
     </div>
     <van-cell-group>
       <van-cell title="商品金额">
-        <span class="red">{{ amount }} 元</span>
+        <span class="red">{{ goodsAmount }} 元</span>
       </van-cell>
-      <van-cell title="邮费">
-        <span class="red">0 元</span>
+      <van-cell title="运费">
+        <span class="red">{{ freightPrice }} 元</span>
       </van-cell>
       <van-cell title="优惠券">
         <span class="red">不可用</span>
@@ -38,7 +38,7 @@
     </van-cell-group>
 
     <van-submit-bar
-      :price="amount * 100"
+      :price="orderTotalAmount * 100"
       label="总计："
       button-text="提交订单"
       :disabled="false"
@@ -55,10 +55,12 @@ export default {
   data() {
     return {
       message: '',
-      amount: 0,
+      goodsAmount: 0,
+      orderTotalAmount: 0,
       goodsList: [],
       orderSn: undefined,
       actualPrice: 0,
+      freightPrice: 0,
       retryCount: 6, // 查询订单结果次数
       retryInterval: 300 // 查询间隔
     }
@@ -75,9 +77,11 @@ export default {
     getGoodsList() {
       this.goodsList = []
       getCheckedGoods().then((res) => {
-        const { data, amount } = res.map
+        const { data, orderTotalAmount, goodsAmount, freightPrice } = res.map
         this.goodsList = data
-        this.amount = amount
+        this.goodsAmount = goodsAmount
+        this.orderTotalAmount = orderTotalAmount
+        this.freightPrice = freightPrice
       })
     },
     onSubmit() {

@@ -17,8 +17,7 @@
         :rules="[
           {
             validator: checkPhone,
-            required: true,
-            message: '请填写正确的手机号！',
+            required: true
           },
         ]"
       />
@@ -32,7 +31,7 @@
         name="密码"
         label="密码"
         placeholder="请输入密码"
-        :rules="[{ required: true, message: '请填写密码！' }]"
+        :rules="[{ required: true }]"
       />
 
       <div style="margin: 36px">

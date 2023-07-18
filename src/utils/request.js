@@ -48,6 +48,10 @@ service.interceptors.response.use(
           })
         })
       }
+      // 订单轮询
+      if (res.code === 5002) {
+        return Promise.reject(new Error(res.msg || 'Error'))
+      }
       Toast.fail(res.msg)
       return Promise.reject(new Error(res.msg || 'Error'))
     } else {

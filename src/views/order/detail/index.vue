@@ -14,6 +14,7 @@
       <div>下单时间: {{ orderInfo.createTime }}</div>
       <div>支付方式: {{ orderInfo.payTypeText }}</div>
       <div>支付时间: {{ orderInfo.payTime }}</div>
+      <div>运    费: {{ orderInfo.freightPrice | yuan }}</div>
       <div>订单金额: {{ orderInfo.orderPrice | yuan }}</div>
       <div>实付金额: {{ orderInfo.actualPrice | yuan }}</div>
       <div>收货地址: {{ orderInfo.address }}</div>

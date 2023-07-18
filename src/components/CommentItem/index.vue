@@ -12,6 +12,7 @@
         <span class="comment_name">{{ name }}</span>
         <van-rate
           v-model="score"
+          readonly
           :size="15"
           :color="variables.red"
           void-icon="star"

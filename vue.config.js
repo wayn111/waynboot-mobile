@@ -2,7 +2,7 @@
 const path = require('path')
 
 const port = process.env.port || process.env.npm_config_port || 4949
-const mockUrl = 'http://127.0.0.1:82'
+const baseUrl = process.env.VUE_APP_BASE_URL
 
 function resolve(dir) {
   return path.join(__dirname, dir)
@@ -23,10 +23,15 @@ module.exports = {
     },
     proxy: {
       '/dev-api': {
-        target: mockUrl,
+        target: baseUrl,
         pathRewrite: {
           '^/dev-api': '/'
         },
+        secure: false,
+        changeOrigin: true
+      },
+      'upload': {
+        target: baseUrl,
         secure: false,
         changeOrigin: true
       }

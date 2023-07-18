@@ -19,6 +19,7 @@
       :stock-num="stockNum"
       :name="name"
       :attr="attributes"
+      :freight-limit="mallConfig.freightLimit"
       @input="isSkuShow = $event"
     />
 
@@ -51,6 +52,7 @@
 
 <script>
 import { getDetail } from '@/api/detail'
+import { getMallConfig } from '@/api/home'
 import { getCommentList, getCommentTagNum } from '@/api/comment'
 import Swiper from './modules/Swiper'
 import Overview from './modules/Overview'
@@ -86,6 +88,7 @@ export default {
       banner: [],
       goods: {},
       info: {},
+      mallConfig: {},
       name: '',
       // 规格默认选择个数
       stockNum: 1,
@@ -104,8 +107,15 @@ export default {
   mounted() {
     this.getGoodsDetail()
     this.getCommentInfo()
+    this.getMallConfig()
   },
   methods: {
+    getMallConfig() {
+      getMallConfig().then(res => {
+        const { map } = res
+        this.mallConfig = map
+      })
+    },
     getGoodsDetail() {
       getDetail(this.goodsId).then((res) => {
         const goods = res.map

@@ -3,7 +3,7 @@
     <Header />
     <Swiper :banner-list="bannerList" />
     <Category :cate-list="cateList" />
-    <Session :session-list="sessionList" />
+    <!-- <Session :session-list="sessionList" /> -->
     <Goods-limit
       v-model="isLoading"
       title-name="新品上线"
@@ -38,7 +38,7 @@ import Swiper from './modules/Swiper'
 import Goods from './modules/GoodsVantCard'
 import GoodsLimit from './modules/GoodsLimit'
 import Category from './modules/Category'
-import Session from './modules/Session'
+// import Session from './modules/Session'
 import Skeleton from './modules/Skeleton'
 
 export default {
@@ -47,13 +47,14 @@ export default {
     Header,
     Swiper,
     Category,
-    Session,
+    // Session,
     Goods,
     GoodsLimit,
     Skeleton
   },
   data() {
     return {
+      mallConfig: {},
       bannerList: [],
       cateList: [],
       sessionList: [],

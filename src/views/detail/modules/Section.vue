@@ -15,7 +15,7 @@
           :value="selectedAddress.address || '选择收货地址'"
           @click="handleAddress"
         />
-        <van-cell title="运费" value="88元" />
+        <van-cell title="运费" :value="`满${freightLimit}元免运费`" />
       </van-cell-group>
     </div>
     <!-- <van-button block @click="onSelectSku">
@@ -97,6 +97,10 @@ export default {
     stockNum: {
       type: Number,
       default: 4
+    },
+    freightLimit: {
+      type: Number,
+      default: 88
     },
     attr: {
       type: Array,
