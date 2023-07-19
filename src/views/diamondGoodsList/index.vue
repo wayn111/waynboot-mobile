@@ -15,7 +15,13 @@
     </div>
 
     <div class="main">
-      <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
+      <van-empty
+        v-if="list.length == 0"
+        :image="require('@/assets/custom-empty-image.png')"
+        image-size="80"
+        description="暂无商品"
+      />
+      <van-pull-refresh v-else v-model="refreshing" @refresh="onRefresh">
         <van-list
           v-model="loading"
           :finished="finished"
@@ -138,5 +144,8 @@ export default {
 .product {
   min-height: 100vh;
   background: #f5f5f5;
+}
+.main {
+  padding: 2vw 0 0 0;
 }
 </style>
