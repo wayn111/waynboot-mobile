@@ -97,14 +97,14 @@ export default {
   align-items: center;
 }
 .order-detail {
-  padding: 10px 10px 20px 40px;
-  > div:nth-child(-n + 9) {
-    margin-top: 15px;
+  padding: 1vw 2vh;
+  > div:nth-child(-n + 10) {
+    margin-top: 1vh;
   }
   van-card {
-    margin-top: 20px;
+    margin-top: 2vh;
   }
-  .van-card__footer {
+  .van-card__header {
     text-align: right;
     .van-button {
       margin-left: 10px;

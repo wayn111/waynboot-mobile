@@ -72,6 +72,7 @@ export default {
     // 对于使用了keep-alive的组件
     // 使用activated这个生命周期钩子刷新地址
     this.getGoodsList()
+    this.message = ''
   },
   methods: {
     getGoodsList() {

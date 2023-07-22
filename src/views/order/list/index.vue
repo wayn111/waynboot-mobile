@@ -12,6 +12,7 @@
       swipeable
       offset-top="46"
       type="line"
+      @change="handleTabClick"
       @click="handleTabClick"
     >
       <van-tab
