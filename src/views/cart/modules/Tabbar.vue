@@ -61,6 +61,6 @@ export default {
 
 }
 .van-submit-bar {
-  bottom: 50px;
+  bottom: 100px;
 }
 </style>

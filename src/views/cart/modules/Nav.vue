@@ -3,7 +3,7 @@
     <nav-bar :title="$route.meta.title" class="nav">
       <van-icon name="search" size="20" @click="onSearch" />
     </nav-bar>
-    <div class="nav--placeholder" style="width:100%;height:46px" />
+    <div class="nav--placeholder" />
   </div>
 </template>
 
@@ -31,5 +31,10 @@ export default {
   left: 0;
   width: 100%;
   z-index: 1;
+}
+
+.nav--placeholder {
+  width:100%;
+  height:92px
 }
 </style>
