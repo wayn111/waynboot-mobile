@@ -23,3 +23,8 @@ export default {
   }
 }
 </script>
+<style scoped>
+  #app {
+    position: relative;
+  }
+</style>
