@@ -91,7 +91,6 @@ export default {
     // 提交
     onSubmit() {
       this.loading = true
-      console.log(process.env.VUE_APP_BASE_PATH)
       this.$store
         .dispatch('user/login', this.form)
         .then(() => {
