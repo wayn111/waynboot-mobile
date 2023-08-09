@@ -1,6 +1,6 @@
 {
   "name": "waynboot-mall",
-  "version": "2.1.1",
+  "version": "2.2.1",
   "author": "Ewall&熊猫 and wayn",
   "scripts": {
     "dev": "cross-env NODE_ENV=development vue-cli-service serve",
