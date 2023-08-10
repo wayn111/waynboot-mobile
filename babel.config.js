@@ -1,5 +1,5 @@
 module.exports = {
-  presets: ['@vue/cli-plugin-babel/preset'],
+  presets: ['@babel/preset-env'],
   // vant引入：https://youzan.github.io/vant/#/zh-CN/quickstart#yin-ru-zu-jian
   plugins: [
     [
