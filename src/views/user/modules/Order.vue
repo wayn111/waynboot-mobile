@@ -66,6 +66,12 @@ export default {
 }
 </script>
 
+<style>
+:root {
+  --user-order-shadow: 0px 2px 16px 0px rgba(0, 0, 0, 0.09);
+}
+</style>
+
 <style lang="scss" scoped>
 @import "@/styles/variables.scss";
 
@@ -73,7 +79,7 @@ export default {
   width: 702px;
   height: 268px;
   margin: 0 auto;
-  box-shadow: 0px 2px 16px 0px rgba(0, 0, 0, 0.09);
+  box-shadow: var(--user-order-shadow); // 这里使用 css 函数，是为了避免旧版本 vue-cli 依赖的 css 压缩工具（mini-css-extract-plugin）导致的 bug
   border-radius: 24px;
   margin-top: 42px;
   .order__title {

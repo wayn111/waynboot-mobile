@@ -55,10 +55,16 @@ export default {
 }
 </script>
 
+<style>
+:root {
+  --submit-bar-shadow: 0px -2px 10px 0px rgba(0, 0, 0, 0.08);
+}
+</style>
+
 <style scoped>
 .submit-bar {
-  box-shadow: 0px -2px 10px 0px rgba(0, 0, 0, 0.08);
-
+  /* 这里使用 css 函数，是为了避免旧版本 vue-cli 依赖的 css 压缩工具（mini-css-extract-plugin）导致的 bug */
+  box-shadow: var(--submit-bar-shadow);
 }
 .van-submit-bar {
   bottom: 100px;
