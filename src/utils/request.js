@@ -47,6 +47,7 @@ service.interceptors.response.use(
             router.push({ name: 'Login' })
           })
         })
+        return
       }
       // 订单轮询
       if (res.code === 5002) {
