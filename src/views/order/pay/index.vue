@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import { orderPrepay, orderH5pay } from '@/api/order'
+import { orderPrepay, orderH5pay } from '@/api/pay'
 import _ from 'lodash'
 import { getLocalStorage, setLocalStorage } from '@/utils/localStorage'
 

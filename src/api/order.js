@@ -22,21 +22,6 @@ export function orderDetail(orderSn) {
   })
 }
 
-export function orderPrepay(data) {
-  return request({
-    url: '/order/prepay',
-    method: 'post',
-    data
-  })
-}
-export function orderH5pay(data) {
-  return request({
-    url: '/order/h5pay',
-    method: 'post',
-    data
-  })
-}
-
 export function searchResult(orderId) {
   return request({
     url: '/order/searchResult/' + orderId + '?t=' + new Date().getTime(),
