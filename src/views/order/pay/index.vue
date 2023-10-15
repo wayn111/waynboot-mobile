@@ -169,7 +169,8 @@ export default {
               forbidClick: true,
               message: '支付中，请稍后'
             })
-            orderH5pay({ orderSn: this.orderSn, payType: 2 })
+            const returnUrl = window.location.origin + window.location.pathname + '#/order/payStatus?status=success'
+            orderH5pay({ orderSn: this.orderSn, payType: 2, returnUrl })
               .then((res) => {
                 this.alipayClientCall(res.map.form)
               })

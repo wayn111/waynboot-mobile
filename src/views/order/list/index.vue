@@ -50,7 +50,7 @@
                 :key="goodsIndex"
                 :title="goods.goodsName"
                 :num="goods.number"
-                :price="goods.price"
+                :price="goods.price | yuan"
                 :thumb="goods.picUrl"
               >
                 <div slot="desc">
