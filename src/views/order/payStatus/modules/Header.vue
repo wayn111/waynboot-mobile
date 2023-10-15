@@ -47,7 +47,7 @@ export default {
     }
   },
   mounted() {
-    this.isSuccess = this.status === 'success'
+    this.isSuccess = this.status === 'success' || this.$route.query.status === 'success'
   }
 }
 </script>
