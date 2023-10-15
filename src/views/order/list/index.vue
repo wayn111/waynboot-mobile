@@ -13,7 +13,7 @@
       offset-top="46"
       type="line"
       @change="handleTabClick"
-      @click="handleTabClick"
+      @click.stop="handleTabClick"
     >
       <van-tab
         v-for="(tabTitle, index) in tabTitles"
