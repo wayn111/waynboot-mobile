@@ -22,7 +22,6 @@ waynboot-mall是一套全部开源的微商城项目，包含一个运营后台�
 关注公众号：waynblog，每周更新最新技术文章。回复关键字：
 - **学习**：加群交流，群内问题都会一一解答。
 - **演示账号**：获得线上项目管理后台演示账号。
-- **chatgpt**：获取博主自建chatgpt网站访问地址和访问密码。
 - **开源项目**：获取博主自己写的三个开源项目，包含PC、H5商城、后台权限管理系统等。
 
 <img src="images/wx-mp-code.png" width = "100" />
@@ -61,7 +60,7 @@ waynboot-mall是一套全部开源的微商城项目，包含一个运营后台�
 |-- ...
 ```
 
-## 开发部署
+## 本地开发
 ```
 # 克隆项目
 git clone git@github.com:wayn111/waynboot-mobile.git
@@ -133,3 +132,7 @@ npm run dev
 - [panda-mall](https://github.com/Ewall1106/vue-h5-template)
 - [litemall](https://github.com/linlinjava/litemall)
 - [vant-ui](https://github.com/youzan/vant)
+
+# 捐助
+
+<img src="./images/捐助.jpg" width="260" alt="如果这个项目对你有所帮助，不如请作者喝杯咖啡吧">

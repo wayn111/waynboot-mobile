@@ -23,7 +23,7 @@
           {
             validator: checkPhone,
             required: true,
-            message: '请输入正确的邮箱地址!',
+            message: '请输入正确的手机号码!',
           },
         ]"
       />

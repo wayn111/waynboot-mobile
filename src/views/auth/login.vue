@@ -42,7 +42,7 @@
           type="info"
           loading-text="登录中..."
           native-type="submit"
-        >提交</van-button>
+        >登录</van-button>
 
         <van-button
           style="margin-top: 10px"
@@ -64,8 +64,8 @@ export default {
   data() {
     return {
       form: {
-        mobile: undefined,
-        password: undefined
+        mobile: 15111111111,
+        password: '123456'
       },
       loading: false
     }
