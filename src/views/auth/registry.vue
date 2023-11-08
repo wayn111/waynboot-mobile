@@ -68,6 +68,25 @@
       />
 
       <van-field
+        v-model="form.captchaCode"
+        type="text"
+        required
+        center
+        clearable
+        name="图形验证码"
+        maxlength="4"
+        label="图形验证码"
+        placeholder="请输入图形验证码"
+        :rules="[{ required: true, message: '请输入正确的图形验证码！' }]"
+      >
+        <template #button>
+          <div class="regist-code">
+            <img :src="captchaImg" @click="getCaptcha">
+          </div>
+        </template>
+      </van-field>
+
+      <van-field
         v-model="form.emailCode"
         type="text"
         required
@@ -105,7 +124,7 @@
 
 <script>
 import variables from '@/styles/variables.scss'
-import { getMailCode } from '@/api/login'
+import { getCaptcha, getMailCode } from '@/api/login'
 import { setRegistry } from '@/api/user'
 
 export default {
@@ -119,11 +138,13 @@ export default {
         confirmPassword: '',
         emailCode: '',
         emailKey: '',
-        key: ''
+        captchaCode: '',
+        captchaKey: ''
       },
       disabled: false,
       totalCount: 0,
-      loading: false
+      loading: false,
+      captchaImg: ''
     }
   },
   computed: {
@@ -136,8 +157,16 @@ export default {
 
   },
   mounted() {
+    this.getCaptcha()
   },
   methods: {
+    // 获取图形验证码
+    getCaptcha() {
+      getCaptcha().then((res) => {
+        this.captchaImg = res.map.captchaImg
+        this.form.captchaKey = res.map.captchaKey
+      })
+    },
     // 获取邮箱验证码
     getMailCode() {
       const { email } = this.form
@@ -145,17 +174,20 @@ export default {
         this.$toast.fail('请先输入正确的邮箱地址')
         return
       }
-      this.disabled = true
-      this.totalCount = 60
-      this.interval = setInterval(() => {
-        this.totalCount--
-        if (this.totalCount === 0) {
-          clearInterval(this.interval)
-          this.disabled = false
-        }
-      }, 1000)
-      getMailCode({ email }).then((res) => {
-        this.form.emailKey = res.map.key
+      const captchaKey = this.form.captchaKey
+      const captchaCode = this.form.captchaCode
+      const mobile = this.form.mobile
+      getMailCode({ email, captchaKey, captchaCode, mobile }).then((res) => {
+        this.form.emailKey = res.map.emailKey
+        this.disabled = true
+        this.totalCount = 60
+        this.interval = setInterval(() => {
+          this.totalCount--
+          if (this.totalCount === 0) {
+            clearInterval(this.interval)
+            this.disabled = false
+          }
+        }, 1000)
         this.$notify({
           type: 'success',
           message: '邮箱验证码已发送',
