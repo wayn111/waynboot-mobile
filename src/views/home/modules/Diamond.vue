@@ -1,6 +1,6 @@
 <template>
   <!-- https://www.jianshu.com/p/c7ecd50f2e52 -->
-  <div class="home-category">
+  <div class="home-diamond">
     <div ref="scroll" class="scroll-wrapper">
       <div class="scroll-content">
         <div v-for="(cate,idx) in list" :key="idx" class="scroll-item__wrapper">
@@ -27,7 +27,7 @@ import BScroll from '@better-scroll/core'
 
 export default {
   props: {
-    cateList: {
+    diamondList: {
       type: Array,
       default() {
         return []
@@ -43,8 +43,8 @@ export default {
   computed: {
     list() {
       let rlt = {}
-      const data = this.cateList
-      const len = this.cateList.length
+      const data = this.diamondList
+      const len = this.diamondList.length
       if (len <= 5) {
         rlt = {
           prev: data,
@@ -66,7 +66,7 @@ export default {
     }
   },
   watch: {
-    cateList(val) {
+    diamondList(val) {
       if (val.length > 5) {
         this.$nextTick(() => {
           this.init()
@@ -118,7 +118,7 @@ export default {
 <style lang="scss" scoped>
 @import "@/styles/variables.scss";
 
-.home-category {
+.home-diamond {
   padding: 24px 0;
   background: #fff;
   .scroll-wrapper {

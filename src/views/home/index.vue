@@ -2,7 +2,7 @@
   <div class="home">
     <Header />
     <Swiper :banner-list="bannerList" />
-    <Category :cate-list="cateList" />
+    <Diamond :diamond-list="diamondList" />
     <!-- <Session :session-list="sessionList" /> -->
     <Goods-limit
       v-model="isLoading"
@@ -31,13 +31,13 @@
 </template>
 
 <script>
-import { getHomeData, getGoodsList } from '@/api/home'
+import { getHomeData, getRecommonGoodsList } from '@/api/home'
 import Header from './modules/Header'
 import Swiper from './modules/Swiper'
 // import Goods from './modules/Goods'
 import Goods from './modules/GoodsVantCard'
 import GoodsLimit from './modules/GoodsLimit'
-import Category from './modules/Category'
+import Diamond from './modules/Diamond'
 // import Session from './modules/Session'
 import Skeleton from './modules/Skeleton'
 
@@ -46,7 +46,7 @@ export default {
   components: {
     Header,
     Swiper,
-    Category,
+    Diamond,
     // Session,
     Goods,
     GoodsLimit,
@@ -56,7 +56,7 @@ export default {
     return {
       mallConfig: {},
       bannerList: [],
-      cateList: [],
+      diamondList: [],
       sessionList: [],
       newGoodsList: [],
       hotGoodsList: [],
@@ -70,13 +70,14 @@ export default {
   },
   mounted() {
     this.getHomeIndexData()
+    this.getRecommonGoodsList()
   },
   methods: {
     getHomeIndexData() {
       getHomeData().then(res => {
         const { map } = res
         this.bannerList = map.bannerList
-        this.cateList = map.categoryList
+        this.diamondList = map.diamondList
         this.sessionList = [
           {
             '_id': '5f5b1ec83f8b304102b77e8d',
@@ -106,11 +107,10 @@ export default {
         this.newGoodsList = map.newGoodsList
         this.hotGoodsList = map.hotGoodsList
         this.isSkeletonShow = false
-        this.getGoodsList()
       })
     },
-    getGoodsList() {
-      getGoodsList({
+    getRecommonGoodsList() {
+      getRecommonGoodsList({
         pageSize: this.pageSize,
         pageNum: this.pageNum
       }).then(res => {
@@ -125,7 +125,7 @@ export default {
     // reach-bottom
     onReachBottom() {
       this.pageNum += 1
-      this.getGoodsList()
+      this.getRecommonGoodsList()
     }
   }
 }

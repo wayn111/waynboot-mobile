@@ -52,9 +52,8 @@ export default {
     align-items: center;
     font-size: 26px;
     color: #8e8e8ec9;
-    background: #f5f5f5;
+    background: #f7f8fa;
     line-height: 10px;
-    border-radius: 25px;
   }
 }
 .placeholder {

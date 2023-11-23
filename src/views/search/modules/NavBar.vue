@@ -13,9 +13,8 @@
       show-action
       clearable
       autofocus
-      shape="round"
       @search="onSearch"
-      @cancel="$router.back()"
+      @cancel="onCancel"
     >
       <template #action>
         <div @click="onSearch">搜索</div>
@@ -64,6 +63,9 @@ export default {
       }
       this.$store.dispatch('search/setKey', key)
       this.$emit('handleSearch', key)
+    },
+    onCancel() {
+      this.value = ''
     }
   }
 }

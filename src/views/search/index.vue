@@ -1,32 +1,59 @@
 <template>
-  <div class="search">
-    <nav-bar v-model="value" :default-search="defaultSearch" @handleSearch="handleSearch" />
-    <search-words :hot-list="hotList" />
+  <div class="search-container">
+    <!--搜索栏-->
+    <form action="/">
+      <van-search
+        v-model="searchText"
+        style="width: 100%"
+        show-action
+        placeholder="搜索商品名称"
+        @search="onSearch"
+        @focus="isResultShow = false"
+        @cancel="onCancel"
+      >
+        <template #action>
+          <div @click="onCancel">取消</div>
+        </template>
+      </van-search>
+    </form>
+    <search-words v-if="searchText == ''" :hot-list="hotList" />
+    <!--联想建议-->
+    <search-suggestion v-else-if="searchText" :search-text="searchText" />
   </div>
 </template>
 
 <script>
 import { getHotList } from '@/api/search'
-import NavBar from './modules/NavBar'
 import SearchWords from './modules/Words'
-
+import SearchSuggestion from './modules/Suggest'
 export default {
-  name: 'Search',
+  name: 'SearchIndex',
   components: {
-    NavBar,
+    SearchSuggestion,
     SearchWords
   },
   data() {
     return {
-      value: '',
       defaultSearch: '',
-      hotList: []
+      hotList: [],
+      searchText: '', // 输入搜索框的内容
+      isResultShow: false // 控制搜索结果的显示状态
     }
   },
-  mounted() {
-    this.getHot()
-  },
   methods: {
+    onSearch(val) {
+      // 展示搜索结果
+      this.isResultShow = true
+      this.$router.push({
+        path: '/search/list',
+        query: {
+          keyword: this.searchText
+        }
+      })
+    },
+    onCancel() {
+      this.$router.back()
+    },
     getHot() {
       getHotList().then(res => {
         this.hotList = res.map.data
@@ -45,3 +72,8 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+
+</style>
+

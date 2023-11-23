@@ -14,3 +14,11 @@ export function getSearchList(data) {
     params: data
   })
 }
+
+export function getSearchSuggest(data) {
+  return request({
+    url: '/search/sugguest',
+    method: 'get',
+    params: data
+  })
+}

@@ -1,8 +1,8 @@
 import request from '@/utils/request'
 
-export function getGoodsList(query) {
+export function getRecommonGoodsList(query) {
   return request({
-    url: '/home/goodsList',
+    url: '/home/recommonGoodsList',
     method: 'get',
     params: query
   })
