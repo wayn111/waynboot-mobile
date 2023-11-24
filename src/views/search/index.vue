@@ -1,7 +1,13 @@
 <template>
   <div class="search-container">
-    <!--搜索栏-->
-    <form action="/">
+    <div class="search-nav-bar">
+      <van-icon
+        size="16"
+        name="arrow-left"
+        style="padding: 12px 0 12px 12px"
+        @click="$router.back()"
+      />
+      <!--搜索栏-->
       <van-search
         v-model="searchText"
         style="width: 100%"
@@ -12,10 +18,10 @@
         @cancel="onCancel"
       >
         <template #action>
-          <div @click="onCancel">取消</div>
+          <div @click="onSearch">搜索</div>
         </template>
       </van-search>
-    </form>
+    </div>
     <search-words v-if="searchText == ''" :hot-list="hotList" />
     <!--联想建议-->
     <search-suggestion v-else-if="searchText" :search-text="searchText" />
@@ -73,7 +79,10 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+.search-nav-bar {
+  display: flex;
+  align-items: center;
+}
 </style>
 

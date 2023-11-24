@@ -1,34 +1,38 @@
 <template>
   <div class="search-list">
-    <nav-bar v-model="value" @handleSearch="handleSearch" />
-    <filter-bar @changeGoods="changeGoods($event)" />
-
-    <van-list
-      v-model="loading"
-      :finished="finished"
-      finished-text="没有更多了"
-      :immediate-check="false"
-      @load="onReachBottom"
-    >
-      <div class="main">
-        <goods-item
-          v-for="(item,idx) in list"
-          :key="idx"
-          :goods-id="item.id"
-          :img="item.picUrl"
-          :title="item.name"
-          :desc="item.brief"
-          :price="item.retailPrice"
-          :discount="item.counterPrice"
-        />
-      </div>
-    </van-list>
-    <van-empty v-if="list && list.length <=0 " description="没有搜索到商品" />
+    <nav-bar v-model="curSearchText" @handleSearch="handleSearch" />
+    <div v-if="searchText == curSearchText">
+      <filter-bar @changeGoods="changeGoods($event)" />
+      <van-list
+        v-model="loading"
+        :finished="finished"
+        finished-text="没有更多了"
+        :immediate-check="false"
+        @load="onReachBottom"
+      >
+        <div class="main">
+          <goods-item
+            v-for="(item,idx) in list"
+            :key="idx"
+            :goods-id="item.id"
+            :img="item.picUrl"
+            :title="item.name"
+            :desc="item.brief"
+            :price="item.retailPrice"
+            :discount="item.counterPrice"
+          />
+        </div>
+      </van-list>
+      <van-empty v-if="list && list.length <=0 " description="没有搜索到商品" />
+    </div>
+    <!--联想建议-->
+    <search-suggestion v-else :search-text="curSearchText" />
   </div>
 </template>
 
 <script>
 import { getSearchList } from '@/api/search'
+import SearchSuggestion from './modules/Suggest'
 import NavBar from './modules/NavBar'
 import FilterBar from './modules/FilterBar'
 import GoodsItem from '@/components/GoodsItem'
@@ -37,12 +41,14 @@ export default {
   name: 'SearchList',
   components: {
     NavBar,
+    SearchSuggestion,
     FilterBar,
     GoodsItem
   },
   data() {
     return {
-      value: '',
+      searchText: '',
+      curSearchText: '',
       list: [],
       pageSize: 10,
       pageNum: 1,
@@ -66,7 +72,8 @@ export default {
       duration: 0
     })
     const { keyword } = this.$route.query
-    this.value = keyword
+    this.searchText = keyword
+    this.curSearchText = keyword
     this.keyword = keyword
     this.getList()
   },
