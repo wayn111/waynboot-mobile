@@ -3,11 +3,12 @@
     <van-checkbox
       v-model="checked"
       icon-size="18px"
+      :disabled="invalid"
       :checked-color="variables.theme"
-      style="padding:0 10px 0 16px"
+      style="padding:0 10px 0 16px; background-color: white;"
     />
-    <van-swipe-cell style="width:100%" :before-close="beforeClose">
-      <van-card :tag="tag" :price="price" :desc="desc" :title="title" :thumb="thumb">
+    <van-swipe-cell style="width:100%; background-color: white;" :before-close="beforeClose">
+      <van-card :price="price" :desc="desc" :title="title" :thumb="thumb">
         <!-- <template #tags>
           <van-tag
             v-for="(item,idx) in tags"
@@ -19,10 +20,12 @@
         </template> -->
         <template #footer>
           <van-stepper
-            :value="value"
-            :default-value="value"
-            theme="round"
-            button-size="20"
+            v-if="!invalid"
+            :value="num"
+            :default-value="num"
+            button-size="26px"
+            min="1"
+            :max="maxNumber"
             integer
             async-change
             @change="onChange"
@@ -34,6 +37,7 @@
       <template #right>
         <van-button square text="删除" type="danger" style="height:100%" />
       </template>
+      <div v-if="invalid" class="invalid">无货</div>
     </van-swipe-cell>
   </div>
 </template>
@@ -84,13 +88,18 @@ export default {
       type: Number,
       default: 0
     },
+    maxNum: {
+      type: Number,
+      default: 0
+    },
     isChecked: {
       type: Boolean,
       default: false
     }
   },
   data() {
-    return { value: this.num }
+    return {
+    }
   },
   computed: {
     variables() {
@@ -103,7 +112,26 @@ export default {
       set(val) {
         this.$emit('input', { val, idx: this.index })
       }
+    },
+    maxNumber() {
+      return this.maxNum > this.num ? this.maxNum : this.num
+    },
+    invalid() {
+      const valid = this.maxNum < this.num
+      return valid
     }
+  },
+  watch: {
+    num: {
+      handler(n, o) {
+        console.log('watch:' + n + ' ' + o)
+      }
+    },
+    deep: true,
+    immediate: true
+  },
+  mounted() {
+    console.log('id:' + this.index + ' maxNum:' + this.maxNum + ' curNum:' + this.num)
   },
   methods: {
     // position 为关闭时点击的位置
@@ -140,7 +168,7 @@ export default {
       // 注意此时修改 value 后会再次触发 change 事件
       changeNumber(this.index, value)
         .then((res) => {
-          this.value = value
+          this.curNum = value
           this.$emit('changeNum', this.index, Number(value))
         })
         .catch()
@@ -151,12 +179,31 @@ export default {
 
 <style lang="scss" scoped>
 .card__item {
+  position: relative;
   display: flex;
   flex-direction: row;
-  margin-bottom: 14px;
-
+  background-color: #f9f8f8;
+  padding: 0px 10px 15px 10px;
   .van-card__num {
     font-size: 16px;
   }
+}
+.van-card__footer {
+  position: absolute;
+  top: 150px;
+  left: -16px;
+}
+.invalid {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  text-align: center;
+  line-height: 120px;
+  border-radius: 50%;
+  background-color: #554f4f;
+  color: white;
+  top: 40px;
+  left: 60px;
+  filter: opacity(80%);
 }
 </style>

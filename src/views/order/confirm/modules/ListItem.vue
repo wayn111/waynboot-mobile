@@ -122,13 +122,13 @@ export default {
           params: { orderSn: this.orderSn, actualPrice: this.actualPrice }
         })
       } catch (error) {
-        console.log('下单失败', error)
         setTimeout(async() => {
           this.retryCount--
           if (this.retryCount > 0) {
             await this.searchResult(this.orderSn)
           } else {
-            this.$toast.fail('抱歉，创建订单失败！')
+            console.log('下单失败', error)
+            this.$toast.fail(error.message)
           }
         }, this.retryInterval)
       }

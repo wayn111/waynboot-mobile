@@ -1,6 +1,6 @@
 <template>
   <div>
-    <van-submit-bar :price="amount" button-text="去结算" :disabled="disabled" class="submit-bar" @submit="onSubmit">
+    <van-submit-bar :price="amount" button-text="去结算" :disabled="!canSubmit" class="submit-bar" @submit="onSubmit">
       <van-checkbox v-model="checked" icon-size="18px" :checked-color="variables.theme">全选</van-checkbox>
     </van-submit-bar>
     <div class="submit-bar-placeholder" style="width:100%;height:50px" />
@@ -22,7 +22,10 @@ export default {
     }
   },
   data() {
-    return { disabled: false }
+    return {
+      disabled: false,
+      allchecked: this.value
+    }
   },
   computed: {
     variables() {
@@ -30,16 +33,15 @@ export default {
     },
     checked: {
       get() {
-        return this.value
+        return this.allchecked
       },
       set(val) {
+        this.allchecked = val
         this.$emit('input', val)
       }
-    }
-  },
-  watch: {
-    amount(newVal) {
-      this.disabled = newVal <= 0
+    },
+    canSubmit() {
+      return this.amount > 0
     }
   },
   methods: {

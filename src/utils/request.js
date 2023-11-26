@@ -50,7 +50,7 @@ service.interceptors.response.use(
         return
       }
       // 订单轮询
-      if (res.code === 5002) {
+      if (res.code === 5001) {
         return Promise.reject(new Error(res.msg || 'Error'))
       }
       Toast.fail(res.msg)

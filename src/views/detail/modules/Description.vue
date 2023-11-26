@@ -4,7 +4,7 @@
     <div class="main">
       <!-- <image-pic width="100%" fill="cover" :src="description" /> -->
       <div v-if="description" v-html="description" />
-      <div v-else style="text-align: center">
+      <div v-else style="text-align: center; padding: 15px 0px;">
         <p>无详情</p>
       </div>
     </div>

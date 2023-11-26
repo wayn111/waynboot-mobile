@@ -6,6 +6,7 @@
       :key="idx"
       :index="item.id"
       :num="item.number"
+      :max-num="item.maxNum"
       :thumb="item.picUrl"
       :title="item.goodsName"
       :desc="item.specifications.join(' ')"
@@ -17,9 +18,9 @@
       @handleDelete="handleDelete"
       @changeNum="changeNum"
     />
-    <Tabbar :amount="amount" :value="isAllSelect" @input="handleAllSelect" />
+    <Tabbar v-if="list && list.length > 0" :amount="amount" :value="isAllSelect" @input="handleAllSelect" />
     <Skeleton v-if="isSkeletonShow" />
-    <van-empty v-if="list && list.length <=0 " description="购物车里没有内容" />
+    <van-empty v-if="list && list.length <=0" description="小车大容量，喜欢的都加进来吧" />
   </div>
 </template>
 
@@ -88,14 +89,18 @@ export default {
     },
     // all select
     handleAllSelect(value) {
-      const data = this.list.map(item => {
+      this.list.filter(item => {
+        return item.maxNum >= item.number
+      }).map(item => {
         const data = { id: item.id, checked: value }
         updateCart(data).then(res => {
         }).catch(e => {})
         item.checked = value
         return item
       })
-      this.list = data
+      this.list.forEach((item, i) => {
+        this.$set(this.list, i, item)
+      })
     },
     // item delete
     handleDelete(idx) {
@@ -105,12 +110,16 @@ export default {
         duration: 0,
         forbidClick: true
       })
-
       deleteCart(idx).then(res => {
         this.$toast.clear()
         this.$toast.success('删除成功')
-        this.getList()
-      }).catch(e => {})
+        const index = this.list.findIndex(item => item.id === idx)
+        this.list.splice(index, 1)
+        this.list.forEach((item, i) => {
+          this.$set(this.list, i, item)
+        })
+        console.log(this.list)
+      }).catch(e => { console.log(e) })
     },
     changeNum(id, num) {
       let newval

@@ -24,9 +24,8 @@
         :key="goodsIndex"
         :title="goods.goodsName"
         :num="goods.number"
-        :price="goods.price"
+        :price="goods.price | yuan"
         :thumb="goods.picUrl"
-        @click.native="toOrderDetail(goods.goodsId)"
       >
         <div slot="desc">
           <div class="desc">
@@ -38,15 +37,6 @@
             >{{ spec }}</van-tag>
           </div>
         </div>
-        <template #footer>
-          <van-button
-            v-if="orderInfo.order_status == 401 && goods.comment == 0"
-            size="mini"
-            round
-            plain
-            @click.stop="commentGoods(goods.id, goods.goodsId)"
-          >去评价</van-button>
-        </template>
       </van-card>
     </div>
   </div>
@@ -97,12 +87,16 @@ export default {
   align-items: center;
 }
 .order-detail {
-  padding: 1vw 2vh;
+  padding: 10px 20px;
   > div:nth-child(-n + 10) {
     margin-top: 1vh;
   }
   van-card {
     margin-top: 2vh;
+  }
+  .van-card {
+    background-color: #f9f8f8;
+    padding: 15px 20px;
   }
   .van-card__header {
     text-align: right;

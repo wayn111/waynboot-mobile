@@ -13,6 +13,7 @@
       show-action
       clearable
       autofocus
+      @focus="onFocus"
       @search="onSearch"
       @cancel="onCancel"
     >
@@ -55,6 +56,9 @@ export default {
   //   }
   // },
   methods: {
+    onFocus() {
+      this.$emit('handleFocus')
+    },
     onSearch() {
       const key = this.keyword.trim() || this.defaultSearch.trim()
       if (!key) {
@@ -66,6 +70,7 @@ export default {
     },
     onCancel() {
       this.value = ''
+      this.$router.back()
     }
   }
 }

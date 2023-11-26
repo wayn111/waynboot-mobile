@@ -1,27 +1,11 @@
 <template>
   <div class="search-container">
-    <div class="search-nav-bar">
-      <van-icon
-        size="16"
-        name="arrow-left"
-        style="padding: 12px 0 12px 12px"
-        @click="$router.back()"
-      />
-      <!--搜索栏-->
-      <van-search
-        v-model="searchText"
-        style="width: 100%"
-        show-action
-        placeholder="搜索商品名称"
-        @search="onSearch"
-        @focus="isResultShow = false"
-        @cancel="onCancel"
-      >
-        <template #action>
-          <div @click="onSearch">搜索</div>
-        </template>
-      </van-search>
-    </div>
+    <nav-bar
+      v-model="searchText"
+      :default-search="defaultSearch"
+      @handleSearch="handleSearch"
+      @handleFocus="handleFocus"
+    />
     <search-words v-if="searchText == ''" :hot-list="hotList" />
     <!--联想建议-->
     <search-suggestion v-else-if="searchText" :search-text="searchText" />
@@ -31,12 +15,14 @@
 <script>
 import { getHotList } from '@/api/search'
 import SearchWords from './modules/Words'
+import NavBar from './modules/NavBar'
 import SearchSuggestion from './modules/Suggest'
 export default {
   name: 'SearchIndex',
   components: {
     SearchSuggestion,
-    SearchWords
+    SearchWords,
+    NavBar
   },
   data() {
     return {
@@ -46,20 +32,10 @@ export default {
       isResultShow: false // 控制搜索结果的显示状态
     }
   },
+  mounted() {
+    this.getHot()
+  },
   methods: {
-    onSearch(val) {
-      // 展示搜索结果
-      this.isResultShow = true
-      this.$router.push({
-        path: '/search/list',
-        query: {
-          keyword: this.searchText
-        }
-      })
-    },
-    onCancel() {
-      this.$router.back()
-    },
     getHot() {
       getHotList().then(res => {
         this.hotList = res.map.data
@@ -74,15 +50,14 @@ export default {
           keyword: value
         }
       })
+    },
+    handleFocus() {
+
     }
   }
 }
 </script>
 
-<style lang="scss" scoped>
-.search-nav-bar {
-  display: flex;
-  align-items: center;
-}
+<style scoped>
 </style>
 

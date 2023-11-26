@@ -2,8 +2,6 @@
   <div class="search-filter">
     <van-dropdown-menu style="flex:1">
       <van-dropdown-item v-model="value1" :options="option1" @change="change1" />
-      <!-- <van-dropdown-item v-model="value2" :options="option2" />
-      <van-dropdown-item v-model="value3" :options="option3" /> -->
     </van-dropdown-menu>
     <div class="filter" @click="chageSales">
       <span style="font-size:15px;margin-right:2px">销量</span>

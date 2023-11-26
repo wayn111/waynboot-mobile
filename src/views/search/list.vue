@@ -1,7 +1,7 @@
 <template>
   <div class="search-list">
-    <nav-bar v-model="curSearchText" @handleSearch="handleSearch" />
-    <div v-if="searchText == curSearchText">
+    <nav-bar v-model="searchText" @handleSearch="handleSearch" @handleFocus="handleFocus" />
+    <div v-if="!focus">
       <filter-bar @changeGoods="changeGoods($event)" />
       <van-list
         v-model="loading"
@@ -26,7 +26,7 @@
       <van-empty v-if="list && list.length <=0 " description="没有搜索到商品" />
     </div>
     <!--联想建议-->
-    <search-suggestion v-else :search-text="curSearchText" />
+    <search-suggestion v-else :search-text="searchText" />
   </div>
 </template>
 
@@ -48,7 +48,7 @@ export default {
   data() {
     return {
       searchText: '',
-      curSearchText: '',
+      focus: false,
       list: [],
       pageSize: 10,
       pageNum: 1,
@@ -73,7 +73,6 @@ export default {
     })
     const { keyword } = this.$route.query
     this.searchText = keyword
-    this.curSearchText = keyword
     this.keyword = keyword
     this.getList()
   },
@@ -111,6 +110,9 @@ export default {
           t: +new Date()
         }
       })
+    },
+    handleFocus() {
+      this.focus = true
     },
     changeGoods(val) {
       // 筛选

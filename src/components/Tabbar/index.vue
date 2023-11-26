@@ -4,7 +4,7 @@
       <van-tabbar v-model="active" :active-color="variables.theme" :fixed="false" route>
         <van-tabbar-item :to="{name: 'Home'}" icon="wap-home">首页</van-tabbar-item>
         <van-tabbar-item :to="{name: 'Category'}" icon="bars">分类</van-tabbar-item>
-        <van-tabbar-item :to="{name: 'Cart'}" icon="shopping-cart">购物车</van-tabbar-item>
+        <van-tabbar-item :to="{name: 'Cart'}" icon="shopping-cart" :badge="totalCartNum">购物车</van-tabbar-item>
         <van-tabbar-item :to="{name: 'User'}" icon="manager">我的</van-tabbar-item>
       </van-tabbar>
     </div>
@@ -14,16 +14,36 @@
 
 <script>
 import variables from '@/styles/variables.scss'
+import { getCartGoodsCount } from '@/api/cart'
 
 export default {
   data() {
     return {
-      active: 0
+      active: 0,
+      count: 0
     }
   },
   computed: {
     variables() {
       return variables
+    },
+    totalCartNum() {
+      if (this.count === 0) {
+        return ''
+      } else {
+        return this.count <= 99 ? this.count : 99
+      }
+    }
+  },
+  mounted() {
+    this.getCartGoodsCount()
+  },
+  methods: {
+    getCartGoodsCount() {
+      getCartGoodsCount().then(res => {
+        const { count } = res.map
+        this.count = count
+      }).catch(e => {})
     }
   }
 }
