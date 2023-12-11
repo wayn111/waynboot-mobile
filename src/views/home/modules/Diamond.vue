@@ -139,7 +139,7 @@ export default {
           display: block;
           width: 100px;
           height: 100px;
-          border-radius: 50%;
+          // border-radius: 50%;
           overflow: hidden;
           background: #f5f5f5;
           margin: 0 auto;
@@ -147,6 +147,7 @@ export default {
         .text {
           width: 100px;
           margin-top: 12px;
+          font-size: 23px;
         }
       }
     }

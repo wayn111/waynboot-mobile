@@ -11,7 +11,7 @@
     </nav-bar>
 
     <div class="banner">
-      <image-pic :src="diamond.picUrl" width="100%" height="100" />
+      <image-pic :src="diamond.picUrl" width="100%" height="200px" />
     </div>
 
     <div class="main">

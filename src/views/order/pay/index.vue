@@ -84,7 +84,7 @@ export default {
       this.$dialog
         .alert({
           message:
-            '你选择了' + (this.payWay === 'wx' ? '微信支付' : '支付宝支付')
+            '你选择了' + (this.payWay === 'test' ? '测试支付' : this.payWay === 'wx' ? '微信支付' : '支付宝支付')
         })
         .then(() => {
           if (this.payWay === 'wx') {
