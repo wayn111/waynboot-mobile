@@ -23,7 +23,7 @@
             </template>
             <van-radio name="test" />
           </van-cell>
-          <van-cell>
+          <!-- <van-cell>
             <template slot="title">
               <img
                 src="../../../assets/images/ali_pay.png"
@@ -33,7 +33,7 @@
               >
             </template>
             <van-radio name="ali" />
-          </van-cell>
+          </van-cell> -->
           <van-cell>
             <template slot="title">
               <img
