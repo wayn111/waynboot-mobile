@@ -87,7 +87,7 @@ npm run dev
 
 ## 演示gif
 
-![Alt text](mall.gif)
+![Alt text](images/mall.gif)
 
 ## waynboot-mall交流群
 
