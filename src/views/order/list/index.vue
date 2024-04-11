@@ -9,11 +9,9 @@
       v-model="activeIndex"
       :swipe-threshold="5"
       sticky
-      swipeable
       offset-top="46"
       type="line"
-      @change="handleTabClick"
-      @click.stop="handleTabClick"
+      @click="handleTabClick"
     >
       <van-tab
         v-for="(tabTitle, index) in tabTitles"

@@ -1,10 +1,6 @@
 <template>
   <div class="user-tools">
     <van-cell title="收货地址" is-link to="address" />
-    <van-cell title="Git仓库" is-link />
-    <van-cell title="文档说明" is-link />
-    <van-cell title="相关组件" is-link />
-    <van-cell title="推荐学习" is-link />
     <van-cell title="退出登录" is-link @click="logout" />
   </div>
 </template>

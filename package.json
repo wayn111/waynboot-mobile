@@ -23,7 +23,7 @@
     "lodash": "^4.17.21",
     "mockjs": "^1.1.0",
     "normalize.css": "^8.0.1",
-    "vant": "^2.12.54",
+    "vant": "^2.13.2",
     "vue": "^2.6.12",
     "vue-clipboard2": "^0.3.1",
     "vue-content-loader": "^0.2.3",

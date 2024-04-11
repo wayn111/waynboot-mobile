@@ -22,3 +22,10 @@ export function updateAddress(data) {
     data
   })
 }
+
+export function deleteAddress(id) {
+  return request({
+    url: `/address/${id}`,
+    method: 'delete'
+  })
+}

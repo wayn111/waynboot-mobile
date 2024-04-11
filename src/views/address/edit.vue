@@ -21,7 +21,7 @@ import { mapGetters } from 'vuex'
 import NavBar from '@/components/NavBar'
 
 import areaList from '@/utils/area.js'
-import { addAddress } from '@/api/address.js'
+import { addAddress, deleteAddress } from '@/api/address.js'
 
 export default {
   name: 'AddressEdit',
@@ -50,7 +50,11 @@ export default {
     },
     onDelete(value) {
       console.log('删除地址', value)
-    }
+      deleteAddress(value.id).then(res => {
+        this.$toast.success('删除成功')
+        this.$router.go(-1)
+      }).catch(e => {})
+    },
   }
 }
 </script>
