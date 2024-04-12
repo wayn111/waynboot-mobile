@@ -54,7 +54,7 @@ export default {
         this.$toast.success('删除成功')
         this.$router.go(-1)
       }).catch(e => {})
-    },
+    }
   }
 }
 </script>
