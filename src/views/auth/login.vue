@@ -10,9 +10,9 @@
         type="text"
         required
         clearable
-        name="登录用户"
-        label="登录用户"
-        placeholder="请输入登录用户名称"
+        name="手机号码"
+        label="手机号码"
+        placeholder="请输入手机号码"
         :rules="[
           {
             validator: checkPhone,
