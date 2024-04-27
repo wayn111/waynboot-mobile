@@ -29,23 +29,6 @@
       />
 
       <van-field
-        v-model="form.email"
-        type="text"
-        required
-        clearable
-        name="注册邮箱"
-        label="注册邮箱"
-        placeholder="请输入邮箱地址"
-        :rules="[
-          {
-            validator: checkEmail,
-            required: true,
-            message: '请输入正确的邮箱地址!',
-          },
-        ]"
-      />
-
-      <van-field
         v-model="form.password"
         type="password"
         required
@@ -86,28 +69,6 @@
         </template>
       </van-field>
 
-      <van-field
-        v-model="form.emailCode"
-        type="text"
-        required
-        center
-        clearable
-        name="邮箱验证码"
-        label="邮箱验证码"
-        placeholder="请输入验证码"
-        :rules="[{ required: true, message: '请输入正确的邮箱验证码！' }]"
-      >
-        <van-button
-          slot="button"
-          size="small"
-          plain
-          type="info"
-          native-type="button"
-          :disabled="disabled"
-          @click.stop="getMailCode"
-        >{{ btnText }}</van-button>
-      </van-field>
-
       <div style="margin: 36px">
         <van-button
           round
@@ -124,7 +85,7 @@
 
 <script>
 import variables from '@/styles/variables.scss'
-import { getCaptcha, getMailCode } from '@/api/login'
+import { getCaptcha } from '@/api/login'
 import { setRegistry } from '@/api/user'
 
 export default {
@@ -136,8 +97,6 @@ export default {
         email: '',
         password: '',
         confirmPassword: '',
-        emailCode: '',
-        emailKey: '',
         captchaCode: '',
         captchaKey: ''
       },
@@ -163,42 +122,9 @@ export default {
     // 获取图形验证码
     getCaptcha() {
       getCaptcha().then((res) => {
-        this.captchaImg = res.map.captchaImg
-        this.form.captchaKey = res.map.captchaKey
+        this.captchaImg = res.data.image
+        this.form.captchaKey = res.data.key
       })
-    },
-    // 获取邮箱验证码
-    getMailCode() {
-      const { email } = this.form
-      if (!email || !this.checkEmail(email)) {
-        this.$toast.fail('请先输入正确的邮箱地址')
-        return
-      }
-      const captchaKey = this.form.captchaKey
-      const captchaCode = this.form.captchaCode
-      const mobile = this.form.mobile
-      getMailCode({ email, captchaKey, captchaCode, mobile }).then((res) => {
-        this.form.emailKey = res.map.emailKey
-        this.disabled = true
-        this.totalCount = 60
-        this.interval = setInterval(() => {
-          this.totalCount--
-          if (this.totalCount === 0) {
-            clearInterval(this.interval)
-            this.disabled = false
-          }
-        }, 1000)
-        this.$notify({
-          type: 'success',
-          message: '邮箱验证码已发送',
-          duration: 2000
-        })
-      })
-    },
-    // 校检邮箱
-    checkEmail(email) {
-      const reg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      return reg.test(email)
     },
     // 校检手机号
     checkPhone(num) {

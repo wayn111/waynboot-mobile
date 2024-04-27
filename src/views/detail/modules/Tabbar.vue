@@ -31,7 +31,7 @@ export default {
   methods: {
     getCartGoodsCount() {
       getCartGoodsCount().then(res => {
-        const { count } = res.map
+        const { data } = res
         this.count = count
       }).catch(e => {})
     },

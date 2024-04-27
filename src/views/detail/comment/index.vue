@@ -71,7 +71,7 @@ export default {
   methods: {
     async getCommentTagNum() {
       const res = await getCommentTagNum({ goodsId: this.goodsId })
-      const commentTagNum = res.map.commentTagNum
+      const commentTagNum = res.data
       this.totalNum = commentTagNum.totalNum
       this.tags = [
         `全部`,
@@ -89,12 +89,12 @@ export default {
         goodsId: this.goodsId
       })
       const {
-        map: { page }
+        data
       } = res
-      this.list = [...this.list, ...page.records]
+      this.list = [...this.list, ...data.records]
       this.loading = false
       // 数据全部加载完成
-      if (page.records.length < this.pageSize) {
+      if (data.records.length < this.pageSize) {
         this.finished = true
       }
       this.pageNum += 1

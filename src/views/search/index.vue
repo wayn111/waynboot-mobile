@@ -38,8 +38,8 @@ export default {
   methods: {
     getHot() {
       getHotList().then(res => {
-        this.hotList = res.map.data
-        this.defaultSearch = res.map.default
+        this.hotList = res.data.hotStrings
+        this.defaultSearch = res.data.defaultSearch
       }).catch(e => {})
       // this.hotList = ['衣服', '手机', '三体书籍三体书籍', '鞋子', '箱包']
     },

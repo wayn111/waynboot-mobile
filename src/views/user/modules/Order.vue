@@ -56,10 +56,10 @@ export default {
   methods: {
     init() {
       statusCount().then(res => {
-        this.orderList[0].count = res.map.unpaid || ''
-        this.orderList[1].count = res.map.unship || ''
-        this.orderList[2].count = res.map.unrecv || ''
-        this.orderList[3].count = res.map.uncomment || ''
+        this.orderList[0].count = res.data.unpaid || ''
+        this.orderList[1].count = res.data.unship || ''
+        this.orderList[2].count = res.data.unrecv || ''
+        this.orderList[3].count = res.data.uncomment || ''
       })
     }
   }

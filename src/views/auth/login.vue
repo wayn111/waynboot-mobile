@@ -2,18 +2,17 @@
   <div class="login-container">
     <div class="header">
       <img class="header__logo" src="@/assets/logo4.png" alt="logo">
-      <!-- <p class="header__title">waynboot-mall</p> -->
     </div>
 
     <van-form class="form" @submit="onSubmit">
       <van-field
         v-model="form.mobile"
-        type="number"
+        type="text"
         required
         clearable
-        name="手机号"
-        label="手机号"
-        placeholder="请输入手机号"
+        name="登录用户"
+        label="登录用户"
+        placeholder="请输入登录用户名称"
         :rules="[
           {
             validator: checkPhone,
@@ -64,7 +63,7 @@ export default {
   data() {
     return {
       form: {
-        mobile: '',
+        username: '',
         password: ''
       },
       loading: false
@@ -100,10 +99,10 @@ export default {
             message: '登录成功',
             duration: 1000,
             onOpened: () => {
-              location.href = this.redirect
+              this.$router.push({ 'name': 'Home' })
             },
             onClose: () => {
-              location.href = this.redirect
+              this.$router.push({ 'name': 'Home' })
             }
           })
         })
@@ -128,9 +127,8 @@ export default {
 
     .header__logo {
       display: block;
-      // width: 150px;
-      // height: 150px;
-      padding-top: 80px;
+      width: 100%;
+      // height: 800px;
     }
     .header__title {
       font-size: 36px;

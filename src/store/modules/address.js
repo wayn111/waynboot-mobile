@@ -20,7 +20,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       getAddress()
         .then(res => {
-          const { data } = res.map
+          const { data } = res
           commit('SET_ADDRESS_LIST', data)
           resolve(data)
         })

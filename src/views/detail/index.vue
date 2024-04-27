@@ -112,13 +112,13 @@ export default {
   methods: {
     getMallConfig() {
       getMallConfig().then(res => {
-        const { map } = res
-        this.mallConfig = map
+        const { data } = res
+        this.mallConfig = data
       })
     },
     getGoodsDetail() {
       getDetail(this.goodsId).then((res) => {
-        const goods = res.map
+        const goods = res.data
         this.attributes = goods.attributes
         this.goods = goods
         this.info = goods.info
@@ -136,7 +136,7 @@ export default {
     async getCommentInfo() {
       const res = await getCommentTagNum({ goodsId: this.goodsId })
       const res1 = await getCommentList({ tagType: 0, goodsId: this.goodsId })
-      const commentTagNum = res.map.commentTagNum
+      const commentTagNum = res.data
       let goodsRate = Math.ceil(
         (commentTagNum.goodsNum / commentTagNum.totalNum) * 100
       )
@@ -152,7 +152,7 @@ export default {
           `有图(${commentTagNum.hasPictureNum})`
         ]
       }
-      this.comment.list = res1.map.page.records.slice(0, 2)
+      this.comment.list = res1.data.records.slice(0, 2)
     },
     skuAdapter() {
       const tree = this.setSkuTree()

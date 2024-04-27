@@ -61,8 +61,8 @@ export default {
       orderSn: undefined,
       actualPrice: 0,
       freightPrice: 0,
-      retryCount: 6, // 查询订单结果次数
-      retryInterval: 300 // 查询间隔
+      retryCount: 10, // 查询订单结果次数
+      retryInterval: 600 // 查询间隔
     }
   },
   computed: {
@@ -78,7 +78,7 @@ export default {
     getGoodsList() {
       this.goodsList = []
       getCheckedGoods().then((res) => {
-        const { data, orderTotalAmount, goodsAmount, freightPrice } = res.map
+        const { data, orderTotalAmount, goodsAmount, freightPrice } = res.data
         this.goodsList = data
         this.goodsAmount = goodsAmount
         this.orderTotalAmount = orderTotalAmount
@@ -102,7 +102,7 @@ export default {
       })
       this.retryCount = 6
       submit({ cartIdArr, addressId, userId, message }).then((res) => {
-        const { orderSn, actualPrice } = res.map
+        const { orderSn, actualPrice } = res.data
         this.orderSn = orderSn
         this.actualPrice = actualPrice
         setTimeout(() => {

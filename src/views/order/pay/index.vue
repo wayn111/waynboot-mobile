@@ -94,7 +94,7 @@ export default {
             if (isWeixin) {
               orderPrepay({ orderSn: this.orderSn, payType: 1 })
                 .then((res) => {
-                  const data = res.map.result
+                  const data = res.data
                   const prepayData = JSON.stringify({
                     appId: data.appId,
                     timeStamp: data.timeStamp,
@@ -139,7 +139,7 @@ export default {
               // 微信h5支付
               orderH5pay({ orderSn: this.orderSn, payType: 1 })
                 .then((res) => {
-                  const data = res.map.data
+                  const data = res.data
                   window.location.replace(
                     data.mwebUrl +
                       '&redirect_url=' +
@@ -172,7 +172,7 @@ export default {
             const returnUrl = window.location.origin + window.location.pathname + '#/order/payStatus?status=success'
             orderH5pay({ orderSn: this.orderSn, payType: 2, returnUrl })
               .then((res) => {
-                this.alipayClientCall(res.map.form)
+                this.alipayClientCall(res.data)
               })
               .catch((err) => {
                 console.log(err)

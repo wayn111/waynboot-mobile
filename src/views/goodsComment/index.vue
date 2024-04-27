@@ -89,7 +89,7 @@ export default {
       })
       // 此时可以自行将文件上传至服务器
       const uploadRes = await base64uploadFileList(fileList)
-      const urlList = uploadRes.map.fileList.map((item) => {
+      const urlList = uploadRes.data.map((item) => {
         return item.url
       })
       this.picUrls = [...this.picUrls, ...urlList]

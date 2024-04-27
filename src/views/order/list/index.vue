@@ -177,11 +177,11 @@ export default {
         sortName: 'updateTime,createTime',
         sortOrder: 'desc'
       }).then((res) => {
-        this.orderList.push(...res.map.data)
+        this.orderList.push(...res.data.data)
         this.loading = false
         this.refreshing = false
-        this.finished = res.map.page >= res.map.pages
-        if (init && res.map.data.length <= 0) {
+        this.finished = res.data.page >= res.data.pages
+        if (init && res.data.length <= 0) {
           this.orderListEmptyShow = true
         }
       })

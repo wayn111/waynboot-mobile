@@ -93,7 +93,7 @@ export default {
         filterNew: this.filterNew,
         filterHot: this.filterHot
       }).then((res) => {
-        const data = res.map.goods
+        const data = res.data
         this.list = [...this.list, ...data]
         this.loading = false
         if (data.length < this.pageNum && this.list.length > 0) {
@@ -156,7 +156,7 @@ export default {
         filterNew: this.filterNew,
         filterHot: this.filterHot
       }).then((res) => {
-        const data = res.map.goods
+        const data = res.data
         this.list = [...data]
         this.loading = false
         if (data.length < this.pageNum && this.list.length > 0) {

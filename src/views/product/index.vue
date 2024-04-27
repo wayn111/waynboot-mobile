@@ -100,8 +100,8 @@ export default {
         pageSize: this.pageSize,
         cateId: this.cateId
       }).then((res) => {
-        const data = res.map.goods
-        this.category = res.map.category
+        const data = res.data.goods
+        this.category = res.data.category
         if (this.refreshing) {
           this.list = data
           this.refreshing = false
@@ -118,8 +118,8 @@ export default {
     getCartGoodsCount() {
       getCartGoodsCount()
         .then((res) => {
-          const { count } = res.map
-          this.count = count
+          const { data } = res
+          this.count = data
         })
         .catch((e) => {})
     },

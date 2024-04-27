@@ -75,37 +75,11 @@ export default {
   methods: {
     getHomeIndexData() {
       getHomeData().then(res => {
-        const { map } = res
-        this.bannerList = map.bannerList
-        this.diamondList = map.diamondList
-        this.sessionList = [
-          {
-            '_id': '5f5b1ec83f8b304102b77e8d',
-            'img': 'https://m.360buyimg.com/babel/s750x300_jfs/t1/96501/1/14812/180805/5e69f6e2E65623863/c40c27c4ec520eef.jpg',
-            'title': '头号爆品、新书特卖专场',
-            'tagnum': 1000,
-            'discount': 3,
-            'time': 1699807149739
-          },
-          {
-            '_id': '5f5b1ec83f8b304102b77e90',
-            'img': 'https://m.360buyimg.com/babel/s1125x450_jfs/t1/98771/1/15620/172104/5e733babEe579fad9/d7d5e51a1f2975e8.jpg',
-            'title': '321阅读日、热门专场',
-            'tagnum': 9999,
-            'discount': 8,
-            'time': 1699907149739
-          },
-          {
-            '_id': '5f5b1ec83f8b304102b77e93',
-            'img': 'https://m.360buyimg.com/babel/s1125x450_jfs/t1/85360/22/15634/120107/5e733524E4883f099/c8c92ebd6112a76e.jpg',
-            'title': '电影学院，电影书籍专场特卖',
-            'tagnum': 666,
-            'discount': 5,
-            'time': 2699907149739
-          }
-        ]
-        this.newGoodsList = map.newGoodsList
-        this.hotGoodsList = map.hotGoodsList
+        const { data } = res
+        this.bannerList = data.bannerList
+        this.diamondList = data.diamondList
+        this.newGoodsList = data.newGoodsList
+        this.hotGoodsList = data.hotGoodsList
         this.isSkeletonShow = false
       })
     },
@@ -114,7 +88,7 @@ export default {
         pageSize: this.pageSize,
         pageNum: this.pageNum
       }).then(res => {
-        const { map: { data }} = res
+        const { data } = res
         this.goodsList = [...this.goodsList, ...data]
         this.isLoading = false
         if (data.length < this.pageSize && this.goodsList.length > 0) {

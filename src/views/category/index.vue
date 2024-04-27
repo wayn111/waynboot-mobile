@@ -50,7 +50,7 @@ export default {
   methods: {
     getCategoryData() {
       getCategoryData().then((res) => {
-        const { categoryList, currentCategory, subCategoryList } = res.map
+        const { categoryList, currentCategory, subCategoryList } = res.data
         this.categoryList = categoryList
         this.currentCategory = currentCategory
         this.subCategoryList = subCategoryList
@@ -67,7 +67,7 @@ export default {
         id: this.categoryList[this.active].id
       }).then((res) => {
         this.$toast.clear()
-        const { currentCategory, subCategoryList } = res.map
+        const { currentCategory, subCategoryList } = res.data
         this.currentCategory = currentCategory
         this.subCategoryList = subCategoryList
       })

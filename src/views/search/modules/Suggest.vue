@@ -43,8 +43,8 @@ export default {
     // 当数据发生变化则会执行 handler处理函数
       handler: debounce(async function() {
       // 发请求
-        const { map } = await getSearchSuggest({ keyword: this.searchText })
-        this.suggestions = map.suggest
+        const { data } = await getSearchSuggest({ keyword: this.searchText })
+        this.suggestions = data
       }, 200),
       // async handler () {
       //   // 发请求

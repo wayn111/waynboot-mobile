@@ -66,7 +66,7 @@ export default {
     // get list
     getList() {
       getCartList().then(res => {
-        const { data } = res.map
+        const { data } = res
         this.list = data
         this.isSkeletonShow = false
       })

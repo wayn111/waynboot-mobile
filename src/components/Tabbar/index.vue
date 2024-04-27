@@ -41,8 +41,8 @@ export default {
   methods: {
     getCartGoodsCount() {
       getCartGoodsCount().then(res => {
-        const { count } = res.map
-        this.count = count
+        const { data } = res
+        this.count = data
       }).catch(e => {})
     }
   }

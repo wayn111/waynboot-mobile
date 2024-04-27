@@ -18,12 +18,6 @@
         is-link
       />
       <van-cell
-        title="邮箱"
-        to="/userSetting/email"
-        :value="userInfo.email"
-        is-link
-      />
-      <van-cell
         title="性别"
         :value="userInfo.gender === 1 ? '男' : '女'"
         is-link
@@ -36,12 +30,6 @@
         @click="showBirthday = true"
       />
       <van-cell title="密码设置" to="/userSetting/password" is-link />
-      <van-cell
-        title="手机号"
-        to="/userSetting/mobile"
-        :value="userInfo.mobile"
-        is-link
-      />
     </van-cell-group>
     <van-popup v-model="showBirthday" round position="bottom">
       <van-datetime-picker
@@ -111,7 +99,7 @@ export default {
         base64content: file.content,
         filename: file.file.name
       })
-      this.avatar = uploadRes.map.url
+      this.avatar = uploadRes.data
       const res = await uploadAvatar({
         avatar: this.avatar
       })

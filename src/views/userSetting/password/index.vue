@@ -3,6 +3,13 @@
     <nav-bar :title="$route.meta.title" />
     <van-form @submit="onSubmit">
       <van-field
+        v-model="form.oldPassword"
+        label="旧密码"
+        type="oldPassword"
+        placeholder="请输入旧密码"
+        :rules="[{ required: true, message: '请填写旧密码' }]"
+      />
+      <van-field
         v-model="form.password"
         label="新密码"
         type="password"
@@ -17,22 +24,6 @@
         :rules="[{ required: true, message: '请填写确认密码' }]"
       />
 
-      <van-field
-        v-model="form.emailCode"
-        label="验证码"
-        placeholder="请输入邮箱验证码"
-        :rules="[{ required: true, message: '请填写验证码' }]"
-      >
-        <van-button
-          slot="button"
-          size="small"
-          plain
-          type="info"
-          native-type="button"
-          :disabled="disabled"
-          @click.stop="getMailCode"
-        >{{ btnText }}</van-button>
-      </van-field>
       <div style="margin: 16px">
         <van-button round block type="info" native-type="submit">提交</van-button>
       </div>
@@ -41,16 +32,15 @@
 </template>
 
 <script>
-import { updatePassword, getMailCode } from '@/api/user'
+import { updatePassword } from '@/api/user'
 import { mapGetters } from 'vuex'
 
 export default {
   data: () => ({
     form: {
+      oldPassword: '',
       password: '',
-      confirmPassword: '',
-      emailCode: null,
-      emailKey: null
+      confirmPassword: ''
     },
     disabled: false,
     totalCount: 0
@@ -77,27 +67,6 @@ export default {
     },
     passwordValid() {
       return this.form.password === this.form.confirmPassword
-    },
-    // 获取邮箱验证码
-    getMailCode() {
-      const email = this.userInfo.email
-      this.disabled = true
-      this.totalCount = 60
-      this.interval = setInterval(() => {
-        this.totalCount--
-        if (this.totalCount === 0) {
-          clearInterval(this.interval)
-          this.disabled = false
-        }
-      }, 1000)
-      getMailCode({ email }).then((res) => {
-        this.form.emailKey = res.map.key
-        this.$notify({
-          type: 'success',
-          message: '邮箱验证码已发送',
-          duration: 2000
-        })
-      })
     }
   }
 }

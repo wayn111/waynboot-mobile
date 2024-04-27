@@ -65,7 +65,7 @@ export default {
     orderDetail() {
       orderDetail(this.orderSn)
         .then((res) => {
-          this.orderInfo = res.map.order
+          this.orderInfo = res.data
         })
         .finally((res) => {
           this.loading = false
