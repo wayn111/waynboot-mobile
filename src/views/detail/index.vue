@@ -224,13 +224,15 @@ export default {
           values.push({
             id: vv.id,
             name: vv.value,
-            imUrl: vv.picUrl
+            imgUrl: vv.picUrl,
+            previewImgUrl: vv.picUrl
           })
         })
         specifications.push({
           k: v.name,
           v: values,
           k_s: 's' + (~~k + 1)
+          // 'largeImageMode': true
         })
       })
 

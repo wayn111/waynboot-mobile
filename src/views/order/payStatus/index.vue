@@ -1,19 +1,16 @@
 <template>
   <div class="order-status">
     <Header :status="status" />
-    <Share />
   </div>
 </template>
 
 <script>
 import Header from './modules/Header'
-import Share from './modules/Share'
 
 export default {
   name: 'OrderStatus',
   components: {
-    Header,
-    Share
+    Header
   },
   props: {
     status: {

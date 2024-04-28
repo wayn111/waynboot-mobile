@@ -8,6 +8,7 @@
       :initial-sku="initialSku"
       :hide-stock="skuData.hide_stock"
       :close-on-click-overlay="true"
+      :show-header-image="true"
       @buy-clicked="onBuy"
       @add-cart="onAddCart"
       @sku-selected="onSkuSelected"

@@ -32,7 +32,7 @@ export default {
     getCartGoodsCount() {
       getCartGoodsCount().then(res => {
         const { data } = res
-        this.count = count
+        this.count = data
       }).catch(e => {})
     },
     handleClick() {

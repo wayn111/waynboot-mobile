@@ -10,10 +10,6 @@
       />
     </nav-bar>
 
-    <div class="banner">
-      <image-pic :src="category.picUrl" width="100%" height="100" />
-    </div>
-
     <div class="main">
       <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
         <van-list

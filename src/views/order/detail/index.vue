@@ -17,6 +17,7 @@
       <div>运    费: {{ orderInfo.freightPrice | yuan }}</div>
       <div>订单金额: {{ orderInfo.orderPrice | yuan }}</div>
       <div>实付金额: {{ orderInfo.actualPrice | yuan }}</div>
+      <div>退款金额: {{ orderInfo.refundAmount | yuan }}</div>
       <div>收货地址: {{ orderInfo.address }}</div>
       <div>用户留言: {{ orderInfo.message }}</div>
       <van-card

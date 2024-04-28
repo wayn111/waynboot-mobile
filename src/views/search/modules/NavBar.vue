@@ -8,6 +8,7 @@
     />
     <van-search
       v-model="keyword"
+      shape="round"
       style="width: 100%"
       :placeholder="defaultSearch"
       show-action
