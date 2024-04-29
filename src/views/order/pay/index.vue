@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import { orderPrepay, orderH5pay } from '@/api/pay'
+import { orderPrepay } from '@/api/pay'
 import _ from 'lodash'
 import { getLocalStorage, setLocalStorage } from '@/utils/localStorage'
 
@@ -92,9 +92,9 @@ export default {
             const isWeixin = ua.indexOf('micromessenger') !== -1
             // 微信jsapi支付
             if (isWeixin) {
-              orderPrepay({ orderSn: this.orderSn, payType: 1 })
+              orderPrepay({ orderSn: this.orderSn, payType: 3 })
                 .then((res) => {
-                  const data = res.data
+                  const data = res.data.wxPayMpOrderResult
                   const prepayData = JSON.stringify({
                     appId: data.appId,
                     timeStamp: data.timeStamp,
@@ -137,7 +137,7 @@ export default {
                 })
             } else {
               // 微信h5支付
-              orderH5pay({ orderSn: this.orderSn, payType: 1 })
+              orderPrepay({ orderSn: this.orderSn, payType: 1 })
                 .then((res) => {
                   const data = res.data
                   window.location.replace(
@@ -170,9 +170,9 @@ export default {
               message: '支付中，请稍后'
             })
             const returnUrl = window.location.origin + window.location.pathname + '#/order/payStatus?status=success'
-            orderH5pay({ orderSn: this.orderSn, payType: 2, returnUrl })
+            orderPrepay({ orderSn: this.orderSn, payType: 2, returnUrl })
               .then((res) => {
-                this.alipayClientCall(res.data)
+                this.alipayClientCall(res.data.form)
               })
               .catch((err) => {
                 console.log(err)
@@ -190,7 +190,7 @@ export default {
               forbidClick: true,
               message: '支付中，请稍后'
             })
-            orderH5pay({ orderSn: this.orderSn, payType: 3 })
+            orderPrepay({ orderSn: this.orderSn, payType: 3 })
               .then((res) => {
                 this.$router.replace({
                   name: 'PayStatus',
