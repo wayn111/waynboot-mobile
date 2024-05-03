@@ -119,7 +119,7 @@ export default {
 @import "@/styles/variables.scss";
 
 .home-diamond {
-  padding: 24px 0;
+  padding: 24px 0 12px 0;
   background: #fff;
   .scroll-wrapper {
     width: 100%;

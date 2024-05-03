@@ -80,7 +80,7 @@ export default {
 
 <style lang="scss" scoped>
 .home-goods {
-  margin-top: 24px;
+  margin-top: 12px;
   .main {
     background: #fff;
   }

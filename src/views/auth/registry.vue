@@ -129,7 +129,7 @@ export default {
     // 校检手机号
     checkPhone(num) {
       if (num === 123456789) return true
-      const reg = /^[1][3,4,5,7,8][0-9]{9}$/
+      const reg = /^[1][3,4,5,7,8,9][0-9]{9}$/
       if (reg.test(num)) {
         return true
       }

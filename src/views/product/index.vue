@@ -28,7 +28,7 @@
             :desc="item.brief"
             :price="item.retailPrice"
             :discount="item.counterPrice"
-            style="margin-bottom: 6px"
+            style="margin-bottom: 1vw"
             @getCartGoodsCount="getCartGoodsCount"
           />
         </van-list>

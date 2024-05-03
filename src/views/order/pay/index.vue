@@ -34,17 +34,17 @@
             </template>
             <van-radio name="ali" />
           </van-cell> -->
-<!--          <van-cell>-->
-<!--            <template slot="title">-->
-<!--              <img-->
-<!--                src="../../../assets/images/wx_pay.png"-->
-<!--                alt="微信支付"-->
-<!--                width="113"-->
-<!--                height="23"-->
-<!--              >-->
-<!--            </template>-->
-<!--            <van-radio name="wx" />-->
-<!--          </van-cell>-->
+          <!-- <van-cell>
+            <template slot="title">
+              <img
+                src="../../../assets/images/wx_pay.png"
+                alt="微信支付"
+                width="82"
+                height="29"
+              >
+            </template>
+            <van-radio name="wx" />
+          </van-cell> -->
         </van-cell-group>
       </van-radio-group>
     </div>
@@ -190,7 +190,7 @@ export default {
               forbidClick: true,
               message: '支付中，请稍后'
             })
-            orderPrepay({ orderSn: this.orderSn, payType: 3 })
+            orderPrepay({ orderSn: this.orderSn, payType: 99 })
               .then((res) => {
                 this.$router.replace({
                   name: 'PayStatus',

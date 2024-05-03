@@ -13,7 +13,9 @@
             <span class="price--old">¥{{ discount }}</span>
           </p>
           <div class="tag">
-            <van-tag type="danger">自营</van-tag>
+            <van-tag v-if="isNew" type="danger">新品</van-tag>
+            <van-tag v-if="isHot" type="danger">热品</van-tag>
+            <van-tag type="success">7天可退</van-tag>
           </div>
           <div class="sale">
             <span class="commom__num">评论2000+条</span>
@@ -33,7 +35,7 @@ import { addDefaultGoodsProduct } from '@/api/cart'
 
 export default {
   // eslint-disable-next-line vue/require-prop-types
-  props: ['goodsId', 'img', 'title', 'desc', 'price', 'discount', 'percentage'],
+  props: ['goodsId', 'img', 'title', 'desc', 'price', 'discount', 'percentage', 'isNew', 'isHot'],
   methods: {
     onClick() {
       this.$router.push({
@@ -70,7 +72,9 @@ export default {
   padding: 0 20px;
   .desc {
     width: 510px;
+    height: 240px;
     .desc__top {
+      margin-top: 10px;
       .desc__top__title {
         font-size: $small;
         color: $black;
@@ -90,7 +94,7 @@ export default {
       align-items: flex-end;
       justify-content: space-between;
       .desc__bottom__info {
-        margin-top: 10px;
+        margin-top: 5px;
         .price {
           .price--new {
             color: $red;
@@ -105,16 +109,17 @@ export default {
         }
 
         .tag {
-          width: 300px;
+          // width: 300px;
           .van-tag {
-            font-size: 4px;
+            // font-size: 12px;
+            margin-right: 12px;
             padding: 0.2em 1em;
             border-radius: 0.6em;
           }
         }
         .sale {
           width: 300px;
-          margin-top: 16px;
+          margin-top: 12px;
           font-size: $mini;
           color: $gray;
           .praise__rate {

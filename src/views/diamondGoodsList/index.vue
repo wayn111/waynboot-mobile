@@ -38,7 +38,9 @@
             :desc="item.brief"
             :price="item.retailPrice"
             :discount="item.counterPrice"
-            style="margin-bottom: 6px"
+            :is-new="item.isNew"
+            :is-hot="item.isHot"
+            style="margin-bottom: 1vw"
             @getCartGoodsCount="getCartGoodsCount"
           />
         </van-list>
@@ -146,6 +148,6 @@ export default {
   background: #f5f5f5;
 }
 .main {
-  padding: 2vw 0 0 0;
+  padding: 1vw 0 0 0;
 }
 </style>
