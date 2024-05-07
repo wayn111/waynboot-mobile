@@ -94,7 +94,6 @@ export default {
     return {
       form: {
         mobile: '',
-        email: '',
         password: '',
         confirmPassword: '',
         captchaCode: '',
