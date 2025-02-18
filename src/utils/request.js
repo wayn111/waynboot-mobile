@@ -53,6 +53,9 @@ service.interceptors.response.use(
       if (res.code === 5001) {
         return Promise.reject(new Error(res.msg || 'Error'))
       }
+      if (res.code === 50148) {
+        return res
+      }
       Toast.fail(res.msg)
       return Promise.reject(new Error(res.msg || 'Error'))
     } else {

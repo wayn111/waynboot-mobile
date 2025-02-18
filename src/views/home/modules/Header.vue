@@ -6,7 +6,7 @@
         <span style="color: #8e8e8e; margin-right: 6px">
           <svg-icon icon-class="search" :width="15" :height="15" />
         </span>
-        <span>搜索商品名称</span>
+        <span>店内搜索</span>
       </van-button>
       <!-- <span style="color: #8e8e8e" @click="onUser">
         <svg-icon icon-class="user" :width="18" :height="18" />

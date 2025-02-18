@@ -1,7 +1,7 @@
 <template>
   <div class="tab-bar">
     <van-goods-action>
-      <van-goods-action-icon icon="chat-o" text="客服" />
+      <van-goods-action-icon icon="home-o" text="首页" @click="goHome" />
       <van-goods-action-icon icon="cart-o" text="购物车" :badge="count" @click="cartClick" />
       <van-goods-action-button type="warning" text="加入购物车" @click="handleClick" />
       <van-goods-action-button :color="variables.red" text="立即购买" @click="handleClick" />
@@ -40,8 +40,10 @@ export default {
     },
     cartClick() {
       this.$router.push({ name: 'Cart' })
+    },
+    goHome() {
+      this.$router.push({ name: 'Home' })
     }
-
   }
 }
 </script>

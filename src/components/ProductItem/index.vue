@@ -17,10 +17,10 @@
             <van-tag v-if="isHot" type="danger">热品</van-tag>
             <van-tag type="success">7天可退</van-tag>
           </div>
-          <div class="sale">
+          <!-- <div class="sale">
             <span class="commom__num">评论2000+条</span>
             <span class="praise__rate">70%好评</span>
-          </div>
+          </div> -->
         </div>
         <div class="desc__bottom__btn">
           <van-button class="btn" size="mini" @click.stop="onAddCart">加入购物车</van-button>
@@ -74,7 +74,7 @@ export default {
     width: 510px;
     height: 240px;
     .desc__top {
-      margin-top: 10px;
+      margin-top: 30px;
       .desc__top__title {
         font-size: $small;
         color: $black;

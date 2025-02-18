@@ -1,9 +1,9 @@
 <template>
   <div class="detail">
-    <nav-bar :title="$route.meta.title">
-      <span style="color: #333">
+    <nav-bar :title="info.name">
+      <!-- <span style="color: #333">
         <svg-icon icon-class="share" :width="15" :height="15" />
-      </span>
+      </span>-->
     </nav-bar>
 
     <Swiper :banner="banner" />
@@ -13,6 +13,7 @@
       :desc="info.brief"
       :price="info.retailPrice"
       :discount="info.counterPrice"
+      :virtual-sales="info.virtualSales"
     />
 
     <Section
@@ -63,6 +64,7 @@ import Tabbar from './modules/Tabbar'
 import Sku from './modules/Sku'
 import Skeleton from './modules/Skeleton'
 import _ from 'lodash'
+import wx from 'weixin-js-sdk'
 
 export default {
   name: 'Detail',
@@ -110,6 +112,38 @@ export default {
     this.getMallConfig()
   },
   methods: {
+    wxShare(goodsInfo) {
+      if (!this.wxJsSdkInit()) {
+        return
+      }
+      const url = window.location.href.split('#')[0]
+      const picUrl = url + goodsInfo.picUrl
+      wx.ready(function() {
+        console.log('wx ready')
+        // 需在用户可能点击分享按钮前就先调用
+        wx.updateAppMessageShareData({
+          title: goodsInfo.name, // 分享标题
+          desc: goodsInfo.brief, // 分享描述
+          link: window.location.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+          imgUrl: picUrl, // 分享图标
+          success: function(e) { console.log('success', e) },
+          fail: function(e) {
+            console.log('fail', e)
+            // alert(JSON.stringify(e))
+          }
+        })
+        wx.updateTimelineShareData({
+          title: goodsInfo.name, // 分享标题
+          link: window.location.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+          imgUrl: picUrl, // 分享图标
+          success: function(e) { console.log('success', e) },
+          fail: function(e) {
+            console.log('fail', e)
+            // alert(JSON.stringify(e))
+          }
+        })
+      })
+    },
     getMallConfig() {
       getMallConfig().then(res => {
         const { data } = res
@@ -131,6 +165,7 @@ export default {
         console.log('总库存：', this.totalStockNum)
         this.skuAdapter()
         this.isSkeletonShow = false
+        this.wxShare(goods.info)
       })
     },
     async getCommentInfo() {

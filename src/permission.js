@@ -4,7 +4,7 @@ import { Toast } from 'vant'
 import { getToken } from '@/utils/auth' // get token from cookie
 import { pathMatcher } from '@/utils/index'
 
-const whiteList = ['/login', '/registry', '/', '/index', '/category', '/detail/**', '/diamondGoodsList/**', '/search/**'] // 白名单
+const whiteList = ['/login', '/registry', '/', '/index', '/category', '/detail/**', '/diamondGoodsList/**', '/search/**', '/order/coupon'] // 白名单
 
 router.beforeEach(async(to, from, next) => {
   // 设置标题
@@ -39,6 +39,7 @@ router.beforeEach(async(to, from, next) => {
     }
   } else {
     if (pathMatcher(whiteList, to.path)) {
+      console.log(to.path)
       next()
     } else {
       // 反之则去登录页面

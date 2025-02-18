@@ -15,7 +15,7 @@
           :value="selectedAddress.address || '选择收货地址'"
           @click="handleAddress"
         />
-        <van-cell title="运费" :value="`满${freightLimit}元免运费`" />
+        <van-cell title="运费" value="全国包邮" />
       </van-cell-group>
     </div>
     <!-- <van-button block @click="onSelectSku">
@@ -157,7 +157,7 @@ export default {
   //  width:700px;
   //  margin: 0 auto;
   // border-radius: 6px;
-  margin-top: 24px;
+  margin-top: 12px;
   background: #fff;
   .van-cell__value {
     min-width: 80%;

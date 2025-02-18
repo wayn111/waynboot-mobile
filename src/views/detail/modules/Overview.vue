@@ -7,6 +7,7 @@
     <div class="price">
       <span class="price__new">¥{{ price | yuan }}</span>
       <span class="price__old">¥{{ discount | yuan }}</span>
+      <span class="desc" style="float: right;margin:0">销量：{{ virtualSales || 0 }}</span>
     </div>
   </div>
 </template>
@@ -14,7 +15,7 @@
 <script>
 export default {
   // eslint-disable-next-line vue/require-prop-types
-  props: ['title', 'desc', 'price', 'discount']
+  props: ['title', 'desc', 'price', 'discount', 'virtualSales']
 }
 </script>
 

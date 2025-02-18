@@ -1,9 +1,9 @@
 <template>
   <div class="home-goods">
-    <van-cell :title="titleName" is-link to="index" :value="'更多' + titleName" />
+    <van-cell :title="titleName" is-link to="index" :value="'更多商品'" />
     <van-list
       v-model="loading"
-      :finished="true"
+      :finished="isFinished"
       :immediate-check="false"
       @load="onReachBottom"
     >
@@ -17,6 +17,7 @@
           :desc="item.brief"
           :price="item.retailPrice"
           :discount="item.counterPrice"
+          :virtual-sales="item.virtualSales"
         />
       </div>
     </van-list>
@@ -48,6 +49,10 @@ export default {
     isLoading: {
       type: Boolean,
       default: false
+    },
+    isFinished: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
@@ -77,8 +82,12 @@ export default {
     padding: 0 10px;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
+    align-items: center;
     flex-wrap: wrap;
   }
+}
+::v-deep .van-cell:after{
+  display: none;
 }
 </style>

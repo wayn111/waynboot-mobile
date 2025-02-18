@@ -19,11 +19,13 @@ export async function initWechatWebview() {
       jsApiList: ['updateAppMessageShareData', 'updateTimelineShareData'] // 必填，需要使用的JS接口列表
     })
     wx.error(function(res) {
-      alert('wx error: ' + res)
+      // alert('wx error: ' + res)
       // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
     })
   } catch (e) {
     console.log(e)
+    return false
   }
+  return true
 }
 Vue.prototype.wxJsSdkInit = initWechatWebview

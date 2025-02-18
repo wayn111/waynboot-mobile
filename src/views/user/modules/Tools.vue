@@ -1,5 +1,6 @@
 <template>
   <div class="user-tools">
+    <van-cell title="优惠券" is-link to="order/my" />
     <van-cell title="收货地址" is-link to="address" />
     <van-cell title="退出登录" is-link @click="logout" />
   </div>

@@ -15,6 +15,7 @@ import './permission'
 
 // import vant
 import '@/components/Vant'
+import '@/components/Wx'
 // import fontAwesome
 import '@/components/fontAwesome'
 // register common components globally

@@ -29,8 +29,9 @@
       <van-cell title="运费">
         <span class="red">{{ freightPrice }} 元</span>
       </van-cell>
-      <van-cell title="优惠券">
-        <span class="red">不可用</span>
+      <van-cell title="优惠券" @click="showPicker = true">
+        <span class="red" v-if="chooseInfo && chooseInfo.id">-{{  chooseInfo.discount }}元</span>
+        <span class="red" v-else>{{ couponList.length }}张可用 </span>
       </van-cell>
       <van-field v-model="message" placeholder="请输入备注" label="订单备注">
         <template slot="icon">{{ 500 }}/50</template>
@@ -43,7 +44,17 @@
       button-text="提交订单"
       :disabled="false"
       @submit="onSubmit"
-    />
+    >
+    <span class="tipsCoupon" v-if="chooseInfo && chooseInfo.id">已优惠-{{  chooseInfo.discount }}元</span>
+    </van-submit-bar>
+    <van-popup v-model="showPicker" position="bottom">
+  <van-picker
+    show-toolbar
+    :columns="couponList"
+    @cancel="showPicker = false"
+    @confirm="onConfirm"
+  />
+</van-popup>
   </div>
 </template>
 
@@ -62,7 +73,11 @@ export default {
       actualPrice: 0,
       freightPrice: 0,
       retryCount: 10, // 查询订单结果次数
-      retryInterval: 600 // 查询间隔
+      retryInterval: 600, // 查询间隔
+      showPicker:false,
+      couponList: [],
+      chooseInfo:{},
+      couponListCopy:[]
     }
   },
   computed: {
@@ -78,11 +93,13 @@ export default {
     getGoodsList() {
       this.goodsList = []
       getCheckedGoods().then((res) => {
-        const { data, orderTotalAmount, goodsAmount, freightPrice } = res.data
+        const { data, orderTotalAmount, goodsAmount, freightPrice, couponList } = res.data
         this.goodsList = data
         this.goodsAmount = goodsAmount
         this.orderTotalAmount = orderTotalAmount
         this.freightPrice = freightPrice
+        this.couponListCopy = couponList
+        this.couponList = couponList.length > 0 ? couponList.map(item=>item.discount+'元'+item.title) : []
       })
     },
     onSubmit() {
@@ -93,6 +110,7 @@ export default {
       const cartIdArr = this.goodsList.map((item) => {
         return item.id
       })
+      const userCouponId = this.chooseInfo && this.chooseInfo.id ? this.chooseInfo.id : undefined
       const message = this.message
       const userId = this.id
       this.$toast.loading({
@@ -101,7 +119,7 @@ export default {
         message: '下单中，请稍后'
       })
       this.retryCount = 6
-      submit({ cartIdArr, addressId, userId, message }).then((res) => {
+      submit({ cartIdArr, addressId, userId, message , userCouponId}).then((res) => {
         const { orderSn, actualPrice } = res.data
         this.orderSn = orderSn
         this.actualPrice = actualPrice
@@ -132,6 +150,11 @@ export default {
           }
         }, this.retryInterval)
       }
+    },
+    onConfirm(val,index){
+      this.showPicker = false
+      this.chooseInfo = this.couponListCopy[index]
+      this.orderTotalAmount = this.goodsAmount + this.freightPrice - this.chooseInfo.discount
     }
   }
 }
@@ -209,5 +232,8 @@ export default {
       }
     }
   }
+}
+.tipsCoupon{
+  margin-top:5px;
 }
 </style>

@@ -11,7 +11,7 @@
       </div>
       <div class="main__id" @click="doCopy(userInfo.id)">
         <span class="code">用户id：{{ userInfo.id }}</span>
-        <span style="color: #fff">
+        <span style="color: #666">
           <svg-icon icon-class="copy" :width="13" :height="13" />
         </span>
       </div>
@@ -56,7 +56,7 @@ export default {
   display: flex;
   flex-direction: row;
   padding: 60px 24px 50px 24px;
-  background: $red;
+
   border-radius: 100% 100% 100% 100% / 0% 0% 16% 16%;
   .userImg {
     img {
@@ -69,7 +69,7 @@ export default {
     position: absolute;
     top: 20px;
     right: 20px;
-    color: #fff;
+    color: #000;
     font-size: 50px;
   }
   .main {
@@ -82,7 +82,7 @@ export default {
       .name {
         font-size: $large;
         font-weight: 500;
-        color: #fff;
+        color: #000;
         display: inline-block;
         max-width: 350px;
         white-space: nowrap;
@@ -96,7 +96,7 @@ export default {
       .code {
         font-size: $small;
         font-weight: 400;
-        color: #fff;
+        color: $gray;
         margin-right: 10px;
       }
     }

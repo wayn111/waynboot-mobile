@@ -89,7 +89,7 @@ export default {
 }
 .order-detail {
   padding: 10px 20px;
-  > div:nth-child(-n + 10) {
+  > div:nth-child(-n + 11) {
     margin-top: 1vh;
   }
   van-card {

@@ -7,11 +7,11 @@ export function getCaptcha() {
   })
 }
 
-export function getMailCode(data) {
+export function getMobileCode(data) {
   return request({
-    url: '/sendEmailCode',
+    url: '/genMobileCode',
     method: 'post',
     data,
-    timeout: 20000
+    timeout: 5000
   })
 }

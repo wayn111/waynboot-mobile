@@ -23,7 +23,7 @@
             </template>
             <van-radio name="test" />
           </van-cell>
-          <!-- <van-cell>
+          <van-cell>
             <template slot="title">
               <img
                 src="../../../assets/images/ali_pay.png"
@@ -33,18 +33,18 @@
               >
             </template>
             <van-radio name="ali" />
-          </van-cell> -->
-          <!-- <van-cell>
+          </van-cell>
+          <van-cell>
             <template slot="title">
               <img
                 src="../../../assets/images/wx_pay.png"
                 alt="微信支付"
-                width="82"
-                height="29"
+                width="113"
+                height="23"
               >
             </template>
             <van-radio name="wx" />
-          </van-cell> -->
+          </van-cell>
         </van-cell-group>
       </van-radio-group>
     </div>
@@ -61,14 +61,14 @@
 <script>
 import { orderPrepay } from '@/api/pay'
 import _ from 'lodash'
-import { getLocalStorage, setLocalStorage } from '@/utils/localStorage'
+import { getLocalStorage } from '@/utils/localStorage'
 
 export default {
   name: 'Payment',
 
   data() {
     return {
-      payWay: 'test',
+      payWay: '',
       orderSn: undefined,
       actualPrice: 0
     }
@@ -81,135 +81,74 @@ export default {
   },
   methods: {
     pay() {
-      this.$dialog
-        .alert({
-          message:
-            '你选择了' + (this.payWay === 'test' ? '测试支付' : this.payWay === 'wx' ? '微信支付' : '支付宝支付')
-        })
-        .then(() => {
-          if (this.payWay === 'wx') {
-            const ua = navigator.userAgent.toLowerCase()
-            const isWeixin = ua.indexOf('micromessenger') !== -1
-            // 微信jsapi支付
-            if (isWeixin) {
-              orderPrepay({ orderSn: this.orderSn, payType: 3 })
-                .then((res) => {
-                  const data = res.data.wxPayMpOrderResult
-                  const prepayData = JSON.stringify({
-                    appId: data.appId,
-                    timeStamp: data.timeStamp,
-                    nonceStr: data.nonceStr,
-                    package: data.packageValue,
-                    signType: 'MD5',
-                    paySign: data.paySign
-                  })
-                  setLocalStorage({ prepay_data: prepayData })
-
-                  if (typeof WeixinJSBridge === 'undefined') {
-                    if (document.addEventListener) {
-                      document.addEventListener(
-                        'WeixinJSBridgeReady',
-                        this.onBridgeReady,
-                        false
-                      )
-                    } else if (document.attachEvent) {
-                      document.attachEvent(
-                        'WeixinJSBridgeReady',
-                        this.onBridgeReady
-                      )
-                      document.attachEvent(
-                        'onWeixinJSBridgeReady',
-                        this.onBridgeReady
-                      )
-                    }
-                  } else {
-                    this.onBridgeReady()
-                  }
-                })
-                .catch((err) => {
-                  this.$dialog.alert({ message: err.map.msg })
-                  this.$router.replace({
-                    name: 'PayStatus',
-                    params: {
-                      status: 'failed'
-                    }
-                  })
-                })
-            } else {
-              // 微信h5支付
-              orderPrepay({ orderSn: this.orderSn, payType: 1 })
-                .then((res) => {
-                  const data = res.data
-                  window.location.replace(
-                    data.mwebUrl +
-                      '&redirect_url=' +
-                      encodeURIComponent(
-                        window.location.origin +
-                          '/#/?orderSn=' +
-                          this.orderSn +
-                          '&tip=yes'
-                      )
-                  )
-                })
-                .catch((err) => {
-                  console.log(err)
-                  // this.$dialog.alert({ message: '支付失败' })
-                  this.$router.replace({
-                    name: 'PayStatus',
-                    params: {
-                      status: 'failed'
-                    }
-                  })
-                })
-            }
-          } else if (this.payWay === 'ali') {
-            // 支付宝手机网站支付
-            this.$toast.loading({
-              duration: 0, // 持续展示 toast
-              forbidClick: true,
-              message: '支付中，请稍后'
+      if (!this.payWay) {
+        this.$toast.fail('请选择支付方式')
+        return
+      }
+      if (this.payWay === 'wx') {
+        // 微信h5支付
+        const returnUrl = window.location.origin + window.location.pathname + '#/order/payStatus?status=success'
+        orderPrepay({ orderSn: this.orderSn, payType: 5, returnUrl })
+          .then((res) => {
+            window.location.href = res.data.epayurl
+          })
+          .catch((err) => {
+            console.log(err)
+            // this.$dialog.alert({ message: '支付失败' })
+            this.$router.replace({
+              name: 'PayStatus',
+              params: {
+                status: 'failed'
+              }
             })
-            const returnUrl = window.location.origin + window.location.pathname + '#/order/payStatus?status=success'
-            orderPrepay({ orderSn: this.orderSn, payType: 2, returnUrl })
-              .then((res) => {
-                this.alipayClientCall(res.data.form)
-              })
-              .catch((err) => {
-                console.log(err)
-                this.$router.replace({
-                  name: 'PayStatus',
-                  params: {
-                    status: 'failed'
-                  }
-                })
-              })
-          } else {
-            // 测试支付
-            this.$toast.loading({
-              duration: 0, // 持续展示 toast
-              forbidClick: true,
-              message: '支付中，请稍后'
-            })
-            orderPrepay({ orderSn: this.orderSn, payType: 99 })
-              .then((res) => {
-                this.$router.replace({
-                  name: 'PayStatus',
-                  params: {
-                    status: 'success'
-                  }
-                })
-              })
-              .catch((err) => {
-                console.log(err)
-                this.$router.replace({
-                  name: 'PayStatus',
-                  params: {
-                    status: 'failed'
-                  }
-                })
-              })
-          }
+          })
+      } else if (this.payWay === 'ali') {
+        // 支付宝手机网站支付
+        this.$toast.loading({
+          duration: 0, // 持续展示 toast
+          forbidClick: true,
+          message: '支付中，请稍后'
         })
+        const returnUrl = window.location.origin + window.location.pathname + '#/order/payStatus?status=success'
+        orderPrepay({ orderSn: this.orderSn, payType: 4, returnUrl })
+          .then((res) => {
+            window.location.href = res.data.epayurl
+          })
+          .catch((err) => {
+            console.log(err)
+            this.$router.replace({
+              name: 'PayStatus',
+              params: {
+                status: 'failed'
+              }
+            })
+          })
+      } else {
+        // 测试支付
+        this.$toast.loading({
+          duration: 0, // 持续展示 toast
+          forbidClick: true,
+          message: '支付中，请稍后'
+        })
+        orderPrepay({ orderSn: this.orderSn, payType: 99 })
+          .then((res) => {
+            this.$router.replace({
+              name: 'PayStatus',
+              params: {
+                status: 'success'
+              }
+            })
+          })
+          .catch((err) => {
+            console.log(err)
+            this.$router.replace({
+              name: 'PayStatus',
+              params: {
+                status: 'failed'
+              }
+            })
+          })
+      }
     },
     /**
      * 通过提交form表单唤起支付宝客户端支付

@@ -20,6 +20,7 @@
             :desc="item.brief"
             :price="item.retailPrice"
             :discount="item.counterPrice"
+            :virtual-sales="item.virtualSales"
           />
         </div>
       </van-list>

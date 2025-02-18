@@ -30,7 +30,7 @@ const routes = [
   {
     path: '/registry',
     name: 'Registry',
-    component: () => import('@/views/auth/registry'),
+    component: () => import('@/views/auth/login'),
     meta: {
       title: '注册'
     }
@@ -261,6 +261,26 @@ const routes = [
     name: 'PayStatus',
     props: true,
     component: () => import('@/views/order/payStatus')
+  },
+  // 优惠券
+  {
+    path: '/order/coupon',
+    name: 'coupon',
+    component: () => import('@/views/order/coupon'),
+    meta: {
+      title: '优惠券',
+      showTab: true
+    }
+  },
+  // 优惠券
+  {
+    path: '/order/my',
+    name: 'couponMy',
+    component: () => import('@/views/order/my'),
+    meta: {
+      title: '优惠券',
+      showTab: true
+    }
   },
   // 评论页面
   {

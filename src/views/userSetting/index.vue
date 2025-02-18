@@ -29,7 +29,7 @@
         is-link
         @click="showBirthday = true"
       />
-      <van-cell title="密码设置" to="/userSetting/password" is-link />
+      <!-- <van-cell title="密码设置" to="/userSetting/password" is-link /> -->
     </van-cell-group>
     <van-popup v-model="showBirthday" round position="bottom">
       <van-datetime-picker

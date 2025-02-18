@@ -16,7 +16,7 @@
               <van-grid :column-num="3" :border="false">
                 <van-grid-item v-for="(single,idx) in subCategoryList" :key="idx" class="single" @click="onL2CateClick(single.id)">
                   <image-pic fit="contain" :src="single.icon" />
-                  <span>{{ single.text }}</span>
+                  <span class="textName">{{ single.text }}</span>
                 </van-grid-item>
               </van-grid>
             </div>
@@ -107,6 +107,9 @@ export default {
           font-size: $mini;
         }
       }
+    }
+    .textName{
+      margin-top: 20px;
     }
   }
 }

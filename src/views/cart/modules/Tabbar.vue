@@ -69,6 +69,6 @@ export default {
   box-shadow: var(--submit-bar-shadow);
 }
 .van-submit-bar {
-  bottom: 100px;
+  bottom: 50px;
 }
 </style>
