@@ -1,0 +1,53 @@
+import { defineConfig, loadEnv } from 'vite'
+import vue from '@vitejs/plugin-vue'
+import path from 'path'
+import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
+
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), '')
+  const port = env.port || env.npm_config_port || 4949
+  const baseUrl = env.VUE_APP_BASE_URL || 'http://localhost:82'
+
+  return {
+    base: '/mall/',
+    envPrefix: ['VITE_', 'VUE_APP_'],
+    plugins: [
+      vue(),
+      createSvgIconsPlugin({
+        iconDirs: [path.resolve(process.cwd(), 'src/icons/svg')],
+        symbolId: 'icon-[name]',
+      }),
+    ],
+    resolve: {
+      alias: {
+        '@': path.resolve(__dirname, 'src')
+      },
+      extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue']
+    },
+    server: {
+      port: port,
+      open: true,
+      proxy: {
+        '/dev-api': {
+          target: baseUrl,
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/dev-api/, '')
+        },
+        '/upload': {
+          target: baseUrl,
+          changeOrigin: true
+        }
+      }
+    },
+    css: {
+      preprocessorOptions: {
+        less: {
+          modifyVars: {
+            'tabbar-item-icon-size': '24px'
+          },
+          javascriptEnabled: true
+        }
+      }
+    }
+  }
+})

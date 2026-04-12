@@ -1,15 +1,15 @@
 <template>
   <div class="payment">
     <nav-bar :title="$route.meta.title" />
-    <!-- closeable 模式，在右侧显示关闭按钮 -->
-    <van-notice-bar
-      mode="closeable"
-    >请在半小时内完成付款，否则系统自动取消订单</van-notice-bar>
+
+    <van-notice-bar mode="closeable">
+      请在半小时内完成支付，否则系统将自动取消订单
+    </van-notice-bar>
 
     <van-cell-group class="payment_group">
-      <van-cell title="订单编号" :value="orderSn" />
+      <van-cell title="订单编号" :value="orderSn || '--'" />
       <van-cell title="实付金额">
-        <span class="red">{{ actualPrice | yuan }}</span>
+        <span class="red">{{ yuan(actualPrice) }}</span>
       </van-cell>
     </van-cell-group>
 
@@ -17,190 +17,157 @@
       <div class="pay_way_title">选择支付方式</div>
       <van-radio-group v-model="payWay">
         <van-cell-group>
-          <van-cell>
-            <template slot="title">
-              <p style="font-size: 17px">测试支付方式</p>
+          <van-cell clickable @click="payWay = 'test'">
+            <template #title>
+              <p class="pay_way_label">测试支付方式</p>
             </template>
-            <van-radio name="test" />
+            <template #right-icon>
+              <van-radio name="test" />
+            </template>
           </van-cell>
-          <van-cell>
-            <template slot="title">
+          <van-cell clickable @click="payWay = 'ali'">
+            <template #title>
               <img
                 src="../../../assets/images/ali_pay.png"
                 alt="支付宝"
                 width="82"
                 height="29"
-              >
+              />
             </template>
-            <van-radio name="ali" />
+            <template #right-icon>
+              <van-radio name="ali" />
+            </template>
           </van-cell>
-          <van-cell>
-            <template slot="title">
+          <van-cell clickable @click="payWay = 'wx'">
+            <template #title>
               <img
                 src="../../../assets/images/wx_pay.png"
                 alt="微信支付"
                 width="113"
                 height="23"
-              >
+              />
             </template>
-            <van-radio name="wx" />
+            <template #right-icon>
+              <van-radio name="wx" />
+            </template>
           </van-cell>
         </van-cell-group>
       </van-radio-group>
     </div>
 
-    <van-button
-      class="pay_submit"
-      type="primary"
-      bottom-action
-      @click="pay"
-    >去支付</van-button>
+    <van-button class="pay_submit" type="primary" @click="pay">
+      去支付
+    </van-button>
   </div>
 </template>
 
-<script>
+<script setup>
+import { onMounted, reactive, toRefs } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+import { showLoadingToast, showToast } from 'vant'
+
 import { orderPrepay } from '@/api/pay'
-import _ from 'lodash'
-import { getLocalStorage } from '@/utils/localStorage'
+import { yuan } from '@/filter'
 
-export default {
-  name: 'Payment',
+const router = useRouter()
+const route = useRoute()
 
-  data() {
-    return {
-      payWay: '',
-      orderSn: undefined,
-      actualPrice: 0
+const state = reactive({
+  payWay: '',
+  orderSn: '',
+  actualPrice: 0,
+})
+
+const { payWay, orderSn, actualPrice } = toRefs(state)
+
+const goPayStatus = (status) => {
+  router.replace({
+    name: 'PayStatus',
+    query: { status },
+  })
+}
+
+const ensurePayContext = () => {
+  const queryOrderSn = route.query.orderSn
+  if (typeof queryOrderSn !== 'string' || !queryOrderSn) {
+    showToast({
+      type: 'fail',
+      message: '订单信息已失效，请返回订单列表重新支付',
+    })
+    router.replace('/user/order/list/0')
+    return false
+  }
+
+  orderSn.value = queryOrderSn
+  actualPrice.value = Number(route.query.actualPrice || 0)
+  return true
+}
+
+const pay = async () => {
+  if (!ensurePayContext()) {
+    return
+  }
+
+  if (!payWay.value) {
+    showToast({
+      type: 'fail',
+      message: '请选择支付方式',
+    })
+    return
+  }
+
+  const returnUrl = `${window.location.origin}${window.location.pathname}#/order/payStatus?status=success`
+
+  try {
+    if (payWay.value === 'wx') {
+      const res = await orderPrepay({
+        orderSn: orderSn.value,
+        payType: 5,
+        returnUrl,
+      })
+      window.location.href = res.data.epayurl
+      return
     }
-  },
-  created() {
-    if (_.has(this.$route.params, 'orderSn')) {
-      this.orderSn = this.$route.params.orderSn
-      this.actualPrice = this.$route.params.actualPrice
+
+    if (payWay.value === 'ali') {
+      showLoadingToast({
+        duration: 0,
+        forbidClick: true,
+        message: '支付中，请稍后...',
+      })
+      const res = await orderPrepay({
+        orderSn: orderSn.value,
+        payType: 4,
+        returnUrl,
+      })
+      window.location.href = res.data.epayurl
+      return
     }
-  },
-  methods: {
-    pay() {
-      if (!this.payWay) {
-        this.$toast.fail('请选择支付方式')
-        return
-      }
-      if (this.payWay === 'wx') {
-        // 微信h5支付
-        const returnUrl = window.location.origin + window.location.pathname + '#/order/payStatus?status=success'
-        orderPrepay({ orderSn: this.orderSn, payType: 5, returnUrl })
-          .then((res) => {
-            window.location.href = res.data.epayurl
-          })
-          .catch((err) => {
-            console.log(err)
-            // this.$dialog.alert({ message: '支付失败' })
-            this.$router.replace({
-              name: 'PayStatus',
-              params: {
-                status: 'failed'
-              }
-            })
-          })
-      } else if (this.payWay === 'ali') {
-        // 支付宝手机网站支付
-        this.$toast.loading({
-          duration: 0, // 持续展示 toast
-          forbidClick: true,
-          message: '支付中，请稍后'
-        })
-        const returnUrl = window.location.origin + window.location.pathname + '#/order/payStatus?status=success'
-        orderPrepay({ orderSn: this.orderSn, payType: 4, returnUrl })
-          .then((res) => {
-            window.location.href = res.data.epayurl
-          })
-          .catch((err) => {
-            console.log(err)
-            this.$router.replace({
-              name: 'PayStatus',
-              params: {
-                status: 'failed'
-              }
-            })
-          })
-      } else {
-        // 测试支付
-        this.$toast.loading({
-          duration: 0, // 持续展示 toast
-          forbidClick: true,
-          message: '支付中，请稍后'
-        })
-        orderPrepay({ orderSn: this.orderSn, payType: 99 })
-          .then((res) => {
-            this.$router.replace({
-              name: 'PayStatus',
-              params: {
-                status: 'success'
-              }
-            })
-          })
-          .catch((err) => {
-            console.log(err)
-            this.$router.replace({
-              name: 'PayStatus',
-              params: {
-                status: 'failed'
-              }
-            })
-          })
-      }
-    },
-    /**
-     * 通过提交form表单唤起支付宝客户端支付
-     */
-    alipayClientCall(form) {
-      const div = document.createElement('div')
-      console.log('我是后端返回的数据:' + form)
-      div.innerHTML = form
-      document.body.appendChild(div)
-      console.log('punchout_form:' + document.forms.punchout_form)
-      document.forms.punchout_form.submit()
-    },
-    onBridgeReady() {
-      const that = this
-      const data = getLocalStorage('prepay_data')
-      // eslint-disable-next-line no-undef
-      WeixinJSBridge.invoke(
-        'getBrandWCPayRequest',
-        JSON.parse(data.prepay_data),
-        function(res) {
-          console.log(res)
-          if (res.err_msg === 'get_brand_wcpay_request:ok') {
-            that.$router.replace({
-              name: 'PayStatus',
-              params: {
-                status: 'success'
-              }
-            })
-          } else if (res.err_msg === 'get_brand_wcpay_request:cancel') {
-            that.$router.replace({
-              name: 'PayStatus',
-              params: {
-                status: 'cancel'
-              }
-            })
-          } else {
-            that.$router.replace({
-              name: 'PayStatus',
-              params: {
-                status: 'failed'
-              }
-            })
-          }
-        }
-      )
-    }
+
+    showLoadingToast({
+      duration: 0,
+      forbidClick: true,
+      message: '支付中，请稍后...',
+    })
+    await orderPrepay({
+      orderSn: orderSn.value,
+      payType: 99,
+    })
+    goPayStatus('success')
+  } catch (error) {
+    console.log(error)
+    goPayStatus('failed')
   }
 }
+
+onMounted(() => {
+  ensurePayContext()
+})
 </script>
 
 <style lang="scss" scoped>
 $mb2vw: 2vw;
+
 .payment {
   min-height: 100vh;
   background: #f5f5f5;
@@ -226,6 +193,10 @@ $mb2vw: 2vw;
   .pay_way_title {
     padding: 5vw 4vw;
     background-color: #fff;
+  }
+
+  .pay_way_label {
+    font-size: 17px;
   }
 }
 </style>

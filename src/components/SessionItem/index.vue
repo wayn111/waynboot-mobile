@@ -9,56 +9,54 @@
       <van-tag round type="success">{{ tagnum }}+款上新</van-tag>
 
       <span class="desc__text">
-        <i>{{ discount }}</i>折起
+        <i>{{ discount }}</i
+        >折起
       </span>
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
+import { useRouter, useRoute } from 'vue-router'
+
+const router = useRouter()
+const route = useRoute()
+
 import CountDown from '@/components/CountDown'
-export default {
-  components: {
-    CountDown
-  },
-  props: {
-    img: {
+
+const props = defineProps({img: {
       type: String,
-      default: ''
+      default: '',
     },
     title: {
       type: String,
-      default: ''
+      default: '',
     },
     time: {
       type: Number,
-      default: 0
+      default: 0,
     },
     tagnum: {
       type: Number,
-      default: 100
+      default: 100,
     },
     discount: {
       type: Number,
-      default: 0
-    }
-  },
-  methods: {
-    onClick() {
-      this.$router.push({
+      default: 0,
+    },})
+
+const onClick = () => {
+  router.push({
         path: '/product/1/1010000',
         query: {
-          t: +new Date()
-        }
+          t: +new Date(),
+        },
       })
-    }
-  }
 }
 </script>
 
 <style lang="scss" scoped>
-@import "@/styles/variables.scss";
-
+@use '@/styles/variables.scss' as *;
 .session-item {
   width: 700px;
   height: 460px;

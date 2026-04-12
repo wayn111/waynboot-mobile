@@ -1,16 +1,14 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-
-Vue.use(VueRouter)
+import { defineAsyncComponent } from 'vue'
+import { createRouter, createWebHashHistory } from 'vue-router'
 
 const routes = [
   // 首页
   {
-    path: '*',
+    path: '/:pathMatch(.*)*',
     name: 'Home',
     // 路由懒加载：https://router.vuejs.org/zh/guide/advanced/lazy-loading.html
     // webpackPreload：https://www.jianshu.com/p/bbdcfeee7fbc
-    component: () => import(/* webpackPreload: true */ '@/views/home'),
+    component: defineAsyncComponent(() => import('@/views/home/index.vue')),
     meta: {
       title: '首页',
       showTab: true,
@@ -21,7 +19,7 @@ const routes = [
   {
     path: '/login',
     name: 'Login',
-    component: () => import('@/views/auth/login'),
+    component: defineAsyncComponent(() => import('@/views/auth/login.vue')),
     meta: {
       title: '登录'
     }
@@ -30,7 +28,7 @@ const routes = [
   {
     path: '/registry',
     name: 'Registry',
-    component: () => import('@/views/auth/login'),
+    component: defineAsyncComponent(() => import('@/views/auth/registry.vue')),
     meta: {
       title: '注册'
     }
@@ -39,7 +37,9 @@ const routes = [
   {
     path: '/category',
     name: 'Category',
-    component: () => import('@/views/category'),
+    component: defineAsyncComponent(
+      () => import('@/views/category/index.vue')
+    ),
     meta: {
       title: '分类',
       showTab: true,
@@ -50,7 +50,7 @@ const routes = [
   {
     path: '/cart',
     name: 'Cart',
-    component: () => import('@/views/cart'),
+    component: defineAsyncComponent(() => import('@/views/cart/index.vue')),
     meta: {
       title: '购物车',
       showTab: true
@@ -60,7 +60,7 @@ const routes = [
   {
     path: '/user',
     name: 'User',
-    component: () => import('@/views/user'),
+    component: defineAsyncComponent(() => import('@/views/user/index.vue')),
     meta: {
       title: '我的',
       showTab: true
@@ -70,7 +70,9 @@ const routes = [
   {
     path: '/userSetting',
     name: 'UserSetting',
-    component: () => import('@/views/userSetting'),
+    component: defineAsyncComponent(
+      () => import('@/views/userSetting/index.vue')
+    ),
     meta: {
       title: '用户设置',
       showTab: true
@@ -80,7 +82,9 @@ const routes = [
   {
     path: '/userSetting/nickname',
     name: 'UserSetNickname',
-    component: () => import('@/views/userSetting/nickname'),
+    component: defineAsyncComponent(
+      () => import('@/views/userSetting/nickname/index.vue')
+    ),
     meta: {
       title: '设置昵称',
       showTab: true
@@ -90,7 +94,9 @@ const routes = [
   {
     path: '/userSetting/birthday',
     name: 'UserSetBirthday',
-    component: () => import('@/views/userSetting/birthday'),
+    component: defineAsyncComponent(
+      () => import('@/views/userSetting/birthday/index.vue')
+    ),
     meta: {
       title: '设置生日',
       showTab: true
@@ -100,7 +106,9 @@ const routes = [
   {
     path: '/userSetting/gender',
     name: 'UserSetGender',
-    component: () => import('@/views/userSetting/gender'),
+    component: defineAsyncComponent(
+      () => import('@/views/userSetting/gender/index.vue')
+    ),
     meta: {
       title: '设置性别',
       showTab: true
@@ -110,7 +118,9 @@ const routes = [
   {
     path: '/userSetting/email',
     name: 'UserSetEmail',
-    component: () => import('@/views/userSetting/email'),
+    component: defineAsyncComponent(
+      () => import('@/views/userSetting/email/index.vue')
+    ),
     meta: {
       title: '设置邮箱',
       showTab: true
@@ -120,7 +130,9 @@ const routes = [
   {
     path: '/userSetting/mobile',
     name: 'UserSetMobile',
-    component: () => import('@/views/userSetting/mobile'),
+    component: defineAsyncComponent(
+      () => import('@/views/userSetting/mobile/index.vue')
+    ),
     meta: {
       title: '设置手机号',
       showTab: true
@@ -130,7 +142,9 @@ const routes = [
   {
     path: '/userSetting/password',
     name: 'UserSetPassword',
-    component: () => import('@/views/userSetting/password'),
+    component: defineAsyncComponent(
+      () => import('@/views/userSetting/password/index.vue')
+    ),
     meta: {
       title: '设置密码',
       showTab: true
@@ -141,7 +155,9 @@ const routes = [
     path: '/user/order/list/:active',
     name: 'OrderList',
     props: true,
-    component: () => import('@/views/order/list'),
+    component: defineAsyncComponent(
+      () => import('@/views/order/list/index.vue')
+    ),
     meta: {
       title: '订单列表',
       showTab: true
@@ -152,7 +168,9 @@ const routes = [
     path: '/product/:categoryLevel/:cateId',
     name: 'Product',
     props: true,
-    component: () => import('@/views/product'),
+    component: defineAsyncComponent(
+      () => import('@/views/product/index.vue')
+    ),
     meta: {
       title: '商品列表',
       keepAlive: true
@@ -163,7 +181,9 @@ const routes = [
     path: '/diamondGoodsList/:diamondId',
     name: 'Diamand',
     props: true,
-    component: () => import('@/views/diamondGoodsList'),
+    component: defineAsyncComponent(
+      () => import('@/views/diamondGoodsList/index.vue')
+    ),
     meta: {
       title: '商品列表',
       keepAlive: true
@@ -174,7 +194,9 @@ const routes = [
     path: '/detail/:goodsId',
     name: 'Detail',
     props: true,
-    component: () => import('@/views/detail'),
+    component: defineAsyncComponent(
+      () => import('@/views/detail/index.vue')
+    ),
     meta: {
       title: '商品详情',
       keepAlive: true
@@ -185,7 +207,9 @@ const routes = [
     path: '/detail/comment/:goodsId/:tagType',
     name: 'Comment',
     props: true,
-    component: () => import('@/views/detail/comment'),
+    component: defineAsyncComponent(
+      () => import('@/views/detail/comment/index.vue')
+    ),
     meta: {
       title: '商品评论'
     }
@@ -194,7 +218,9 @@ const routes = [
   {
     path: '/address',
     name: 'Address',
-    component: () => import('@/views/address/list'),
+    component: defineAsyncComponent(
+      () => import('@/views/address/list.vue')
+    ),
     meta: {
       title: '地址管理'
     }
@@ -203,7 +229,9 @@ const routes = [
   {
     path: '/address/edit',
     name: 'AddressEdit',
-    component: () => import('@/views/address/edit'),
+    component: defineAsyncComponent(
+      () => import('@/views/address/edit.vue')
+    ),
     meta: {
       title: '地址编辑'
     }
@@ -212,7 +240,9 @@ const routes = [
   {
     path: '/search',
     name: 'Search',
-    component: () => import('@/views/search'),
+    component: defineAsyncComponent(
+      () => import('@/views/search/index.vue')
+    ),
     meta: {
       title: '搜索'
     }
@@ -221,7 +251,9 @@ const routes = [
   {
     path: '/search/list',
     name: 'SearchList',
-    component: () => import('@/views/search/list'),
+    component: defineAsyncComponent(
+      () => import('@/views/search/list.vue')
+    ),
     meta: {
       title: '搜索结果'
     }
@@ -230,7 +262,9 @@ const routes = [
   {
     path: '/order/confirm',
     name: 'OrderConfirm',
-    component: () => import('@/views/order/confirm'),
+    component: defineAsyncComponent(
+      () => import('@/views/order/confirm/index.vue')
+    ),
     meta: {
       title: '确认订单',
       keepAlive: true
@@ -240,7 +274,9 @@ const routes = [
   {
     path: '/order/pay',
     name: 'OrderPay',
-    component: () => import('@/views/order/pay'),
+    component: defineAsyncComponent(
+      () => import('@/views/order/pay/index.vue')
+    ),
     meta: {
       title: '订单支付'
     }
@@ -250,7 +286,9 @@ const routes = [
     path: '/order/detail/:orderSn',
     name: 'OrderDetail',
     props: true,
-    component: () => import('@/views/order/detail'),
+    component: defineAsyncComponent(
+      () => import('@/views/order/detail/index.vue')
+    ),
     meta: {
       title: '订单详情'
     }
@@ -260,13 +298,17 @@ const routes = [
     path: '/order/payStatus',
     name: 'PayStatus',
     props: true,
-    component: () => import('@/views/order/payStatus')
+    component: defineAsyncComponent(
+      () => import('@/views/order/payStatus/index.vue')
+    )
   },
   // 优惠券
   {
     path: '/order/coupon',
     name: 'coupon',
-    component: () => import('@/views/order/coupon'),
+    component: defineAsyncComponent(
+      () => import('@/views/order/coupon/index.vue')
+    ),
     meta: {
       title: '优惠券',
       showTab: true
@@ -276,7 +318,9 @@ const routes = [
   {
     path: '/order/my',
     name: 'couponMy',
-    component: () => import('@/views/order/my'),
+    component: defineAsyncComponent(
+      () => import('@/views/order/my/index.vue')
+    ),
     meta: {
       title: '优惠券',
       showTab: true
@@ -287,21 +331,24 @@ const routes = [
     path: '/goodsComment/:orderGoodsId/:goodsId',
     name: 'GoodsComment',
     props: true,
-    component: () => import('@/views/goodsComment'),
+    component: defineAsyncComponent(
+      () => import('@/views/goodsComment/index.vue')
+    ),
     meta: {
       title: '商品评论'
     }
   }
 ]
 
-const router = new VueRouter({
+const router = createRouter({
+  history: createWebHashHistory(),
   // 记录上个页面的滚动位置
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
       return savedPosition
-    } else {
-      return { x: 0, y: 0 }
     }
+
+    return { top: 0, left: 0 }
   },
   routes
 })

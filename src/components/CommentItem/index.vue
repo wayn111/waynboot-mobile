@@ -11,7 +11,7 @@
         />
         <span class="comment_name">{{ name }}</span>
         <van-rate
-          v-model="score"
+          :model-value="score"
           readonly
           :size="15"
           :color="variables.red"
@@ -33,7 +33,7 @@
           width="90"
           height="90"
           style="margin-right: 8px"
-          @click.native="onClick(idx)"
+          @click="onClick(idx)"
         />
       </div>
       <div v-if="reply" class="admin-reply">
@@ -43,72 +43,70 @@
   </div>
 </template>
 
-<script>
-import variables from '@/styles/variables.scss'
-import { ImagePreview } from 'vant'
+<script setup>
+import { showImagePreview } from 'vant'
+import variables from '@/styles/variables.scss?inline'
 
-export default {
-  props: {
-    avatar: {
-      type: String,
-      default: ''
-    },
-    time: {
-      type: String,
-      default: ''
-    },
-    name: {
-      type: String,
-      default: ''
-    },
-    score: {
-      type: Number,
-      default: 0
-    },
-    desc: {
-      type: String,
-      default: ''
-    },
-    reply: {
-      type: String,
-      default: ''
-    },
-    imgs: {
-      type: Array,
-      default() {
-        return []
-      }
-    }
+const props = defineProps({
+  avatar: {
+    type: String,
+    default: '',
   },
-  computed: {
-    variables() {
-      return variables
-    }
+  time: {
+    type: String,
+    default: '',
   },
-  methods: {
-    onClick(index) {
-      ImagePreview(this.imgs, index)
-    }
-  }
+  name: {
+    type: String,
+    default: '',
+  },
+  score: {
+    type: Number,
+    default: 0,
+  },
+  desc: {
+    type: String,
+    default: '',
+  },
+  reply: {
+    type: String,
+    default: '',
+  },
+  imgs: {
+    type: Array,
+    default() {
+      return []
+    },
+  },
+})
+
+const onClick = (index) => {
+  showImagePreview({
+    images: props.imgs,
+    startPosition: index,
+  })
 }
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/variables.scss';
+@use '@/styles/variables.scss' as *;
 
 .comment-item-component {
   border-top: 1px solid rgb(236, 231, 231);
   padding: 15px 0 10px 0;
+
   .title {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0px 0 18px 0;
+
     .title__left {
       display: flex;
       align-items: center;
       color: $black;
       font-size: $small;
+
       .comment_name {
         margin: 0 10px 0 6px;
         max-width: 180px;
@@ -118,11 +116,13 @@ export default {
         white-space: nowrap;
       }
     }
+
     .title__right {
       color: $gray;
       font-size: $small;
     }
   }
+
   .desc {
     .desc__text {
       font-size: $small;
@@ -130,16 +130,19 @@ export default {
       line-height: 38px;
       text-align: justify;
     }
+
     .desc_img {
       display: flex;
       flex-direction: row;
       margin-top: 8px;
       overflow: scroll;
     }
+
     .admin-reply {
       font-size: $small;
       margin-top: 18px;
       line-height: 34px;
+
       span {
         color: #e26262;
       }

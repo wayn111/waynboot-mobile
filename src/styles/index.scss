@@ -1,3 +1,3 @@
-@import './variables.scss';
-@import './vant-theme.scss';
-@import './reset.scss';
+@use './variables.scss' as *;
+@use './vant-theme.scss' as *;
+@use './reset.scss' as *;

@@ -1,43 +1,46 @@
 <template>
-  <div style="background:#fff">
+  <div style="background: #fff">
     <van-swipe :autoplay="3000" :indicator-color="variables.red">
-      <van-swipe-item v-for="(image, index) in banner" :key="index" @click="onSwipeClick(index)">
+      <van-swipe-item
+        v-for="(image, index) in banner"
+        :key="index"
+        @click="onSwipeClick(index)"
+      >
         <image-pic width="100%" :src="image" />
       </van-swipe-item>
     </van-swipe>
 
-    <van-image-preview v-model="show" :images="banner" :start-position="previewIdx" />
+    <van-image-preview
+      v-model:show="show"
+      :images="banner"
+      :start-position="previewIdx"
+    />
   </div>
 </template>
 
-<script>
-import variables from '@/styles/variables.scss'
+<script setup>
+import { reactive, toRefs } from 'vue'
 
-export default {
-  props: {
-    banner: {
-      type: Array,
-      default() {
-        return []
-      }
-    }
+import variables from '@/styles/variables.scss?inline'
+
+defineProps({
+  banner: {
+    type: Array,
+    default() {
+      return []
+    },
   },
-  data() {
-    return {
-      show: false,
-      previewIdx: 0
-    }
-  },
-  computed: {
-    variables() {
-      return variables
-    }
-  },
-  methods: {
-    onSwipeClick(index) {
-      this.previewIdx = index
-      this.show = true
-    }
-  }
+})
+
+const state = reactive({
+  show: false,
+  previewIdx: 0,
+})
+
+const { show, previewIdx } = toRefs(state)
+
+const onSwipeClick = (index) => {
+  previewIdx.value = index
+  show.value = true
 }
 </script>

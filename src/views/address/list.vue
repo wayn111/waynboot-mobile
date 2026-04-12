@@ -10,90 +10,85 @@
       @edit="onEdit"
       @select="onSelect"
     />
-
-    <!-- 商品列表 -->
-    <div class="goods">
-      <div v-for="(item, idx) in exhibitionSettlementItemDTOs" :key="idx" class="goods--exhibition">
-        <h3 class="exhibition__title">
-          <svg-icon icon-class="store" :width="15" :height="15" />
-          <span class="name">{{ item.exhibitionParkName }}</span>
-        </h3>
-        <div v-for="(settlementItem, idx2) in item.settlementItemDTOs" :key="idx2" class="goods__item">
-          <img class="goods__item__img" :src="settlementItem.headPicture | addCDNImg">
-          <div class="goods__item__main">
-            <p class="goods__item__main__desc">{{ settlementItem.spuName }}</p>
-            <p class="goods__item__main__attr">
-              <span>{{ settlementItem.attribute1 }}</span>
-              <span>{{ settlementItem.attribute2 }}</span>
-            </p>
-            <!-- <p class="goods__item__main__id">货号：{{item.supplierId}}</p> -->
-          </div>
-          <div class="goods__item__price">
-            <span class="goods__item__price__price">¥{{ settlementItem.itemPrice | formatAmountFixed2Zero }}</span>
-            <span class="goods__item__price__count">x{{ settlementItem.num }}</span>
-          </div>
-          <!-- new add: 运费 -->
-          <div
-            v-if="settlementItem.postage>0"
-            class="goods__item__postage"
-          >运费：¥{{ settlementItem.postage | formatAmountFixed2Zero }}</div>
-        </div>
-        <div class="exhibition__amount">
-          <span
-            v-if="role > 0"
-            class="exhibition__amount__bouns"
-          >返佣金¥{{ item.bonus | formatAmountFixed2Zero }}</span>
-          <span>共1件商品 合计：¥{{ item.exhibitionTotalPrice | formatAmountFixed2Zero }}</span>
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 
-<script>
+<script setup>
+import { computed, onMounted, reactive, toRefs } from 'vue'
+import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
+import { closeToast, showLoadingToast } from 'vant'
+
 import NavBar from '@/components/NavBar'
 
-export default {
-  name: 'Address',
-  components: {
-    NavBar
-  },
-  data() {
-    return {
-      defaultId: '',
-      list: [],
-      exhibitionSettlementItemDTOs: []
-    }
-  },
-  async mounted() {
-    this.$toast.loading('加载中...')
-    this.list = await this.$store.dispatch('address/getList')
-    this.list.forEach(item => {
-      item.address = item.province + item.city + item.county + ' ' + item.addressDetail
-    })
-    this.$toast.clear()
-  },
-  methods: {
-    onSelect(item, index) {
-      this.$store.dispatch('address/setList', index)
-      this.$router.go(-1)
-    },
-    onAdd() {
-      this.$router.push({
-        path: '/address/edit'
-      })
-    },
-    onEdit(item, index) {
-      this.$toast('编辑地址:' + index)
-      this.$router.push({
-        path: '/address/edit',
-        query: {
-          index
-        }
-      })
-    }
+const router = useRouter()
+const store = useStore()
+
+const selectedAddress = computed(() => store.getters.selectedAddress || {})
+
+const state = reactive({
+  defaultId: '',
+  list: [],
+})
+
+const { defaultId, list } = toRefs(state)
+
+const normalizeAddressList = (addressList) => {
+  return (addressList || []).map((item) => ({
+    ...item,
+    address: `${item.province || ''}${item.city || ''}${item.county || ''} ${item.addressDetail || ''}`.trim(),
+  }))
+}
+
+const syncDefaultId = () => {
+  if (selectedAddress.value?.id) {
+    defaultId.value = selectedAddress.value.id
+    return
+  }
+
+  const defaultItem = list.value.find((item) => item.isDefault)
+  defaultId.value = defaultItem?.id || ''
+}
+
+const loadAddressList = async () => {
+  showLoadingToast({
+    message: '加载中...',
+    forbidClick: true,
+    duration: 0,
+  })
+
+  try {
+    const data = await store.dispatch('address/getList')
+    list.value = normalizeAddressList(data)
+    syncDefaultId()
+  } finally {
+    closeToast()
   }
 }
+
+const onSelect = (item) => {
+  store.commit('address/SET_SELECTED_ADDRESS', item)
+  router.back()
+}
+
+const onAdd = () => {
+  router.push({
+    path: '/address/edit',
+  })
+}
+
+const onEdit = (_, index) => {
+  router.push({
+    path: '/address/edit',
+    query: {
+      index,
+    },
+  })
+}
+
+onMounted(() => {
+  loadAddressList()
+})
 </script>
 
 <style lang="scss" scoped>

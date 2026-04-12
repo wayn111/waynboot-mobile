@@ -1,131 +1,130 @@
 <template>
-    <div class="coupon">
-        <nav-bar :title="$route.meta.title" />
+  <div class="coupon">
+    <nav-bar :title="$route.meta.title" />
 
-        <van-list v-model="isLoading" :finished="isFinished" finished-text="没有更多了" :immediate-check="false"
-            @load="onReachBottom">
-            <div class="main">
-                <div v-for="(item, i) in goodsList" :key="i" class="content">
-                    <div class="left">
-                        <div class="title">{{ item.discount }}元{{ item.title }}</div>
-                        <div class="desc">最低消费{{ item.min }}可用</div>
-                    </div>
-                    <div class="right" v-if="item.useStatus == 1">已使用</div>
-                    <div class="right" v-if="item.useStatus == 2">已过期</div>
-                    <div class="noUser"  v-if="!item.useStatus">未使用</div>
-                </div>
-            </div>
-        </van-list>
-    </div>
+    <van-list
+      v-model:loading="isLoading"
+      :finished="isFinished"
+      finished-text="没有更多了"
+      :immediate-check="false"
+      @load="onReachBottom"
+    >
+      <div class="main">
+        <div v-for="(item, i) in goodsList" :key="item.id || i" class="content">
+          <div class="left">
+            <div class="title">{{ item.discount }}元{{ item.title }}</div>
+            <div class="desc">最低消费 {{ item.min }} 元可用</div>
+          </div>
+          <div :class="statusClass(item.useStatus)">
+            {{ statusText(item.useStatus) }}
+          </div>
+        </div>
+      </div>
+    </van-list>
+  </div>
 </template>
 
-<script>
-import { orderCouponMy } from '@/api/order'
-import { getToken } from '@/utils/auth' // get token from cookie
-import { Toast, Dialog } from 'vant'
-import store from '@/store'
-import router from '@/router'
-export default {
-    components: {
-    },
-    model: {
-        prop: 'isLoading'
-    },
-    data() {
-        return {
-            goodsList: [],
-            isLoading: false,
-            isFinished: false,
-            pageSize: 10,
-            pageNum: 1,
-        }
-    },
+<script setup>
+import { onMounted, reactive, toRefs } from 'vue'
 
-    computed: {
-        loading: {
-            get() {
-                return this.isLoading
-            },
-            set(val) {
-                this.$emit('input', val)
-            }
-        }
-    },
-    mounted() {
-        this.getOrderCouponMyList()
-    },
-    methods: {
-        getOrderCouponMyList() {
-            orderCouponMy({
-                pageSize: this.pageSize,
-                pageNum: this.pageNum
-            }).then(res => {
-                const { records } = res.data
-                if(this.pageNum == 1){
-                    this.goodsList = records
-                }else{
-                    this.goodsList = [...this.goodsList, ...records]
-                }
-                this.isLoading = false
-                if (records.length < this.pageSize && this.goodsList.length > 0) {
-                    this.isFinished = true
-                }
-            })
-        },
-        onReachBottom() {
-            this.pageNum += 1
-            this.getOrderCouponMyList()
-        },
-        onSubmit(id) {
-           
-        }
-    }
+import { orderCouponMy } from '@/api/order'
+
+const state = reactive({
+  goodsList: [],
+  isLoading: false,
+  isFinished: false,
+  pageSize: 10,
+  pageNum: 1,
+})
+
+const { goodsList, isLoading, isFinished, pageSize, pageNum } = toRefs(state)
+
+const statusText = (status) => {
+  if (status === 1) return '已使用'
+  if (status === 2) return '已过期'
+  return '未使用'
 }
+
+const statusClass = (status) => (status === 0 ? 'unused' : 'right')
+
+const getOrderCouponMyList = () => {
+  orderCouponMy({
+    pageSize: pageSize.value,
+    pageNum: pageNum.value,
+  }).then((res) => {
+    const records = res?.data?.records || []
+
+    if (pageNum.value === 1) {
+      goodsList.value = records
+    } else {
+      goodsList.value = [...goodsList.value, ...records]
+    }
+
+    isLoading.value = false
+    if (records.length < pageSize.value) {
+      isFinished.value = true
+    }
+  }).catch(() => {
+    isLoading.value = false
+    isFinished.value = true
+  })
+}
+
+const onReachBottom = () => {
+  pageNum.value += 1
+  getOrderCouponMyList()
+}
+
+onMounted(() => {
+  getOrderCouponMyList()
+})
 </script>
 
 <style lang="scss" scoped>
 .coupon {
-    background: #f5f5f5;
-    min-height: 100vh;
+  background: #f5f5f5;
+  min-height: 100vh;
 
-    .content {
-        margin: 20px 30px;
-        background: #fff;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 20px 30px;
-        border-radius: 10px;
+  .content {
+    margin: 20px 30px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 30px;
+    border-radius: 10px;
 
-        .left {
-            display: flex;
+    .left {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
 
-            flex-direction: column;
-            justify-content: center;
+      .title {
+        font-weight: bold;
+        font-size: 36px;
+        color: #000;
+        line-height: 70px;
+      }
 
-            .title {
-                font-weight: bold;
-                font-size: 36px;
-                color: #000;
-                line-height: 70px;
-            }
-
-            .desc {
-                font-size: 24px;
-                color: #666;
-                line-height: 50px;
-            }
-        }
-
-        .right {
-            color:#ce4141;
-            font-size: 32px;
-        }
-        .noUser{
-            color:rgb(68, 178, 238);
-            font-size: 32px;
-        }
-
+      .desc {
+        font-size: 24px;
+        color: #666;
+        line-height: 50px;
+      }
     }
+
+    .right,
+    .unused {
+      font-size: 32px;
+    }
+
+    .right {
+      color: #ce4141;
+    }
+
+    .unused {
+      color: #44b2ee;
+    }
+  }
 }
 </style>

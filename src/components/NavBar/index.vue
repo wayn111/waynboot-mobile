@@ -16,39 +16,38 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    title: {
+<script setup>
+import { useRouter, useRoute } from 'vue-router'
+
+const router = useRouter()
+const route = useRoute()
+
+const props = defineProps({title: {
       type: String,
-      default: '请输入标题'
+      default: '请输入标题',
     },
     leftText: {
       type: String,
-      default: '返回'
+      default: '返回',
     },
     leftArrow: {
       type: Boolean,
-      default: true
-    }
-  },
-  methods: {
-    onClickLeft() {
-      // if (this.$route.name === 'OrderList') {
-      //   this.$router.push({ 'name': 'User' })
+      default: true,
+    },})
+
+const onClickLeft = () => {
+  // if (route.name === 'OrderList') {
+      //   router.push({ 'name': 'User' })
       // } else {
-      //   this.$router.go(-1)
+      //   router.go(-1)
       // }
-      this.$router.go(-1)
-    }
-  }
+      router.go(-1)
 }
 </script>
 
-<style lang="scss" >
-@import "@/styles/variables.scss";
-
-// reset vant-nav-bar style
+<style lang="scss">
+@use '@/styles/variables.scss' as *; /*// reset vant-nav-bar style
+*/
 .nav-compoment {
   .van-nav-bar {
     .van-icon {

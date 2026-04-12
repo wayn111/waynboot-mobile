@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="set_nickname">
     <nav-bar :title="$route.meta.title" />
     <van-cell-group>
@@ -6,42 +6,53 @@
     </van-cell-group>
 
     <div class="bottom_btn">
-      <van-button type="primary" size="large" @click="saveNick">保存</van-button>
+      <van-button type="primary" size="large" @click="saveMobile">保存</van-button>
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
+import { reactive, toRefs } from 'vue'
+import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
+import { showDialog, showToast } from 'vant'
+
 import { profile } from '@/api/user'
 import { Valid } from '@/utils/index'
 
-export default {
-  data() {
-    return {
-      mobile: ''
+const router = useRouter()
+const store = useStore()
+
+const state = reactive({ mobile: '' })
+const { mobile } = toRefs(state)
+
+const getMobile = () => {
+  mobile.value = store.getters.userInfo.mobile
+}
+
+const saveMobile = async () => {
+  if (Valid.checkPhone(mobile.value) === false) {
+    showToast({ type: 'fail', message: '请输入正确的手机号' })
+    return
+  }
+
+  try {
+    const res = await profile({ mobile: mobile.value })
+    if (res.code !== 200) {
+      showToast({ type: 'fail', message: res.msg || '保存失败' })
+      return
     }
-  },
-  created() {
-    this.getMobile()
-  },
-  methods: {
-    getMobile() {
-      this.mobile = this.$store.getters.userInfo.mobile
-    },
-    saveNick() {
-      if (Valid.checkPhone(this.mobile) === false) {
-        this.$toast.fail('请输入正确的手机号')
-        return
-      }
-      profile({ mobile: this.mobile }).then((res) => {
-        this.$dialog.alert({ message: '保存成功' }).then(async() => {
-          await this.$store.dispatch('user/getInfo')
-          this.$router.go(-1)
-        })
-      })
-    }
+
+    await store.dispatch('user/getInfo')
+    showDialog({ message: '保存成功' }).then(() => {
+      router.go(-1)
+    })
+  } catch (error) {
+    showToast({ type: 'fail', message: error?.message || '保存失败' })
   }
 }
+
+getMobile()
 </script>
 
 <style scoped>

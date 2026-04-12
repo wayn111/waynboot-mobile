@@ -2,68 +2,80 @@
   <div class="user-order">
     <h3 class="order__title">
       <p class="order__title__title">我的订单</p>
-      <p class="order__title__navigate" @click="$router.push({path: '/user/order/list/0'})">
-        <span>全部订单</span>
+      <p
+        class="order__title__navigate"
+        @click="$router.push({ path: '/user/order/list/0' })"
+      >
+        <span>查看全部</span>
         <van-icon name="arrow" color="#969799" />
       </p>
     </h3>
     <div class="order__bd">
-      <div v-for="(item,idx) in orderList" :key="idx" class="order__bd__item" @click="$router.push({path: `/user/order/list/${item.type}`})">
-        <van-icon :name="item.icon" size="25" color="#dab309" :badge="item.count" />
+      <div
+        v-for="(item, idx) in orderList"
+        :key="idx"
+        class="order__bd__item"
+        @click="$router.push({ path: `/user/order/list/${item.type}` })"
+      >
+        <van-icon
+          :name="item.icon"
+          size="25"
+          color="#dab309"
+          :badge="item.count"
+        />
         <span class="name">{{ item.name }}</span>
       </div>
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
+import { reactive, toRefs, onMounted } from 'vue'
+
 import { statusCount } from '@/api/order'
 
-export default {
-  data() {
-    return {
-      orderList: [
-        {
-          icon: 'pending-payment',
-          name: '待支付',
-          count: '',
-          type: 1
-        },
-        {
-          icon: 'peer-pay',
-          name: '待发货',
-          count: '',
-          type: 2
-        },
-        {
-          icon: 'logistics',
-          name: '待收货',
-          count: '',
-          type: 3
-        },
-        {
-          icon: 'chat-o',
-          name: '待评价',
-          count: '',
-          type: 4
-        }
-      ]
-    }
-  },
-  mounted() {
-    this.init()
-  },
-  methods: {
-    init() {
-      statusCount().then(res => {
-        this.orderList[0].count = res.data.unpaid || ''
-        this.orderList[1].count = res.data.unship || ''
-        this.orderList[2].count = res.data.unrecv || ''
-        this.orderList[3].count = res.data.uncomment || ''
-      })
-    }
-  }
+const state = reactive({
+  orderList: [
+    {
+      icon: 'pending-payment',
+      name: '待付款',
+      count: '',
+      type: 1,
+    },
+    {
+      icon: 'peer-pay',
+      name: '待发货',
+      count: '',
+      type: 2,
+    },
+    {
+      icon: 'logistics',
+      name: '待收货',
+      count: '',
+      type: 3,
+    },
+    {
+      icon: 'chat-o',
+      name: '待评价',
+      count: '',
+      type: 4,
+    },
+  ],
+})
+const { orderList } = toRefs(state)
+
+const init = () => {
+  statusCount().then((res) => {
+    orderList.value[0].count = res.data.unpaid || ''
+    orderList.value[1].count = res.data.unship || ''
+    orderList.value[2].count = res.data.unrecv || ''
+    orderList.value[3].count = res.data.uncomment || ''
+  })
 }
+
+onMounted(() => {
+  init()
+})
 </script>
 
 <style>
@@ -73,13 +85,15 @@ export default {
 </style>
 
 <style lang="scss" scoped>
-@import "@/styles/variables.scss";
+@use '@/styles/variables.scss' as *;
 
 .user-order {
   width: 702px;
   height: 268px;
   margin: 0 auto;
-  box-shadow: var(--user-order-shadow); // 这里使用 css 函数，是为了避免旧版本 vue-cli 依赖的 css 压缩工具（mini-css-extract-plugin）导致的 bug
+  box-shadow: var(
+    --user-order-shadow
+  ); // 这里使用 css 函数，是为了避免旧版本 vue-cli 依赖的 css 压缩工具（mini-css-extract-plugin）导致的 bug
   border-radius: 24px;
   margin-top: 42px;
   .order__title {

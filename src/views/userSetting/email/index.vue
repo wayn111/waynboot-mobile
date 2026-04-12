@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="set_nickname">
     <nav-bar :title="$route.meta.title" />
     <van-cell-group>
@@ -6,37 +6,47 @@
     </van-cell-group>
 
     <div class="bottom_btn">
-      <van-button type="primary" size="large" @click="saveNick">保存</van-button>
+      <van-button type="primary" size="large" @click="saveEmail">保存</van-button>
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
+import { reactive, toRefs } from 'vue'
+import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
+import { showDialog, showToast } from 'vant'
+
 import { profile } from '@/api/user'
 
-export default {
-  data() {
-    return {
-      email: ''
+const router = useRouter()
+const store = useStore()
+
+const state = reactive({ email: '' })
+const { email } = toRefs(state)
+
+const getEmail = () => {
+  email.value = store.getters.userInfo.email
+}
+
+const saveEmail = async () => {
+  try {
+    const res = await profile({ email: email.value })
+    if (res.code !== 200) {
+      showToast({ type: 'fail', message: res.msg || '保存失败' })
+      return
     }
-  },
-  created() {
-    this.getEmail()
-  },
-  methods: {
-    getEmail() {
-      this.email = this.$store.getters.userInfo.email
-    },
-    saveNick() {
-      profile({ email: this.email }).then((res) => {
-        this.$dialog.alert({ message: '保存成功' }).then(async() => {
-          await this.$store.dispatch('user/getInfo')
-          this.$router.go(-1)
-        })
-      })
-    }
+
+    await store.dispatch('user/getInfo')
+    showDialog({ message: '保存成功' }).then(() => {
+      router.go(-1)
+    })
+  } catch (error) {
+    showToast({ type: 'fail', message: error?.message || '保存失败' })
   }
 }
+
+getEmail()
 </script>
 
 <style scoped>

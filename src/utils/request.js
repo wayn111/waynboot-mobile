@@ -1,13 +1,13 @@
 import axios from 'axios'
 import qs from 'qs'
-import { Toast, Dialog } from 'vant'
+import { showToast, showDialog } from 'vant'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
 import router from '@/router'
 
 // 创建一个axios实例
 const service = axios.create({
-  baseURL: process.env.VUE_APP_BASE_API,
+  baseURL: import.meta.env.VUE_APP_BASE_API,
   // withCredentials: true,
   timeout: 5000
 })
@@ -35,11 +35,11 @@ service.interceptors.response.use(
     if (res.code !== 200) {
       // 5001订单不存在
       // if (res.code !== 5001) {
-      //   Toast.fail(res.msg)
+      //   showToast({ type: 'fail', message: res.msg })
       // }
       // 401未登陆
       if (res.code === 401) {
-        Dialog.alert({
+        showDialog({
           title: '提示',
           message: '您还未登录，请登录'
         }).then(() => {
@@ -56,7 +56,7 @@ service.interceptors.response.use(
       if (res.code === 50148) {
         return res
       }
-      Toast.fail(res.msg)
+      showToast({ type: 'fail', message: res.msg })
       return Promise.reject(new Error(res.msg || 'Error'))
     } else {
       return res
@@ -64,7 +64,7 @@ service.interceptors.response.use(
   },
   error => {
     console.log('err' + error)
-    Toast.fail(error.message)
+    showToast({ type: 'fail', message: error.message })
     return Promise.reject(error)
   }
 )

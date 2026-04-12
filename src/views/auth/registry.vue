@@ -1,4 +1,3 @@
-
 <template>
   <div class="registration">
     <nav-bar :title="$route.meta.title">
@@ -16,14 +15,14 @@
         type="text"
         required
         clearable
-        name="手机号码"
-        label="手机号码"
-        placeholder="请输入手机号码"
+        name="手机号"
+        label="手机号"
+        placeholder="请输入手机号"
         :rules="[
           {
             validator: checkPhone,
             required: true,
-            message: '请输入正确的手机号码!',
+            message: '请输入正确的手机号!',
           },
         ]"
       />
@@ -36,7 +35,7 @@
         name="设置密码"
         label="设置密码"
         placeholder="请设置密码"
-        :rules="[{ required: true, message: '请设置密码!' }]"
+        :rules="[{ required: true, message: '请设置密码' }]"
       />
 
       <van-field
@@ -47,7 +46,7 @@
         name="确认密码"
         label="确认密码"
         placeholder="请再次输入密码确认"
-        :rules="[{ required: true, message: '请再次输入密码确认!' }]"
+        :rules="[{ required: true, message: '请再次输入密码确认' }]"
       />
 
       <van-field
@@ -64,7 +63,7 @@
       >
         <template #button>
           <div class="regist-code">
-            <img :src="captchaImg" @click="getCaptcha">
+            <img :src="captchaImg" @click="getCaptcha" />
           </div>
         </template>
       </van-field>
@@ -75,99 +74,90 @@
           block
           :loading="loading"
           type="info"
-          loading-text="登录中..."
+          loading-text="注册中..."
           native-type="submit"
-        >注册</van-button>
+        >
+          注册
+        </van-button>
       </div>
     </van-form>
   </div>
 </template>
 
-<script>
-import variables from '@/styles/variables.scss'
-import { getCaptcha } from '@/api/login'
+<script setup>
+import { reactive, toRefs, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { showNotify, showToast } from 'vant'
+
+import variables from '@/styles/variables.scss?inline'
+import { getCaptcha as getCaptchaApi } from '@/api/login'
 import { setRegistry } from '@/api/user'
 
-export default {
-  name: 'Regist',
-  data() {
-    return {
-      form: {
-        mobile: '',
-        email: '',
-        password: '',
-        confirmPassword: '',
-        captchaCode: '',
-        captchaKey: ''
-      },
-      disabled: false,
-      totalCount: 0,
-      loading: false,
-      captchaImg: ''
-    }
-  },
-  computed: {
-    variables() {
-      return variables
-    },
-    btnText() {
-      return this.totalCount !== 0 ? `${this.totalCount}秒后获取` : '获取验证码'
-    }
+const router = useRouter()
 
+const state = reactive({
+  form: {
+    mobile: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    captchaCode: '',
+    captchaKey: '',
   },
-  mounted() {
-    this.getCaptcha()
-  },
-  methods: {
-    // 获取图形验证码
-    getCaptcha() {
-      getCaptcha().then((res) => {
-        this.captchaImg = res.data.image
-        this.form.captchaKey = res.data.key
-      })
-    },
-    // 校检手机号
-    checkPhone(num) {
-      if (num === 123456789) return true
-      const reg = /^[1][3,4,5,7,8][0-9]{9}$/
-      if (reg.test(num)) {
-        return true
-      }
-      return false
-    },
-    // 提交
-    onSubmit() {
-      const { password, confirmPassword } = this.form
-      if (password !== confirmPassword) {
-        this.$toast.fail('确认密码与设置的不一致')
-        return
-      }
-      this.loading = true
-      setRegistry(this.form)
-        .then((res) => {
-          this.$notify({
-            type: 'success',
-            message: '注册成功，请登录',
-            duration: 2000,
-            onOpened: () => {
-              this.$router.back()
-            }
-          })
-        })
-        .finally(() => {
-          this.loading = false
-        })
-    }
-  }
+  loading: false,
+  captchaImg: '',
+})
+const { form, loading, captchaImg } = toRefs(state)
+
+const getCaptcha = () => {
+  getCaptchaApi().then((res) => {
+    captchaImg.value = res.data.image
+    form.value.captchaKey = res.data.key
+  })
 }
+
+const checkPhone = (num) => {
+  if (num === 123456789) return true
+  return /^[1][3,4,5,7,8][0-9]{9}$/.test(num)
+}
+
+const onSubmit = () => {
+  const { password, confirmPassword } = form.value
+  if (password !== confirmPassword) {
+    showToast({ type: 'fail', message: '确认密码与设置的不一致' })
+    return
+  }
+
+  loading.value = true
+  setRegistry(form.value)
+    .then(() => {
+      showNotify({
+        type: 'success',
+        message: '注册成功，请登录',
+        duration: 2000,
+        onOpened: () => {
+          router.back()
+        },
+      })
+    })
+    .finally(() => {
+      loading.value = false
+    })
+}
+
+onMounted(() => {
+  getCaptcha()
+})
 </script>
 
 <style lang="scss" scoped>
 .form {
   padding: 24px;
 }
+
 .regist-code {
   height: 40px;
+
   img {
     vertical-align: middle;
     position: relative;

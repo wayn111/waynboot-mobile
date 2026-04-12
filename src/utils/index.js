@@ -36,7 +36,7 @@ export function str2date(str, format) {
 
 export function pathMatcher(matcherArr, path) {
   let flag = false
-  matcherArr.forEach(item => {
+  matcherArr.forEach((item) => {
     if (item.indexOf(path) > -1) {
       flag = true
       return

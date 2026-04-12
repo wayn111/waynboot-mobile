@@ -9,29 +9,31 @@
         <span>店内搜索</span>
       </van-button>
       <!-- <span style="color: #8e8e8e" @click="onUser">
-        <svg-icon icon-class="user" :width="18" :height="18" />
-      </span> -->
+          <svg-icon icon-class="user" :width="18" :height="18" />
+        </span> -->
     </div>
     <div class="placeholder" />
   </div>
 </template>
 
-<script>
-export default {
-  methods: {
-    onSearch() {
-      this.$router.push({
-        path: '/search'
+<script setup>
+import { useRouter, useRoute } from 'vue-router'
+
+const router = useRouter()
+const route = useRoute()
+
+const onSearch = () => {
+  router.push({
+        path: '/search',
       })
-    },
-    onUser() {
-      this.$router.push({
-        path: '/user'
-      })
-    }
-  }
 }
-</script>>
+
+const onUser = () => {
+  router.push({
+        path: '/user',
+      })
+}
+</script>
 
 <style lang="scss" scoped>
 .home-header {

@@ -1,3 +1,25 @@
+@use './variables.scss' as *;
+
+:root {
+  /* Tabbar */
+  --van-tabbar-height: 110px;
+  --van-tabbar-item-font-size: 24px;
+  --van-tabbar-item-icon-size: 44px;
+  --van-tabbar-item-margin-bottom: 10px;
+  
+  /* Search */
+  --van-search-padding: 20px 24px;
+  --van-search-input-height: 68px;
+  --van-search-action-font-size: 28px;
+  --van-search-label-font-size: 28px;
+  --van-search-action-padding: 0 16px;
+
+  /* Badge */
+  --van-badge-size: 32px;
+  --van-badge-font-size: 20px;
+  --van-badge-padding: 0 8px;
+}
+
 //商品卡片
 .van-card__footer {
 	width: 100%;

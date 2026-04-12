@@ -1,29 +1,13 @@
 <template>
   <div class="comment">
-    <!-- <div class="title">
-      <van-button block>
-        <div class="comment__item">
-          <div class="comment__item__left">
-            <span class="title">评价</span>
-            <span class="content">好评率{{ rate }}</span>
-          </div>
-          <div class="comment__item__right">
-            <span class="text">共{{ num }}评论</span>
-            <van-icon name="arrow" />
-          </div>
-        </div>
-      </van-button>
-      <div class="comment__line" />
-    </div> -->
     <div class="item_cell_group">
       <van-cell
-        :value="rate != 0 ? '好评率' + rate + '%' : ''"
+        :value="rate !== 0 ? `好评率 ${rate}%` : ''"
         is-link
         :to="`/detail/comment/${goodsId}/0`"
       >
-        <!-- 使用 title 插槽来自定义标题 -->
         <template #title>
-          <span>评论</span>
+          <span>评价</span>
           <span class="custom-num">{{ num }}</span>
         </template>
       </van-cell>
@@ -35,8 +19,11 @@
         :key="idx"
         class="tags__item"
         @click="itemClick(idx)"
-      >{{ item }}</van-tag>
+      >
+        {{ item }}
+      </van-tag>
     </div>
+
     <div class="main">
       <comment-item
         v-for="(item, idx) in list"
@@ -50,6 +37,7 @@
         :imgs="item.picUrls"
         style="margin-top: 4px"
       />
+
       <div class="main__btn">
         <van-button
           :color="variables.gray"
@@ -57,102 +45,67 @@
           round
           size="small"
           @click="itemClick(0)"
-        >查看全部评价</van-button>
+        >
+          查看全部评价
+        </van-button>
       </div>
     </div>
   </div>
 </template>
 
-<script>
-import CommentItem from '@/components/CommentItem'
-import variables from '@/styles/variables.scss'
+<script setup>
+import { useRouter } from 'vue-router'
 
-export default {
-  components: {
-    CommentItem
+import CommentItem from '@/components/CommentItem'
+import variables from '@/styles/variables.scss?inline'
+
+const router = useRouter()
+
+const props = defineProps({
+  rate: {
+    type: Number,
+    default: 0,
   },
-  // eslint-disable-next-line vue/require-prop-types
-  // props: ['rate', 'num', 'tags', 'list', 'goodsId'],
-  props: {
-    rate: {
-      type: Number,
-      default: 0
-    },
-    num: {
-      type: String,
-      default: ''
-    },
-    tags: {
-      type: Array,
-      default() {
-        return []
-      }
-    },
-    list: {
-      type: Array,
-      default() {
-        return []
-      }
-    },
-    goodsId: {
-      type: String,
-      default: ''
-    }
+  num: {
+    type: String,
+    default: '',
   },
-  computed: {
-    variables() {
-      return variables
-    }
+  tags: {
+    type: Array,
+    default() {
+      return []
+    },
   },
-  methods: {
-    itemClick(tagType) {
-      this.$router.push({
-        path: `/detail/comment/${this.goodsId}/${tagType}`
-      })
-    }
-  }
+  list: {
+    type: Array,
+    default() {
+      return []
+    },
+  },
+  goodsId: {
+    type: String,
+    default: '',
+  },
+})
+
+const itemClick = (tagType) => {
+  router.push({
+    path: `/detail/comment/${props.goodsId}/${tagType}`,
+  })
 }
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/variables.scss';
+@use '@/styles/variables.scss' as *;
 
 .comment {
   background: #fff;
-  .title {
-    .comment__item {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      .comment__item__left {
-        font-size: $small;
-        .title {
-          color: $black;
-          margin-right: 16px;
-        }
-        .content {
-          color: $red;
-        }
-      }
-      .comment__item__right {
-        display: flex;
-        align-items: center;
-        color: $gray;
-        font-size: $mini;
-      }
-    }
-    .comment__line {
-      width: 700px;
-      height: 1px;
-      background: #f5f5f5;
-      margin: 0 auto;
-    }
-  }
 
   .tags {
     display: flex;
     flex-wrap: wrap;
     padding: 12px 24px;
+
     .tags__item {
       color: #ad0000;
       background-color: #ffe1e1;
@@ -161,13 +114,17 @@ export default {
       border-radius: 18px;
     }
   }
+
   .custom-num {
     margin-left: 8px;
-    font-size: 5px;
-    font-weight: 100;
+    font-size: 24px;
+    font-weight: 400;
+    color: $gray;
   }
+
   .main {
     padding: 0 24px;
+
     .main__btn {
       display: flex;
       justify-content: center;

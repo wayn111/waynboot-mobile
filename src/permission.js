@@ -1,12 +1,22 @@
 import router from './router'
 import store from './store'
-import { Toast } from 'vant'
+import { closeToast } from 'vant'
 import { getToken } from '@/utils/auth' // get token from cookie
 import { pathMatcher } from '@/utils/index'
 
-const whiteList = ['/login', '/registry', '/', '/index', '/category', '/detail/**', '/diamondGoodsList/**', '/search/**', '/order/coupon'] // 白名单
+const whiteList = [
+  '/login',
+  '/registry',
+  '/',
+  '/index',
+  '/category',
+  '/detail/**',
+  '/diamondGoodsList/**',
+  '/search/**',
+  '/order/coupon',
+] // 白名单
 
-router.beforeEach(async(to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   // 设置标题
   document.title = to.meta.title || 'panda-mall'
 
@@ -30,9 +40,8 @@ router.beforeEach(async(to, from, next) => {
           if (pathMatcher(whiteList, to.path)) {
             next()
           } else {
-            // 清空token重新去登录
-            // await store.dispatch('user/resetToken')
-            // next(`/login?redirect=${encodeURIComponent(location.href)}`)
+            await store.dispatch('user/resetToken')
+            next(`/login?redirect=${encodeURIComponent(location.href)}`)
           }
         }
       }
@@ -49,5 +58,5 @@ router.beforeEach(async(to, from, next) => {
 })
 
 router.afterEach(() => {
-  Toast.clear()
+  closeToast()
 })

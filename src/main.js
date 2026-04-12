@@ -1,43 +1,47 @@
-import Vue from 'vue'
+import { createApp } from 'vue'
 
 // A modern alternative to CSS resets
 // https://github.com/necolas/normalize.css
 import 'normalize.css/normalize.css'
 import './styles/index.scss'
 import './assets/iconfont/iconfont.css'
+import 'virtual:svg-icons-register'
+import 'vant/lib/index.css'
 
 import App from './App.vue'
 import router from './router'
 import store from './store'
 
-import './icons'
 import './permission'
 
 // import vant
-import '@/components/Vant'
-import '@/components/Wx'
+import setupVant from '@/components/Vant'
+import setupWx from '@/components/Wx'
 // import fontAwesome
-import '@/components/fontAwesome'
+import setupFontAwesome from '@/components/fontAwesome'
 // register common components globally
-import '@/components/common'
-import filters from '@/filter'
+import setupCommonComponents from '@/components/common'
+import setupFilters from '@/filter'
 // 引入fastclick
 // import FastClick from 'fastclick'
 
 // FastClick.attach(document.body)
 
-Vue.use(filters)
+const app = createApp(App)
+
+app.use(router)
+app.use(store)
+
+setupVant(app)
+setupWx(app)
+setupFontAwesome(app)
+setupCommonComponents(app)
+setupFilters(app)
 
 // mock in online
-if (process.env.NODE_ENV === 'production') {
+if (import.meta.env.MODE === 'production') {
   // const { mockXHR } = require('../mock')
   // mockXHR()
 }
 
-Vue.config.productionTip = false
-
-new Vue({
-  router,
-  store,
-  render: h => h(App)
-}).$mount('#app')
+app.mount('#app')

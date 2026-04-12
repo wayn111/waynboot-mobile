@@ -1,52 +1,69 @@
 <template>
   <div class="tab-bar">
-    <van-goods-action>
-      <van-goods-action-icon icon="home-o" text="首页" @click="goHome" />
-      <van-goods-action-icon icon="cart-o" text="购物车" :badge="count" @click="cartClick" />
-      <van-goods-action-button type="warning" text="加入购物车" @click="handleClick" />
-      <van-goods-action-button :color="variables.red" text="立即购买" @click="handleClick" />
-    </van-goods-action>
-    <div class="tabbar--placeholder" style="width:100%;height:50px" />
+    <van-action-bar>
+      <van-action-bar-icon icon="home-o" text="首页" @click="goHome" />
+      <van-action-bar-icon
+        icon="cart-o"
+        text="购物车"
+        :badge="count"
+        @click="cartClick"
+      />
+      <van-action-bar-button
+        type="warning"
+        text="加入购物车"
+        @click="handleClick"
+      />
+      <van-action-bar-button
+        :color="variables.red"
+        text="立即购买"
+        @click="handleClick"
+      />
+    </van-action-bar>
+    <div class="tabbar--placeholder" style="width: 100%; height: 50px" />
   </div>
 </template>
 
-<script>
+<script setup>
+import { onMounted, reactive, toRefs } from 'vue'
+import { useRouter } from 'vue-router'
 import { getCartGoodsCount } from '@/api/cart'
-import variables from '@/styles/variables.scss'
+import variables from '@/styles/variables.scss?inline'
 
-export default {
-  data() {
-    return {
-      count: 0
-    }
-  },
-  computed: {
-    variables() {
-      return variables
-    }
-  },
-  mounted() {
-    this.getCartGoodsCount()
-  },
-  methods: {
-    getCartGoodsCount() {
-      getCartGoodsCount().then(res => {
-        const { data } = res
-        this.count = data
-      }).catch(e => {})
-    },
-    handleClick() {
-      this.$emit('input', true)
-    },
-    cartClick() {
-      this.$router.push({ name: 'Cart' })
-    },
-    goHome() {
-      this.$router.push({ name: 'Home' })
-    }
-  }
+const router = useRouter()
+const emit = defineEmits(['update:value'])
+const state = reactive({
+  count: 0
+})
+const { count } = toRefs(state)
+
+const getCartCount = () => {
+  getCartGoodsCount()
+    .then((res) => {
+      const { data } = res
+      count.value = data
+    })
+    .catch(() => {})
 }
+
+const handleClick = () => {
+  emit('update:value', true)
+}
+
+const cartClick = () => {
+  router.push({ name: 'Cart' })
+}
+
+const goHome = () => {
+  router.push({ name: 'Home' })
+}
+
+defineExpose({
+  getCartCount
+})
+
+onMounted(() => {
+  getCartCount()
+})
 </script>
 
-<style>
-</style>
+<style></style>

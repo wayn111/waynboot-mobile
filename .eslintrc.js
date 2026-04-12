@@ -9,25 +9,25 @@ module.exports = {
     node: true,
     es6: true
   },
-  extends: ["plugin:vue/recommended", "eslint:recommended"],
+  extends: ["plugin:vue/vue3-recommended", "eslint:recommended"],
 
   // add your custom rules here
   //it is base on https://github.com/vuejs/eslint-config-vue
   rules: {
-    "vue/max-attributes-per-line": [
-      2,
-      {
-        singleline: 10,
-        multiline: {
-          max: 1,
-          allowFirstLine: false
-        }
-      }
-    ],
+    "vue/max-attributes-per-line": "off",
     "vue/singleline-html-element-content-newline": "off",
     "vue/multiline-html-element-content-newline": "off",
-    "vue/name-property-casing": ["error", "PascalCase"],
+    "vue/attributes-order": "off",
+    "vue/html-closing-bracket-newline": "off",
+    "vue/html-indent": "off",
+    "vue/html-self-closing": "off",
     "vue/no-v-html": "off",
+    "vue/multi-word-component-names": "off",
+    "vue/no-v-model-argument": "off",
+    "vue/component-definition-name-casing": "off",
+    "vue/v-on-event-hyphenation": "off",
+    "vue/v-slot-style": "off",
+    "vue/require-default-prop": "off",
     "accessor-pairs": 2,
     "arrow-spacing": [
       2,
@@ -50,14 +50,8 @@ module.exports = {
         properties: "always"
       }
     ],
-    "comma-dangle": [2, "never"],
-    "comma-spacing": [
-      2,
-      {
-        before: false,
-        after: true
-      }
-    ],
+    "comma-dangle": "off",
+    "comma-spacing": "off",
     "comma-style": [2, "last"],
     "constructor-super": 2,
     curly: [2, "multi-line"],
@@ -72,13 +66,7 @@ module.exports = {
       }
     ],
     "handle-callback-err": [2, "^(err|error)$"],
-    indent: [
-      2,
-      2,
-      {
-        SwitchCase: 1
-      }
-    ],
+    indent: "off",
     "jsx-quotes": [2, "prefer-single"],
     "key-spacing": [
       2,
@@ -142,12 +130,7 @@ module.exports = {
     "no-mixed-spaces-and-tabs": 2,
     "no-multi-spaces": 2,
     "no-multi-str": 2,
-    "no-multiple-empty-lines": [
-      2,
-      {
-        max: 1
-      }
-    ],
+    "no-multiple-empty-lines": "off",
     "no-native-reassign": 2,
     "no-negated-in-lhs": 2,
     "no-new-object": 2,
@@ -170,7 +153,7 @@ module.exports = {
     "no-sparse-arrays": 2,
     "no-this-before-super": 2,
     "no-throw-literal": 2,
-    "no-trailing-spaces": 2,
+    "no-trailing-spaces": "off",
     "no-undef": 2,
     "no-undef-init": 2,
     "no-unexpected-multiline": 2,
@@ -183,13 +166,7 @@ module.exports = {
     ],
     "no-unreachable": 2,
     "no-unsafe-finally": 2,
-    "no-unused-vars": [
-      2,
-      {
-        vars: "all",
-        args: "none"
-      }
-    ],
+    "no-unused-vars": "off",
     "no-useless-call": 2,
     "no-useless-computed-key": 2,
     "no-useless-constructor": 2,
@@ -230,7 +207,7 @@ module.exports = {
       }
     ],
     "space-before-blocks": [2, "always"],
-    "space-before-function-paren": [2, "never"],
+    "space-before-function-paren": "off",
     "space-in-parens": [2, "never"],
     "space-infix-ops": 2,
     "space-unary-ops": [
@@ -263,13 +240,7 @@ module.exports = {
     yoda: [2, "never"],
     "prefer-const": 2,
     "no-debugger": process.env.NODE_ENV === "production" ? 2 : 0,
-    "object-curly-spacing": [
-      2,
-      "always",
-      {
-        objectsInObjects: false
-      }
-    ],
+    "object-curly-spacing": "off",
     "array-bracket-spacing": [2, "never"]
   }
 };

@@ -5,10 +5,10 @@
         <van-cell
           title="规格"
           is-link
-          :value="name + ' ' + stockNum + ' 个'"
-          @click.native="onSelectSku"
+          :value="`${name} ${stockNum} 件`"
+          @click="onSelectSku"
         />
-        <van-cell title="属性" is-link @click.native="propsPopup = true" />
+        <van-cell title="属性" is-link @click="propsPopup = true" />
         <van-cell
           title="送至"
           is-link
@@ -18,126 +18,74 @@
         <van-cell title="运费" value="全国包邮" />
       </van-cell-group>
     </div>
-    <!-- <van-button block @click="onSelectSku">
-      <div class="section__item">
-        <div class="section__item__left">
-          <span class="title">已选</span>
-          <span class="content">{{ name }}，{{ stockNum }}个</span>
-        </div>
-        <div class="section__item__right">
-          <van-icon name="arrow" />
-        </div>
-      </div>
-    </van-button>
 
-    <div class="section__line" />
-    <van-button block @click.native="propsPopup = true">
-      <div class="section__item">
-        <div class="section__item__left">
-          <span class="content">属性</span>
-        </div>
-        <div class="section__item__right">
-          <van-icon name="arrow" />
-        </div>
-      </div>
-    </van-button>
-
-    <div class="section__line" />
-    <van-button block @click="handleAddress">
-      <div class="section__item">
-        <div class="section__item__left">
-          <span class="title">送至</span>
-          <span class="content">{{
-            selectedAddress.address || "北京市 东城区"
-          }}</span>
-        </div>
-        <div class="section__item__right">
-          <van-icon name="arrow" />
-        </div>
-      </div>
-    </van-button>
-
-    <div class="section__line" />
-    <van-button block>
-      <div class="section__item section__item--icon">
-        <div class="section__item__left">
-          <p
-            v-for="(item, idx) in ['panda自营', 'panda发货', '七天无理由退款']"
-            :key="idx"
-            class="icon--wrapper"
-          >
-            <svg-icon icon-class="good" :width="16" :height="16" />
-            <span>{{ item }}</span>
-          </p>
-        </div>
-        <div class="section__item__right">
-          <van-icon name="arrow" />
-        </div>
-      </div>
-    </van-button> -->
-    <van-popup v-if="isShowAttr" v-model="propsPopup" position="bottom">
+    <van-popup v-if="isShowAttr" v-model:show="propsPopup" position="bottom">
       <popup-props :props-str="attr" @closePopup="closePopup" />
     </van-popup>
   </div>
 </template>
 
-<script>
-import { mapGetters } from 'vuex'
+<script setup>
+import { computed, reactive, toRefs, watch } from 'vue'
+import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
+
 import PopupProps from './Popup-props'
 
-export default {
-  components: {
-    PopupProps
+const router = useRouter()
+const store = useStore()
+const emit = defineEmits(['update:value'])
+
+const selectedAddress = computed(() => store.getters.selectedAddress || {})
+
+const props = defineProps({
+  name: {
+    type: String,
+    default: '',
   },
-  props: {
-    name: {
-      type: String,
-      default: ''
-    },
-    stockNum: {
-      type: Number,
-      default: 4
-    },
-    freightLimit: {
-      type: Number,
-      default: 88
-    },
-    attr: {
-      type: Array,
-      default() {
-        return []
-      }
-    }
+  stockNum: {
+    type: Number,
+    default: 1,
   },
-  data() {
-    return {
-      propsPopup: false,
-      isShowAttr: false
-    }
+  freightLimit: {
+    type: Number,
+    default: 88,
   },
-  computed: {
-    ...mapGetters(['selectedAddress'])
-  },
-  watch: {
-    attr(o1, o2) {
-      this.attr = o1
-      this.isShowAttr = true
-    }
-  },
-  mounted() {},
-  methods: {
-    onSelectSku() {
-      this.$emit('input', true)
+  attr: {
+    type: Array,
+    default() {
+      return []
     },
-    handleAddress() {
-      this.$router.push({
-        path: '/address'
-      })
-    },
-    closePopup() {
-      this.propsPopup = false
-    }
-  }
+  },
+})
+
+const state = reactive({
+  propsPopup: false,
+  isShowAttr: false,
+})
+
+const { propsPopup, isShowAttr } = toRefs(state)
+
+watch(
+  () => props.attr,
+  (value) => {
+    isShowAttr.value = Array.isArray(value) && value.length > 0
+  },
+  { immediate: true }
+)
+
+const onSelectSku = () => {
+  emit('update:value', true)
+}
+
+const handleAddress = () => {
+  router.push({
+    path: '/address',
+  })
+}
+
+const closePopup = () => {
+  propsPopup.value = false
 }
 </script>
 
@@ -151,55 +99,14 @@ export default {
 </style>
 
 <style lang="scss" scoped>
-@import "@/styles/variables.scss";
+@use '@/styles/variables.scss' as *;
 
 .section {
-  //  width:700px;
-  //  margin: 0 auto;
-  // border-radius: 6px;
   margin-top: 12px;
   background: #fff;
+
   .van-cell__value {
     min-width: 80%;
   }
-  /* .section__item {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    .section__item__left {
-      font-size: $small;
-      .title {
-        color: $gray;
-        margin-right: 16px;
-      }
-      .content {
-        color: $black;
-      }
-    }
-    .section__item__right {
-      color: $gray;
-    }
-  }
-  .section__item--icon {
-    .section__item__left {
-      display: flex;
-      .icon--wrapper {
-        display: flex;
-        align-items: center;
-        color: $gray;
-        font-size: $small;
-        margin-right: 10px;
-        span {
-          margin-left: 6px;
-        }
-      }
-    }
-  }
-  .section__line {
-    width: 700px;
-    height: 1px;
-    background: #f5f5f5;
-    margin: 0 auto;
-  } */
 }
 </style>

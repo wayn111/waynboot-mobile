@@ -1,6 +1,6 @@
 <template>
   <div class="product">
-    <nav-bar :title="diamond.name">
+    <nav-bar :title="diamond.name || ''">
       <van-icon
         name="shopping-cart-o"
         :color="variables.black"
@@ -16,22 +16,23 @@
 
     <div class="main">
       <van-empty
-        v-if="list.length == 0"
-        :image="require('@/assets/custom-empty-image.png')"
+        v-if="!isSkeletonShow && list.length === 0"
+        image="https://fastly.jsdelivr.net/npm/@vant/assets/custom-empty-image.png"
         image-size="80"
         description="暂无商品"
       />
+
       <van-pull-refresh v-else v-model="refreshing" @refresh="onRefresh">
         <van-list
-          v-model="loading"
+          v-model:loading="loading"
           :finished="finished"
           finished-text="没有更多了"
           :immediate-check="false"
           @load="onLoad"
         >
           <product-item
-            v-for="(item, idx) in list"
-            :key="idx"
+            v-for="item in list"
+            :key="item.id"
             :goods-id="item.id"
             :img="item.picUrl"
             :title="item.name"
@@ -41,7 +42,7 @@
             :is-new="item.isNew"
             :is-hot="item.isHot"
             style="margin-bottom: 1vw"
-            @getCartGoodsCount="getCartGoodsCount"
+            @getCartGoodsCount="handleGetCartGoodsCount"
           />
         </van-list>
       </van-pull-refresh>
@@ -51,95 +52,109 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { onMounted, reactive, toRefs } from 'vue'
+import { useRouter } from 'vue-router'
+
+import { getCartGoodsCount as getCartGoodsCountApi } from '@/api/cart'
 import { getGoodsList } from '@/api/diamond'
-import { getCartGoodsCount } from '@/api/cart'
 import NavBar from '@/components/NavBar'
 import ProductItem from '@/components/ProductItem'
+import variables from '@/styles/variables.scss?inline'
 import Skeleton from './modules/Skeleton'
-import variables from '@/styles/variables.scss'
 
-export default {
-  name: 'Product',
-  components: {
-    NavBar,
-    ProductItem,
-    Skeleton
+const router = useRouter()
+
+const props = defineProps({
+  diamondId: {
+    type: [Number, String],
+    default: 0,
   },
-  props: {
-    diamondId: {
-      type: [Number, String],
-      default: 0
-    }
-  },
-  data() {
-    return {
-      list: [],
-      diamond: [],
-      initFun: '',
-      count: 0,
-      pageNo: 1,
-      pageSize: 10,
-      loading: false,
-      finished: false,
-      refreshing: false,
-      isSkeletonShow: true
-    }
-  },
-  computed: {
-    variables() {
-      return variables
-    }
-  },
-  mounted() {
-    this.getProductList()
-    this.getCartGoodsCount()
-  },
-  methods: {
-    getProductList() {
-      getGoodsList({
-        pageNum: this.pageNo,
-        pageSize: this.pageSize,
-        diamondId: this.diamondId
-      }).then((res) => {
-        const data = res.data.goods
-        this.diamond = res.data.diamond
-        if (this.refreshing) {
-          this.list = data
-          this.refreshing = false
-        } else {
-          this.list = [...this.list, ...data]
-          if (data.length < this.pageSize && this.list.length > 0) {
-            this.finished = true
-          }
-        }
-        this.loading = false
-        this.isSkeletonShow = false
-      })
-    },
-    getCartGoodsCount() {
-      getCartGoodsCount()
-        .then((res) => {
-          const { data } = res
-          this.count = data
-        })
-        .catch((e) => {})
-    },
-    onLoad() {
-      this.loading = true
-      this.pageNo += 1
-      this.getProductList()
-    },
-    onRefresh() {
-      this.refreshing = true
-      this.pageNo = 1
-      this.getProductList()
-    },
-    cartClick() {
-      this.$router.push({ name: 'Cart' })
-    }
+})
+
+const state = reactive({
+  list: [],
+  diamond: {},
+  count: 0,
+  pageNo: 1,
+  pageSize: 10,
+  loading: false,
+  finished: false,
+  refreshing: false,
+  isSkeletonShow: true,
+})
+
+const {
+  list,
+  diamond,
+  count,
+  pageNo,
+  pageSize,
+  loading,
+  finished,
+  refreshing,
+  isSkeletonShow,
+} = toRefs(state)
+
+const getProductList = async () => {
+  const res = await getGoodsList({
+    pageNum: pageNo.value,
+    pageSize: pageSize.value,
+    diamondId: props.diamondId,
+  })
+
+  const goods = res.data?.goods || []
+  diamond.value = res.data?.diamond || {}
+
+  if (refreshing.value) {
+    list.value = goods
+    refreshing.value = false
+  } else if (pageNo.value === 1) {
+    list.value = goods
+  } else {
+    list.value = [...list.value, ...goods]
+  }
+
+  finished.value = goods.length < pageSize.value
+  loading.value = false
+  isSkeletonShow.value = false
+}
+
+const handleGetCartGoodsCount = async () => {
+  try {
+    const res = await getCartGoodsCountApi()
+    count.value = res.data || 0
+  } catch (error) {
+    console.log(error)
   }
 }
+
+const onLoad = () => {
+  if (pageNo.value === 1 && list.value.length === 0) {
+    getProductList()
+    return
+  }
+
+  loading.value = true
+  pageNo.value += 1
+  getProductList()
+}
+
+const onRefresh = () => {
+  refreshing.value = true
+  finished.value = false
+  pageNo.value = 1
+  getProductList()
+}
+
+const cartClick = () => {
+  router.push({ name: 'Cart' })
+}
+
+onMounted(() => {
+  getProductList()
+  handleGetCartGoodsCount()
+})
 </script>
 
 <style lang="scss" scoped>
@@ -147,6 +162,7 @@ export default {
   min-height: 100vh;
   background: #f5f5f5;
 }
+
 .main {
   padding: 1vw 0 0 0;
 }

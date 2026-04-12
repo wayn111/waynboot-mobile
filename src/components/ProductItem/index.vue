@@ -15,51 +15,62 @@
           <div class="tag">
             <van-tag v-if="isNew" type="danger">新品</van-tag>
             <van-tag v-if="isHot" type="danger">热品</van-tag>
-            <van-tag type="success">7天可退</van-tag>
+            <van-tag type="success">7天退换</van-tag>
           </div>
-          <!-- <div class="sale">
-            <span class="commom__num">评论2000+条</span>
-            <span class="praise__rate">70%好评</span>
-          </div> -->
         </div>
         <div class="desc__bottom__btn">
-          <van-button class="btn" size="mini" @click.stop="onAddCart">加入购物车</van-button>
+          <van-button class="btn" size="mini" @click.stop="onAddCart">
+            加入购物车
+          </van-button>
         </div>
       </div>
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
+import { useRouter } from 'vue-router'
+import { showToast } from 'vant'
+
 import { addDefaultGoodsProduct } from '@/api/cart'
 
-export default {
-  // eslint-disable-next-line vue/require-prop-types
-  props: ['goodsId', 'img', 'title', 'desc', 'price', 'discount', 'percentage', 'isNew', 'isHot'],
-  methods: {
-    onClick() {
-      this.$router.push({
-        path: '/detail/' + this.goodsId
-      })
-    },
-    onAddCart() {
-      addDefaultGoodsProduct({
-        goodsId: this.goodsId,
-        number: 1
-      }).then(() => {
-        this.$toast({
-          message: '已添加至购物车',
-          duration: 1500
-        })
-        this.$emit('getCartGoodsCount')
-      })
-    }
-  }
+const router = useRouter()
+const emit = defineEmits(['getCartGoodsCount'])
+
+const props = defineProps({
+  goodsId: [Number, String],
+  img: String,
+  title: String,
+  desc: String,
+  price: [Number, String],
+  discount: [Number, String],
+  isNew: Boolean,
+  isHot: Boolean,
+})
+
+const onClick = () => {
+  router.push({
+    path: `/detail/${props.goodsId}`,
+  })
+}
+
+const onAddCart = async () => {
+  await addDefaultGoodsProduct({
+    goodsId: props.goodsId,
+    number: 1,
+  })
+
+  showToast({
+    type: 'success',
+    message: '已加入购物车',
+    duration: 1500,
+  })
+  emit('getCartGoodsCount')
 }
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/variables.scss';
+@use '@/styles/variables.scss' as *;
 
 .product-item {
   box-sizing: border-box;
@@ -70,16 +81,20 @@ export default {
   justify-content: space-between;
   background: #fff;
   padding: 0 20px;
+
   .desc {
     width: 510px;
     height: 240px;
+
     .desc__top {
       margin-top: 30px;
+
       .desc__top__title {
         font-size: $small;
         color: $black;
         @include text-ellipsis;
       }
+
       .desc__top__info {
         min-height: 60px;
         font-size: $mini;
@@ -89,18 +104,22 @@ export default {
         @include text-multiple-ellipsis;
       }
     }
+
     .desc__bottom {
       display: flex;
       align-items: flex-end;
       justify-content: space-between;
+
       .desc__bottom__info {
         margin-top: 5px;
+
         .price {
           .price--new {
             color: $red;
             font-size: $small;
             margin-right: 10px;
           }
+
           .price--old {
             color: $gray;
             font-size: $mini;
@@ -109,24 +128,25 @@ export default {
         }
 
         .tag {
-          // width: 300px;
           .van-tag {
-            // font-size: 12px;
             margin-right: 12px;
             padding: 0.2em 1em;
             border-radius: 0.6em;
           }
         }
+
         .sale {
           width: 300px;
           margin-top: 12px;
           font-size: $mini;
           color: $gray;
+
           .praise__rate {
             margin-left: 2vw;
           }
         }
       }
+
       .desc__bottom__btn {
         .btn {
           background: $red;

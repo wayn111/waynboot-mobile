@@ -13,11 +13,13 @@
       </h3>
       <div class="history__main">
         <p
-          v-for="(item,idx) in searchKey"
+          v-for="(item, idx) in searchKey"
           :key="idx"
           class="history__main__item"
           @click="onSearch(item)"
-        >{{ item }}</p>
+        >
+          {{ item }}
+        </p>
       </div>
     </div>
     <!-- hot -->
@@ -30,59 +32,61 @@
       </h3>
       <div class="hot__main">
         <p
-          v-for="(item,idx) in hotList"
+          v-for="(item, idx) in hotList"
           :key="idx"
           class="hot__main__item"
           @click="onSearch(item)"
-        >{{ item }}</p>
+        >
+          {{ item }}
+        </p>
       </div>
     </div>
   </div>
 </template>
 
-<script>
-import { mapGetters } from 'vuex'
+<script setup>
+import { computed } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+import { useStore } from 'vuex'
+import { showConfirmDialog } from 'vant'
 
-export default {
-  props: {
-    hotList: {
+const router = useRouter()
+const route = useRoute()
+const store = useStore()
+
+const searchKey = computed(() => store.getters.searchKey || [])
+
+const props = defineProps({hotList: {
       type: Array,
       default() {
         return []
-      }
-    }
-  },
-  computed: {
-    ...mapGetters(['searchKey'])
-  },
-  methods: {
-    onDelete() {
-      this.$dialog
-        .confirm({
-          title: '提示',
-          message: '确定清空所有搜索记录吗？'
-        })
-        .then(() => {
-          this.$store.dispatch('search/delKey')
-        })
-        .catch(() => {})
-    },
-    onSearch(value) {
-      this.$store.dispatch('search/setKey', value)
-      this.$router.push({
+      },
+    },})
+
+const onDelete = () => {
+  showConfirmDialog({
+    title: '提示',
+    message: '确定清空所有搜索记录吗？',
+  })
+    .then(() => {
+      store.dispatch('search/delKey')
+    })
+    .catch(() => {})
+}
+
+const onSearch = (value) => {
+  store.dispatch('search/setKey', value)
+      router.push({
         path: '/search/list',
         query: {
-          keyword: value
-        }
+          keyword: value,
+        },
       })
-    }
-  }
 }
 </script>
 
 <style lang="scss" scoped>
-@import "@/styles/variables.scss";
-
+@use '@/styles/variables.scss' as *;
 .search-words {
   .history,
   .hot {

@@ -1,60 +1,82 @@
 <template>
   <div>
-    <van-submit-bar :price="amount" button-text="去结算" :disabled="!canSubmit" class="submit-bar" @submit="onSubmit">
-      <van-checkbox v-model="checked" icon-size="18px" :checked-color="variables.theme">全选</van-checkbox>
+    <van-submit-bar
+      :price="displayPrice"
+      button-text="去结算"
+      :disabled="!canSubmit"
+      class="submit-bar"
+      @submit="onSubmit"
+    >
+      <van-checkbox
+        v-model="checked"
+        icon-size="18px"
+        :checked-color="variables.theme"
+      >
+        全选
+      </van-checkbox>
     </van-submit-bar>
-    <div class="submit-bar-placeholder" style="width:100%;height:50px" />
+    <div class="submit-bar-placeholder" style="width: 100%; height: 50px" />
   </div>
 </template>
 
-<script>
-import variables from '@/styles/variables.scss'
+<script setup>
+import { computed } from 'vue'
+import { useRouter } from 'vue-router'
+import { showToast } from 'vant'
 
-export default {
-  props: {
-    amount: {
-      type: Number,
-      default: 0
-    },
-    value: {
-      type: Boolean,
-      default: false
-    }
+import variables from '@/styles/variables.scss?inline'
+
+const router = useRouter()
+const emit = defineEmits(['update:modelValue'])
+
+const props = defineProps({
+  amount: {
+    type: Number,
+    default: 0,
   },
-  data() {
-    return {
-      disabled: false,
-      allchecked: this.value
-    }
+  selectedIds: {
+    type: Array,
+    default: () => [],
   },
-  computed: {
-    variables() {
-      return variables
-    },
-    checked: {
-      get() {
-        return this.allchecked
-      },
-      set(val) {
-        this.allchecked = val
-        this.$emit('input', val)
-      }
-    },
-    canSubmit() {
-      return this.amount > 0
-    }
+  modelValue: {
+    type: Boolean,
+    default: false,
   },
-  methods: {
-    onSubmit() {
-      if (this.amount <= 0) {
-        return this.$toast.success('请至少选择一件商品')
-      }
-      this.$router.push({
-        path: '/order/confirm'
-      })
-    }
+})
+
+const onSubmit = () => {
+  if (props.amount <= 0 || props.selectedIds.length <= 0) {
+    showToast({
+      type: 'fail',
+      message: '请至少选择一件商品',
+    })
+    return
   }
+
+  router.push({
+    path: '/order/confirm',
+    query: {
+      cartIds: props.selectedIds.join(','),
+    },
+  })
 }
+
+const checked = computed({
+  get() {
+    return props.modelValue
+  },
+  set(val) {
+    emit('update:modelValue', val)
+  },
+})
+
+const canSubmit = computed(() => {
+  return props.amount > 0
+})
+
+const displayPrice = computed(() => {
+  return Math.round((Number(props.amount) || 0) * 100)
+})
 </script>
 
 <style>
@@ -65,9 +87,9 @@ export default {
 
 <style scoped>
 .submit-bar {
-  /* 这里使用 css 函数，是为了避免旧版本 vue-cli 依赖的 css 压缩工具（mini-css-extract-plugin）导致的 bug */
   box-shadow: var(--submit-bar-shadow);
 }
+
 .van-submit-bar {
   bottom: 50px;
 }

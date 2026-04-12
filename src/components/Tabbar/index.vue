@@ -1,52 +1,64 @@
 <template>
   <div>
     <div class="tabbar">
-      <van-tabbar v-model="active" :active-color="variables.theme" :fixed="false" route>
-        <van-tabbar-item :to="{name: 'Home'}" icon="wap-home">首页</van-tabbar-item>
-        <van-tabbar-item :to="{name: 'Category'}" icon="bars">分类</van-tabbar-item>
-        <van-tabbar-item :to="{name: 'Cart'}" icon="shopping-cart" :badge="totalCartNum">购物车</van-tabbar-item>
-        <van-tabbar-item :to="{name: 'User'}" icon="manager">我的</van-tabbar-item>
+      <van-tabbar
+        v-model="active"
+        :active-color="variables.theme"
+        :fixed="false"
+        route
+      >
+        <van-tabbar-item :to="{ name: 'Home' }" icon="wap-home"
+          >首页</van-tabbar-item
+        >
+        <van-tabbar-item :to="{ name: 'Category' }" icon="bars"
+          >分类</van-tabbar-item
+        >
+        <van-tabbar-item
+          :to="{ name: 'Cart' }"
+          icon="shopping-cart"
+          :badge="totalCartNum"
+          >购物车</van-tabbar-item
+        >
+        <van-tabbar-item :to="{ name: 'User' }" icon="manager"
+          >我的</van-tabbar-item
+        >
       </van-tabbar>
     </div>
-    <div class="tabbar--placeholder" style="width:100%;height:50px" />
+    <div class="tabbar--placeholder" style="width: 100%; height: 50px" />
   </div>
 </template>
 
-<script>
-import variables from '@/styles/variables.scss'
+<script setup>
+import { reactive, toRefs, computed, onMounted } from 'vue'
+
+
+import variables from '@/styles/variables.scss?inline'
 import { getCartGoodsCount } from '@/api/cart'
 
-export default {
-  data() {
-    return {
-      active: 0,
-      count: 0
-    }
-  },
-  computed: {
-    variables() {
-      return variables
-    },
-    totalCartNum() {
-      if (this.count === 0) {
+const state = reactive({active: 0,
+      count: 0,})
+const { active, count } = toRefs(state)
+
+const loadCartCount = () => {
+  getCartGoodsCount()
+        .then((res) => {
+          const { data } = res
+          count.value = data
+        })
+        .catch((e) => {})
+}
+
+const totalCartNum = computed(() => {
+  if (count.value === 0) {
         return ''
       } else {
-        return this.count <= 99 ? this.count : 99
+        return count.value <= 99 ? count.value : 99
       }
-    }
-  },
-  mounted() {
-    this.getCartGoodsCount()
-  },
-  methods: {
-    getCartGoodsCount() {
-      getCartGoodsCount().then(res => {
-        const { data } = res
-        this.count = data
-      }).catch(e => {})
-    }
-  }
-}
+})
+
+onMounted(() => {
+  loadCartCount()
+})
 </script>
 
 <style lang="scss" scoped>

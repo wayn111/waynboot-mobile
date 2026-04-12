@@ -3,7 +3,7 @@
     <Title :name="titleName" style="background: #fff" />
 
     <van-list
-      v-model="loading"
+      v-model:loading="loading"
       :finished="isFinished"
       finished-text="没有更多了"
       :immediate-check="false"
@@ -11,13 +11,13 @@
     >
       <div class="main">
         <van-card
-          v-for="(item, i) in goodsList"
-          :key="i"
+          v-for="item in goodsList"
+          :key="item.id"
           :desc="item.brief"
           :title="item.name"
           :thumb="item.picUrl"
-          :price="item.retailPrice | yuan"
-          :origin-price="item.counterPrice | yuan"
+          :price="yuan(item.retailPrice)"
+          :origin-price="yuan(item.counterPrice)"
           @click="itemClick(item.id)"
         />
       </div>
@@ -25,62 +25,61 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { computed } from 'vue'
+import { useRouter } from 'vue-router'
+
+import { yuan } from '@/filter'
 import Title from './Title'
 
-export default {
-  components: {
-    Title
-  },
-  model: {
-    prop: 'isLoading'
-  },
-  props: {
-    goodsList: {
-      type: Array,
-      default() {
-        return []
-      }
+const router = useRouter()
+const emit = defineEmits(['onReachBottom', 'update:modelValue'])
+
+const props = defineProps({
+  goodsList: {
+    type: Array,
+    default() {
+      return []
     },
-    titleName: {
-      type: String,
-      default: ''
-    },
-    isLoading: {
-      type: Boolean,
-      default: false
-    },
-    isFinished: {
-      type: Boolean,
-      default: false
-    }
   },
-  computed: {
-    loading: {
-      get() {
-        return this.isLoading
-      },
-      set(val) {
-        this.$emit('input', val)
-      }
-    }
+  titleName: {
+    type: String,
+    default: '',
   },
-  methods: {
-    onReachBottom() {
-      this.$emit('onReachBottom')
-    },
-    itemClick(goodsId) {
-      this.$router.push({
-        path: `/detail/${goodsId}`
-      })
-    }
-  }
+  modelValue: {
+    type: Boolean,
+    default: false,
+  },
+  isFinished: {
+    type: Boolean,
+    default: false,
+  },
+})
+
+const onReachBottom = () => {
+  emit('onReachBottom')
 }
+
+const itemClick = (goodsId) => {
+  router.push({
+    path: `/detail/${goodsId}`,
+  })
+}
+
+const loading = computed({
+  get() {
+    return props.modelValue
+  },
+  set(val) {
+    emit('update:modelValue', val)
+  },
+})
 </script>
 
 <style lang="scss" scoped>
 .home-goods {
   margin-top: 12px;
+
   .main {
     background: #fff;
   }

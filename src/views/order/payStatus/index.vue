@@ -1,24 +1,11 @@
 <template>
   <div class="order-status">
-    <Header :status="status" />
+    <Header />
   </div>
 </template>
 
-<script>
+<script setup>
 import Header from './modules/Header'
-
-export default {
-  name: 'OrderStatus',
-  components: {
-    Header
-  },
-  props: {
-    status: {
-      type: String,
-      default: ''
-    }
-  }
-}
 </script>
 
 <style lang="scss" scoped>

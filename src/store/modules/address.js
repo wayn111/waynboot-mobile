@@ -19,12 +19,12 @@ const actions = {
   getList({ commit }) {
     return new Promise((resolve, reject) => {
       getAddress()
-        .then(res => {
+        .then((res) => {
           const { data } = res
           commit('SET_ADDRESS_LIST', data)
           resolve(data)
         })
-        .catch(error => {
+        .catch((error) => {
           reject(error)
         })
     })

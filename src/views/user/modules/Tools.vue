@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="user-tools">
     <van-cell title="优惠券" is-link to="order/my" />
     <van-cell title="收货地址" is-link to="address" />
@@ -6,23 +6,25 @@
   </div>
 </template>
 
-<script>
-export default {
-  methods: {
-    logout() {
-      this.$store.dispatch('user/logout')
-        .then(() => {
-          this.$notify({
-            type: 'success',
-            message: '退出成功',
-            duration: 2000,
-            onOpened: () => {
-              this.$router.push({ name: 'Login' })
-            }
-          })
-        })
-    }
-  }
+<script setup>
+import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
+import { showNotify } from 'vant'
+
+const router = useRouter()
+const store = useStore()
+
+const logout = () => {
+  store.dispatch('user/logout').then(() => {
+    showNotify({
+      type: 'success',
+      message: '退出成功',
+      duration: 2000,
+      onOpened: () => {
+        router.push({ name: 'Login' })
+      },
+    })
+  })
 }
 </script>
 
@@ -38,7 +40,7 @@ export default {
   background: rgba(255, 255, 255, 1);
   margin: 0 auto;
   margin-top: 24px;
-  box-shadow: var(--user-tools-shadow); // 这里使用 css 函数，是为了避免旧版本 vue-cli 依赖的 css 压缩工具（mini-css-extract-plugin）导致的 bug
+  box-shadow: var(--user-tools-shadow);
   border-radius: 24px;
   overflow: hidden;
 }

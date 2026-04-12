@@ -7,24 +7,22 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { useRouter, useRoute } from 'vue-router'
+
+const router = useRouter()
+const route = useRoute()
+
 import NavBar from '@/components/NavBar'
 
-export default {
-  components: {
-    NavBar
-  },
-  methods: {
-    onSearch() {
-      this.$router.push({
-        path: '/search'
+const onSearch = () => {
+  router.push({
+        path: '/search',
       })
-    }
-  }
 }
 </script>
 
-<style  scoped>
+<style scoped>
 .nav {
   position: fixed;
   top: 0;
@@ -32,9 +30,8 @@ export default {
   width: 100%;
   z-index: 1;
 }
-
 .nav--placeholder {
-  width:100%;
-  height:92px
+  width: 100%;
+  height: 92px;
 }
 </style>

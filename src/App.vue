@@ -1,30 +1,32 @@
 <template>
   <div id="app">
-    <keep-alive>
-      <router-view v-if="$route.meta.keepAlive" :key="key" />
-    </keep-alive>
-    <router-view v-if="!$route.meta.keepAlive" :key="key" />
+    <router-view v-slot="{ Component }">
+      <template v-if="Component">
+        <keep-alive>
+          <component :is="Component" :key="route.fullPath" v-if="route.meta.keepAlive" />
+        </keep-alive>
+        <component :is="Component" :key="route.fullPath" v-if="!route.meta.keepAlive" />
+      </template>
+    </router-view>
 
-    <tabbar v-if="$route.meta.showTab" />
+    <tabbar v-if="route.meta.showTab" />
   </div>
 </template>
 
-<script>
-import Tabbar from './components/Tabbar'
+<script setup>
+import Tabbar from './components/Tabbar/index.vue'
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
 
-export default {
-  components: {
-    Tabbar
-  },
-  computed: {
-    key() {
-      return this.$route.fullPath
-    }
-  }
-}
+const route = useRoute()
+
+const key = computed(() => {
+      return route.fullPath
+    })
 </script>
+
 <style scoped>
-  #app {
-    position: relative;
-  }
+#app {
+  position: relative;
+}
 </style>

@@ -3,7 +3,7 @@
     <nav-bar :title="$route.meta.title" />
 
     <van-list
-      v-model="isLoading"
+      v-model:loading="isLoading"
       :finished="isFinished"
       finished-text="没有更多了"
       :immediate-check="false"
@@ -15,145 +15,147 @@
             <div class="title">{{ item.discount }}元{{ item.title }}</div>
             <div class="desc">最低消费{{ item.min }}可用</div>
           </div>
-          <van-button v-if="item.receiveStatus" class="btnInfo" type="info">已领取</van-button>
+          <van-button v-if="item.receiveStatus" class="btnInfo" type="info">
+            已领取
+          </van-button>
           <van-button v-else type="info" @click="onSubmit(item.id)">领取</van-button>
-
         </div>
-
       </div>
     </van-list>
   </div>
 </template>
 
-<script>
+<script setup>
+import { reactive, toRefs, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
+import { showDialog, showToast } from 'vant'
+
 import { orderCoupon, orderReceive } from '@/api/order'
-import { getToken } from '@/utils/auth' // get token from cookie
-import { Dialog } from 'vant'
-import store from '@/store'
-import router from '@/router'
-export default {
-  components: {
-  },
-  model: {
-    prop: 'isLoading'
-  },
-  data() {
-    return {
-      goodsList: [],
-      isLoading: false,
-      isFinished: false,
-      pageSize: 10,
-      pageNum: 1
-    }
-  },
+import { getToken } from '@/utils/auth'
 
-  computed: {
-    loading: {
-      get() {
-        return this.isLoading
-      },
-      set(val) {
-        this.$emit('input', val)
-      }
-    }
-  },
-  mounted() {
-    this.getOrderCouponList()
-  },
-  methods: {
-    getOrderCouponList() {
-      orderCoupon({
-        pageSize: this.pageSize,
-        pageNum: this.pageNum
-      }).then(res => {
-        const { records } = res.data
-        if (this.pageNum === 1) {
-          this.goodsList = records
-        } else {
-          this.goodsList = [...this.goodsList, ...records]
-        }
+const router = useRouter()
+const store = useStore()
 
-        this.isLoading = false
-        if (records.length < this.pageSize && this.goodsList.length > 0) {
-          this.isFinished = true
-        }
-      })
-    },
-    onReachBottom() {
-      this.pageNum += 1
-      this.getOrderCouponList()
-    },
-    onSubmit(id) {
-      const hasToken = getToken()
-      if (!hasToken) {
-        Dialog.alert({
-          title: '提示',
-          message: '您还未登录，请登录'
-        }).then(() => {
-          store.dispatch('user/resetToken').then(() => {
-            router.push({ name: 'Login' })
-          })
-        })
-      } else {
-        orderReceive({ couponId: id }).then(res => {
-          if (res.code === 200) {
-            this.pageNum = 1
-            this.getOrderCouponList()
-            this.$toast('已领取')
-          } else {
-            this.$toast(res.msg)
-          }
-        })
-      }
+const state = reactive({
+  goodsList: [],
+  isLoading: false,
+  isFinished: false,
+  pageSize: 10,
+  pageNum: 1,
+})
+const { goodsList, isLoading, isFinished, pageSize, pageNum } = toRefs(state)
+
+const getOrderCouponList = async () => {
+  if (isLoading.value) {
+    return
+  }
+
+  isLoading.value = true
+
+  try {
+    const res = await orderCoupon({
+      pageSize: pageSize.value,
+      pageNum: pageNum.value,
+    })
+    const { records = [] } = res.data || {}
+
+    if (pageNum.value === 1) {
+      goodsList.value = records
+    } else {
+      goodsList.value = [...goodsList.value, ...records]
     }
+
+    isFinished.value = records.length < pageSize.value
+  } catch (error) {
+    showToast({ type: 'fail', message: error?.message || '优惠券加载失败' })
+    isFinished.value = true
+  } finally {
+    isLoading.value = false
   }
 }
+
+const onReachBottom = () => {
+  pageNum.value += 1
+  getOrderCouponList()
+}
+
+const onSubmit = async (id) => {
+  const hasToken = getToken()
+  if (!hasToken) {
+    showDialog({
+      title: '提示',
+      message: '您还未登录，请先登录',
+    }).then(() => {
+      store.dispatch('user/resetToken').then(() => {
+        router.push({ name: 'Login' })
+      })
+    })
+    return
+  }
+
+  try {
+    const res = await orderReceive({ couponId: id })
+    if (res.code === 200) {
+      pageNum.value = 1
+      isFinished.value = false
+      getOrderCouponList()
+      showToast({ type: 'success', message: '领取成功' })
+      return
+    }
+    showToast({ type: 'fail', message: res.msg })
+  } catch (error) {
+    showToast({ type: 'fail', message: error?.message || '领取失败' })
+  }
+}
+
+onMounted(() => {
+  getOrderCouponList()
+})
 </script>
 
 <style lang="scss" scoped>
 .coupon {
-    background: #f5f5f5;
-    min-height: 100vh;
+  background: #f5f5f5;
+  min-height: 100vh;
 
-    .content {
-        margin: 20px 30px;
-        background: #fff;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 20px 30px;
-        border-radius: 10px;
+  .content {
+    margin: 20px 30px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 30px;
+    border-radius: 10px;
 
-        .left {
-            display: flex;
+    .left {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
 
-            flex-direction: column;
-            justify-content: center;
+      .title {
+        font-weight: bold;
+        font-size: 36px;
+        color: #000;
+        line-height: 70px;
+      }
 
-            .title {
-                font-weight: bold;
-                font-size: 36px;
-                color: #000;
-                line-height: 70px;
-            }
-
-            .desc {
-                font-size: 24px;
-                color: #666;
-                line-height: 50px;
-            }
-        }
-
-        .van-button--info {
-            border-radius: 20px;
-            height: 70px;
-        }
-
+      .desc {
+        font-size: 24px;
+        color: #666;
+        line-height: 50px;
+      }
     }
 
-    .btnInfo{
-        background: #999;
-        border:none;
+    .van-button--info {
+      border-radius: 20px;
+      height: 70px;
     }
+  }
+
+  .btnInfo {
+    background: #999;
+    border: none;
+  }
 }
 </style>

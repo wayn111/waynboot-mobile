@@ -25,13 +25,13 @@ const actions = {
     const { mobile, yzm } = userInfo
     return new Promise((resolve, reject) => {
       login({ mobile, yzm })
-        .then(res => {
+        .then((res) => {
           const { data } = res
           commit('SET_TOKEN', data)
           setToken(data)
           resolve()
         })
-        .catch(error => {
+        .catch((error) => {
           reject(error)
         })
     })
@@ -47,7 +47,7 @@ const actions = {
 
           resolve()
         })
-        .catch(error => {
+        .catch((error) => {
           reject(error)
         })
     })
@@ -57,7 +57,7 @@ const actions = {
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
       getInfo(state.token)
-        .then(res => {
+        .then((res) => {
           const data = res.data
           if (!data) {
             reject(new Error('获取基本信息失败，请重新登录'))
@@ -65,14 +65,14 @@ const actions = {
           commit('SET_USER_INFO', data)
           resolve(data)
         })
-        .catch(error => {
+        .catch((error) => {
           reject(error)
         })
     })
   },
   // 重置token
   resetToken({ commit }) {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       commit('SET_TOKEN', '')
       removeToken()
       resolve()

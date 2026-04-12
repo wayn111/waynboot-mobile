@@ -30,7 +30,10 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { reactive, toRefs, onMounted } from 'vue'
+
+
 import { getHomeData, getRecommonGoodsList } from '@/api/home'
 import Header from './modules/Header'
 import Swiper from './modules/Swiper'
@@ -41,20 +44,7 @@ import Diamond from './modules/Diamond'
 // import Session from './modules/Session'
 import Skeleton from './modules/Skeleton'
 
-export default {
-  name: 'Home',
-  components: {
-    Header,
-    Swiper,
-    Diamond,
-    // Session,
-    Goods,
-    GoodsLimit,
-    Skeleton
-  },
-  data() {
-    return {
-      mallConfig: {},
+const state = reactive({mallConfig: {},
       bannerList: [],
       diamondList: [],
       sessionList: [],
@@ -65,44 +55,43 @@ export default {
       pageNum: 1,
       isLoading: false,
       isFinished: false,
-      isSkeletonShow: true
-    }
-  },
-  mounted() {
-    this.getHomeIndexData()
-    this.getRecommonGoodsList()
-  },
-  methods: {
-    getHomeIndexData() {
-      getHomeData().then(res => {
+      isSkeletonShow: true,})
+const { mallConfig, bannerList, diamondList, sessionList, newGoodsList, hotGoodsList, goodsList, pageSize, pageNum, isLoading, isFinished, isSkeletonShow } = toRefs(state)
+
+const getHomeIndexData = () => {
+  getHomeData().then((res) => {
         const { data } = res
-        this.bannerList = data.bannerList
-        this.diamondList = data.diamondList
-        this.newGoodsList = data.newGoodsList
-        this.hotGoodsList = data.hotGoodsList
-        this.isSkeletonShow = false
+        bannerList.value = data.bannerList
+        diamondList.value = data.diamondList
+        newGoodsList.value = data.newGoodsList
+        hotGoodsList.value = data.hotGoodsList
+        isSkeletonShow.value = false
       })
-    },
-    getRecommonGoodsList() {
-      getRecommonGoodsList({
-        pageSize: this.pageSize,
-        pageNum: this.pageNum
-      }).then(res => {
+}
+
+const getRecommendGoods = () => {
+  getRecommonGoodsList({
+        pageSize: pageSize.value,
+        pageNum: pageNum.value,
+      }).then((res) => {
         const { data } = res
-        this.goodsList = [...this.goodsList, ...data]
-        this.isLoading = false
-        if (data.length < this.pageSize && this.goodsList.length > 0) {
-          this.isFinished = true
+        goodsList.value = [...goodsList.value, ...data]
+        isLoading.value = false
+        if (data.length < pageSize.value && goodsList.value.length > 0) {
+          isFinished.value = true
         }
       })
-    },
-    // reach-bottom
-    onReachBottom() {
-      this.pageNum += 1
-      this.getRecommonGoodsList()
-    }
-  }
 }
+
+const onReachBottom = () => {
+  pageNum.value += 1
+      getRecommendGoods()
+}
+
+onMounted(() => {
+  getHomeIndexData()
+    getRecommendGoods()
+})
 </script>
 
 <style lang="scss" scoped>

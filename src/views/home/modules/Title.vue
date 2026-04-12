@@ -6,20 +6,17 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    name: {
+<script setup>
+
+
+const props = defineProps({name: {
       type: String,
-      default: ''
-    }
-  }
-}
+      default: '',
+    },})
 </script>
 
 <style lang="scss" scoped>
-@import "@/styles/variables.scss";
-
+@use '@/styles/variables.scss' as *;
 .home-title {
   display: flex;
   flex-direction: row;

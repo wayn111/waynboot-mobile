@@ -1,133 +1,152 @@
 <template>
-  <!-- https://www.jianshu.com/p/c7ecd50f2e52 -->
   <div class="home-diamond">
-    <div ref="scroll" class="scroll-wrapper">
+    <div ref="scrollRef" class="scroll-wrapper">
       <div class="scroll-content">
-        <div v-for="(cate,idx) in list" :key="idx" class="scroll-item__wrapper">
+        <div
+          v-for="(cate, idx) in pageList"
+          :key="idx"
+          class="scroll-item__wrapper"
+        >
           <div
-            v-for="(item, index) in cate"
-            :key="index"
+            v-for="item in cate"
+            :key="item.id"
             class="scroll-item"
             @click="onNavigate(item)"
           >
-            <img :src="item.iconUrl">
+            <img :src="item.iconUrl" alt="分类图标" />
             <p class="text">{{ item.name }}</p>
           </div>
         </div>
       </div>
     </div>
-    <div v-if="list && list.prev && list.prev.length > 5" class="dot-wrapper">
-      <div class="dot" :style="{'transform': `translateX(${rate})`}" />
+
+    <div v-if="pageList.prev.length > 5" class="dot-wrapper">
+      <div class="dot" :style="{ transform: `translateX(${rate})` }" />
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
+import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import BScroll from '@better-scroll/core'
 
-export default {
-  props: {
-    diamondList: {
-      type: Array,
-      default() {
-        return []
-      }
-    }
+const router = useRouter()
+
+const props = defineProps({
+  diamondList: {
+    type: Array,
+    default() {
+      return []
+    },
   },
-  data() {
+})
+
+const scrollRef = ref(null)
+const rate = ref('0%')
+let bs = null
+
+const pageList = computed(() => {
+  const data = props.diamondList || []
+  const len = data.length
+
+  if (len <= 5) {
     return {
-      rate: 0,
-      breakPoint: 0
-    }
-  },
-  computed: {
-    list() {
-      let rlt = {}
-      const data = this.diamondList
-      const len = this.diamondList.length
-      if (len <= 5) {
-        rlt = {
-          prev: data,
-          next: []
-        }
-      } else if (len > 5 && len <= 10) {
-        rlt = {
-          prev: data.slice(0, 5),
-          next: data.slice(5)
-        }
-      } else {
-        const breakPoint = Math.ceil(data.length / 2)
-        rlt = {
-          prev: data.slice(0, breakPoint),
-          next: data.slice(breakPoint)
-        }
-      }
-      return rlt
-    }
-  },
-  watch: {
-    diamondList(val) {
-      if (val.length > 5) {
-        this.$nextTick(() => {
-          this.init()
-        })
-      }
-    }
-  },
-  beforeDestroy() {
-    if (this.bs) this.bs.destroy()
-  },
-  methods: {
-    // 跳转
-    onNavigate(item) {
-      if (item.jumpType === 2) {
-        return
-      }
-      this.$router.push({
-        path: `/diamondGoodsList/${item.id}`
-      })
-      /* this.$router.push({
-        path: `/product/1/${item.id}`
-      }) */
-    },
-    // 初始化
-    init() {
-      this.bs = new BScroll(this.$refs.scroll, {
-        scrollX: true,
-        click: true,
-        // taps: true,
-        probeType: 3 // listening scroll hook
-      })
-
-      const totalX = Math.abs(this.bs.maxScrollX)
-
-      this._registerHooks(['scroll'], pos => {
-        const currentX = Math.abs(pos.x)
-        this.rate = `${Number((currentX / totalX) * 100).toFixed(2)}%`
-      })
-    },
-    _registerHooks(hookNames, handler) {
-      hookNames.forEach(name => {
-        this.bs.on(name, handler)
-      })
+      prev: data,
+      next: [],
     }
   }
+
+  if (len <= 10) {
+    return {
+      prev: data.slice(0, 5),
+      next: data.slice(5),
+    }
+  }
+
+  const middle = Math.ceil(len / 2)
+  return {
+    prev: data.slice(0, middle),
+    next: data.slice(middle),
+  }
+})
+
+const totalPages = computed(() => {
+  return pageList.value.next.length > 0 ? 2 : 1
+})
+
+const onNavigate = (item) => {
+  if (item.jumpType === 2) {
+    return
+  }
+
+  router.push({
+    path: `/diamondGoodsList/${item.id}`,
+  })
 }
+
+const initScroll = async () => {
+  await nextTick()
+
+  if (!scrollRef.value || totalPages.value <= 1) {
+    if (bs) {
+      bs.destroy()
+      bs = null
+    }
+    rate.value = '0%'
+    return
+  }
+
+  if (bs) {
+    bs.destroy()
+  }
+
+  bs = new BScroll(scrollRef.value, {
+    scrollX: true,
+    scrollY: false,
+    click: true,
+    probeType: 3,
+  })
+
+  const totalX = Math.abs(bs.maxScrollX)
+  bs.on('scroll', (pos) => {
+    const currentX = Math.abs(pos.x)
+    rate.value = totalX > 0 ? `${Number((currentX / totalX) * 100).toFixed(2)}%` : '0%'
+  })
+}
+
+watch(
+  () => props.diamondList,
+  () => {
+    initScroll()
+  },
+  { immediate: true, deep: true }
+)
+
+onBeforeUnmount(() => {
+  if (bs) {
+    bs.destroy()
+    bs = null
+  }
+})
 </script>
 
 <style lang="scss" scoped>
-@import "@/styles/variables.scss";
+@use '@/styles/variables.scss' as *;
 
 .home-diamond {
   padding: 24px 0 12px 0;
   background: #fff;
+
   .scroll-wrapper {
     width: 100%;
     white-space: nowrap;
     overflow: hidden;
   }
+
   .scroll-content {
     display: inline-block;
+
     .scroll-item__wrapper {
       .scroll-item {
         font-size: $mini;
@@ -135,15 +154,16 @@ export default {
         text-align: center;
         color: $black;
         padding: 0 25px 24px 25px;
+
         img {
           display: block;
           width: 100px;
           height: 100px;
-          // border-radius: 50%;
           overflow: hidden;
           background: #f5f5f5;
           margin: 0 auto;
         }
+
         .text {
           width: 100px;
           margin-top: 12px;
@@ -152,6 +172,7 @@ export default {
       }
     }
   }
+
   .dot-wrapper {
     width: 80px;
     height: 4px;
@@ -159,6 +180,7 @@ export default {
     border-radius: 3px;
     margin: 0 auto;
     overflow: hidden;
+
     .dot {
       box-sizing: border-box;
       width: 40px;

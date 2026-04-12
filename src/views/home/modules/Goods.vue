@@ -1,6 +1,6 @@
 <template>
   <div class="home-goods">
-    <Title :name="titleName" style="background:#fff" />
+    <Title :name="titleName" style="background: #fff" />
 
     <van-list
       v-model="loading"
@@ -11,7 +11,7 @@
     >
       <div class="main">
         <goods-item
-          v-for="(item,idx) in goodsList"
+          v-for="(item, idx) in goodsList"
           :key="idx"
           :goods-id="item.id"
           :img="item.picUrl"
@@ -25,54 +25,44 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { computed } from 'vue'
+
+const emit = defineEmits(['onReachBottom', 'update:modelValue'])
 import Title from './Title'
 import GoodsItem from '@/components/GoodsItem'
 
-export default {
-  components: {
-    GoodsItem,
-    Title
-  },
-  model: {
-    prop: 'isLoading'
-  },
-  props: {
-    goodsList: {
+const props = defineProps({goodsList: {
       type: Array,
       default() {
         return []
-      }
+      },
     },
     titleName: {
       type: String,
-      default: ''
+      default: '',
     },
-    isLoading: {
+    modelValue: {
       type: Boolean,
-      default: false
+      default: false,
     },
     isFinished: {
       type: Boolean,
-      default: false
-    }
-  },
-  computed: {
-    loading: {
-      get() {
-        return this.isLoading
-      },
-      set(val) {
-        this.$emit('input', val)
-      }
-    }
-  },
-  methods: {
-    onReachBottom() {
-      this.$emit('onReachBottom')
-    }
-  }
+      default: false,
+    },})
+
+const onReachBottom = () => {
+  emit('onReachBottom')
 }
+
+const loading = computed({
+  get() {
+    return props.modelValue
+  },
+  set(val) {
+    emit('update:modelValue', val)
+  }
+})
 </script>
 
 <style lang="scss" scoped>

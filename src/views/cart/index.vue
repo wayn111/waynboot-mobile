@@ -1,140 +1,191 @@
 <template>
   <div class="cart">
     <Nav />
+
     <Item
-      v-for="(item,idx) in list"
-      :key="idx"
+      v-for="item in list"
+      :key="item.id"
+      v-model="item.checked"
       :index="item.id"
       :num="item.number"
       :max-num="item.maxNum"
       :thumb="item.picUrl"
       :title="item.goodsName"
-      :desc="item.specifications.join(' ')"
+      :desc="(item.specifications || []).join(' ')"
       :tag="item.tag"
-      :tags="['满50减20', 'hot']"
-      :price="item.price | yuan"
-      :is-checked="item.checked"
-      @input="handleItemSelect"
+      :tags="['满50减10', 'hot']"
+      :price="yuan(item.price)"
+      @changeChecked="handleItemSelect"
       @handleDelete="handleDelete"
       @changeNum="changeNum"
     />
-    <Tabbar v-if="list && list.length > 0" :amount="amount" :value="isAllSelect" @input="handleAllSelect" />
+
+    <Tabbar
+      v-if="list.length > 0"
+      :amount="amount"
+      :selected-ids="selectedCartIds"
+      :model-value="isAllSelect"
+      @update:model-value="handleAllSelect"
+    />
+
     <Skeleton v-if="isSkeletonShow" />
-    <van-empty v-if="list && list.length <=0" description="小车大容量，喜欢的都加进来吧" />
+    <van-empty
+      v-if="!isSkeletonShow && list.length <= 0"
+      description="购物车还是空的，去挑选喜欢的商品吧"
+    />
   </div>
 </template>
 
-<script>
-import { getCartList, updateCart, deleteCart } from '@/api/cart'
-import Nav from './modules/Nav'
-import Item from './modules/Item'
-import Tabbar from './modules/Tabbar'
-import Skeleton from './modules/Skeleton'
+<script setup>
+import { computed, onMounted, reactive, toRefs } from 'vue'
+import { closeToast, showLoadingToast, showToast } from 'vant'
 
-export default {
-  name: 'Cart',
-  components: {
-    Nav,
-    Item,
-    Tabbar,
-    Skeleton
-  },
-  data() {
-    return {
-      list: [],
-      amount: 0,
-      isAllSelect: false,
-      isSkeletonShow: true
-    }
-  },
-  watch: {
-    list(newval) {
-      let num = 0
-      newval.forEach(item => {
-        if (item.checked) num += parseFloat(item.price) * item.number
-      })
-      this.isAllSelect = newval.every(item => {
-        return item.checked === true
-      })
-      this.amount = num * 100
-    }
-  },
-  mounted() {
-    this.getList()
-  },
-  methods: {
-    // get list
-    getList() {
-      getCartList().then(res => {
-        const { data } = res
-        this.list = data
-        this.isSkeletonShow = false
-      })
-    },
-    // single select
-    handleItemSelect(playload) {
-      const { val, idx } = playload
-      const arr = this.list.filter(item => {
-        return item.id === idx
-      })
-      const index = this.list.findIndex(item => {
-        return item.id === idx
-      })
-      const data = { id: idx, checked: val }
-      updateCart(data).then(res => {
-        const newval = arr[0]
-        newval.checked = val
-        this.$set(this.list, index, newval)
-      }).catch(e => {})
-    },
-    // all select
-    handleAllSelect(value) {
-      this.list.filter(item => {
-        return item.maxNum >= item.number
-      }).map(item => {
-        const data = { id: item.id, checked: value }
-        updateCart(data).then(res => {
-        }).catch(e => {})
-        item.checked = value
-        return item
-      })
-      this.list.forEach((item, i) => {
-        this.$set(this.list, i, item)
-      })
-    },
-    // item delete
-    handleDelete(idx) {
-      this.$toast.loading({
-        message: '加载中...',
-        overlay: true,
-        duration: 0,
-        forbidClick: true
-      })
-      deleteCart(idx).then(res => {
-        this.$toast.clear()
-        this.$toast.success('删除成功')
-        const index = this.list.findIndex(item => item.id === idx)
-        this.list.splice(index, 1)
-        this.list.forEach((item, i) => {
-          this.$set(this.list, i, item)
-        })
-        console.log(this.list)
-      }).catch(e => { console.log(e) })
-    },
-    changeNum(id, num) {
-      let newval
-      this.list.forEach(item => {
-        if (item.id === id) {
-          item.number = num
-          newval = item
-        }
-      })
-      const index = this.list.findIndex(item => {
-        return item.id === id
-      })
-      // vue动态更新list集合
-      this.$set(this.list, index, newval)
-    }
+import { deleteCart, getCartList, updateCart } from '@/api/cart'
+import { yuan } from '@/filter'
+import Item from './modules/Item'
+import Nav from './modules/Nav'
+import Skeleton from './modules/Skeleton'
+import Tabbar from './modules/Tabbar'
+
+const state = reactive({
+  list: [],
+  isSkeletonShow: true,
+})
+
+const { list, isSkeletonShow } = toRefs(state)
+
+const isItemSelectable = (item) => {
+  return Number(item?.maxNum) >= Number(item?.number)
+}
+
+const amount = computed(() => {
+  return list.value
+    .filter((item) => isItemSelectable(item) && item.checked)
+    .reduce((total, item) => {
+      return total + Number(item.price || 0) * Number(item.number || 0)
+    }, 0)
+})
+
+const selectedCartIds = computed(() => {
+  return list.value
+    .filter((item) => isItemSelectable(item) && item.checked)
+    .map((item) => item.id)
+})
+
+const isAllSelect = computed(() => {
+  const selectableList = list.value.filter((item) => isItemSelectable(item))
+  if (selectableList.length <= 0) {
+    return false
+  }
+  return selectableList.every((item) => item.checked)
+})
+
+const getList = async () => {
+  try {
+    const res = await getCartList()
+    list.value = res.data || []
+  } finally {
+    isSkeletonShow.value = false
   }
 }
+
+const handleItemSelect = async ({ val, idx }) => {
+  const index = list.value.findIndex((item) => item.id === idx)
+  if (index < 0) {
+    return
+  }
+
+  const prevChecked = list.value[index].checked
+
+  try {
+    await updateCart({ id: idx, checked: val })
+    list.value[index].checked = val
+  } catch (error) {
+    list.value[index].checked = prevChecked
+    showToast({
+      type: 'fail',
+      message: error?.message || '勾选状态更新失败',
+    })
+  }
+}
+
+const handleAllSelect = async (value) => {
+  const changedItems = list.value.filter((item) => {
+    return isItemSelectable(item) && item.checked !== value
+  })
+
+  if (changedItems.length <= 0) {
+    return
+  }
+
+  const previousState = changedItems.map((item) => ({
+    id: item.id,
+    checked: item.checked,
+  }))
+
+  changedItems.forEach((item) => {
+    item.checked = value
+  })
+
+  try {
+    await Promise.all(
+      changedItems.map((item) => {
+        return updateCart({ id: item.id, checked: value })
+      })
+    )
+  } catch (error) {
+    previousState.forEach((item) => {
+      const target = list.value.find((cartItem) => cartItem.id === item.id)
+      if (target) {
+        target.checked = item.checked
+      }
+    })
+    showToast({
+      type: 'fail',
+      message: error?.message || '全选状态更新失败',
+    })
+  }
+}
+
+const handleDelete = async (idx) => {
+  showLoadingToast({
+    type: 'loading',
+    message: '删除中...',
+    overlay: true,
+    duration: 0,
+    forbidClick: true,
+  })
+
+  try {
+    await deleteCart(idx)
+    const index = list.value.findIndex((item) => item.id === idx)
+    if (index >= 0) {
+      list.value.splice(index, 1)
+    }
+    closeToast()
+    showToast({
+      type: 'success',
+      message: '删除成功',
+    })
+  } catch (error) {
+    closeToast()
+    showToast({
+      type: 'fail',
+      message: error?.message || '删除失败',
+    })
+  }
+}
+
+const changeNum = (id, num) => {
+  const index = list.value.findIndex((item) => item.id === id)
+  if (index < 0) {
+    return
+  }
+
+  list.value[index].number = num
+}
+
+onMounted(() => {
+  getList()
+})
 </script>

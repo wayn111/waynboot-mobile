@@ -1,6 +1,6 @@
 <template>
   <div class="popup_wrap">
-    <van-icon name="clear" class="cancel_popup" size="20" @click.native="close" />
+    <van-icon name="clear" class="cancel_popup" size="20" @click="close" />
     <div class="popup_header">商品属性</div>
     <div class="popup_content">
       <van-cell-group>
@@ -15,30 +15,19 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'PopupProps',
-  props: {
-    propsStr: {
-      type: Array,
-      default() {
-        return []
-      }
-    }
-  },
-  watch: {
-    propsStr(o1) {
-      console.log(o1)
-      this.propsStr = o1
-    }
-  },
-  mounted() {
-  },
-  methods: {
-    close() {
-      this.$emit('closePopup')
+<script setup>
+const emit = defineEmits(['closePopup'])
+defineProps({
+  propsStr: {
+    type: Array,
+    default() {
+      return []
     }
   }
+})
+
+const close = () => {
+  emit('closePopup')
 }
 </script>
 

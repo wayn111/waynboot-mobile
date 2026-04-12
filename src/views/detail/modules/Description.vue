@@ -4,27 +4,24 @@
     <div class="main">
       <!-- <image-pic width="100%" fill="cover" :src="description" /> -->
       <div v-if="description" v-html="description" />
-      <div v-else style="text-align: center; padding: 15px 0px;">
+      <div v-else style="text-align: center; padding: 15px 0px">
         <p>无详情</p>
       </div>
     </div>
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    description: {
+<script setup>
+
+
+const props = defineProps({description: {
       type: String,
-      default: ''
-    }
-  }
-}
+      default: '',
+    },})
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/variables.scss';
-
+@use '@/styles/variables.scss' as *;
 .description {
   background: #fff;
   margin-top: 24px;
@@ -36,15 +33,15 @@ export default {
   .main {
     padding: 0 24px;
     background-color: #fff;
-    ::v-deep p {
+    :deep(p ){
       padding: 0 10px;
       margin-block-start: 0 !important;
       margin-block-end: 0 !important;
     }
-    ::v-deep img {
+    :deep(img ){
       max-width: 100%;
       display: block;
     }
   }
 }
-</style>>
+</style>

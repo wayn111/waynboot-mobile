@@ -1,17 +1,21 @@
 <template>
-  <div class="comment">
-    <nav-bar :title="$route.meta.title + '(' + totalNum + ')'" />
+  <div class="comment-page">
+    <nav-bar :title="`${$route.meta.title}(${totalNum})`" />
+
     <div class="tags">
       <van-tag
         v-for="(item, idx) in tags"
         :key="idx"
         class="tags__item"
-        :plain="idx == type"
+        :plain="idx === type"
         @click="tagList(idx)"
-      >{{ item }}</van-tag>
+      >
+        {{ item }}
+      </van-tag>
     </div>
+
     <van-list
-      v-model="loading"
+      v-model:loading="loading"
       :finished="finished"
       finished-text="没有更多了"
       @load="onLoad"
@@ -34,91 +38,90 @@
     </van-list>
   </div>
 </template>
-<script>
+
+<script setup>
+import { onMounted, reactive, toRefs } from 'vue'
+
 import CommentItem from '@/components/CommentItem'
 import { getCommentList, getCommentTagNum } from '@/api/comment'
 
-export default {
-  components: {
-    CommentItem
+const props = defineProps({
+  goodsId: {
+    type: String,
+    default: '',
   },
-  props: {
-    goodsId: {
-      type: String,
-      default: ''
-    },
-    tagType: {
-      type: String,
-      default: ''
-    }
+  tagType: {
+    type: [String, Number],
+    default: 0,
   },
-  data() {
-    return {
-      loading: false,
-      finished: false,
-      tags: [],
-      list: [],
-      type: 0,
-      totalNum: '',
-      pageSize: 10,
-      pageNum: 1
-    }
-  },
-  created() {
-    this.type = this.tagType
-    this.getCommentTagNum()
-  },
-  methods: {
-    async getCommentTagNum() {
-      const res = await getCommentTagNum({ goodsId: this.goodsId })
-      const commentTagNum = res.data
-      this.totalNum = commentTagNum.totalNum
-      this.tags = [
-        `全部`,
-        `好评(${commentTagNum.goodsNum})`,
-        `中评(${commentTagNum.middleNum})`,
-        `差评(${commentTagNum.badNum})`,
-        `有图(${commentTagNum.hasPictureNum})`
-      ]
-    },
-    async onLoad() {
-      const res = await getCommentList({
-        pageSize: this.pageSize,
-        pageNum: this.pageNum,
-        tagType: this.type,
-        goodsId: this.goodsId
-      })
-      const {
-        data
-      } = res
-      this.list = [...this.list, ...data.records]
-      this.loading = false
-      // 数据全部加载完成
-      if (data.records.length < this.pageSize) {
-        this.finished = true
-      }
-      this.pageNum += 1
-    },
-    async tagList(tagType) {
-      this.pageNum = 1
-      this.type = tagType
-      this.list = []
-      this.loading = true
-      this.onLoad()
-    }
+})
+
+const state = reactive({
+  loading: false,
+  finished: false,
+  tags: [],
+  list: [],
+  type: Number(props.tagType || 0),
+  totalNum: 0,
+  pageSize: 10,
+  pageNum: 1,
+})
+
+const { loading, finished, tags, list, type, totalNum, pageSize, pageNum } = toRefs(state)
+
+const fetchCommentTagNum = async () => {
+  const res = await getCommentTagNum({ goodsId: props.goodsId })
+  const commentTagNum = res.data || {}
+  totalNum.value = commentTagNum.totalNum || 0
+  tags.value = [
+    '全部',
+    `好评(${commentTagNum.goodsNum || 0})`,
+    `中评(${commentTagNum.middleNum || 0})`,
+    `差评(${commentTagNum.badNum || 0})`,
+    `有图(${commentTagNum.hasPictureNum || 0})`,
+  ]
+}
+
+const onLoad = async () => {
+  try {
+    const res = await getCommentList({
+      pageSize: pageSize.value,
+      pageNum: pageNum.value,
+      tagType: type.value,
+      goodsId: props.goodsId,
+    })
+    const records = res.data?.records || []
+    list.value = [...list.value, ...records]
+    finished.value = records.length < pageSize.value
+    pageNum.value += 1
+  } finally {
+    loading.value = false
   }
 }
-</script>
-<style lang="scss" scoped>
 
-.comment {
-  // margin-top: 24px;
+const tagList = (tagType) => {
+  pageNum.value = 1
+  type.value = tagType
+  list.value = []
+  finished.value = false
+  loading.value = true
+  onLoad()
+}
+
+onMounted(() => {
+  fetchCommentTagNum()
+})
+</script>
+
+<style lang="scss" scoped>
+.comment-page {
   background: #fff;
 
   .tags {
     display: flex;
     flex-wrap: wrap;
     padding: 12px 24px;
+
     .tags__item {
       color: #ad0000;
       background-color: #ffe1e1;
@@ -127,6 +130,7 @@ export default {
       border-radius: 18px;
     }
   }
+
   .main {
     padding: 0 24px;
   }

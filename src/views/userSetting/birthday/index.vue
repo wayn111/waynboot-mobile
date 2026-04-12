@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="set_nickname">
     <nav-bar :title="$route.meta.title" />
     <van-cell-group>
@@ -11,32 +11,42 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { reactive, toRefs } from 'vue'
+import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
+import { showDialog, showToast } from 'vant'
+
 import { profile } from '@/api/user'
 
-export default {
-  data() {
-    return {
-      birthday: '',
-      show: false
+const router = useRouter()
+const store = useStore()
+
+const state = reactive({ birthday: '' })
+const { birthday } = toRefs(state)
+
+const getBirthday = () => {
+  birthday.value = store.getters.userInfo.birthday
+}
+
+const saveBirthday = async () => {
+  try {
+    const res = await profile({ birthday: birthday.value })
+    if (res.code !== 200) {
+      showToast({ type: 'fail', message: res.msg || '保存失败' })
+      return
     }
-  },
-  created() {
-    this.getBirthday()
-  },
-  methods: {
-    getBirthday() {
-      this.birthday = this.$store.getters.userInfo.birthday
-    },
-    saveBirthday() {
-      profile({ nickname: this.nickName }).then((res) => {
-        this.$dialog.alert({ message: '保存成功' }).then(() => {
-          this.$router.go(-1)
-        })
-      })
-    }
+
+    await store.dispatch('user/getInfo')
+    showDialog({ message: '保存成功' }).then(() => {
+      router.go(-1)
+    })
+  } catch (error) {
+    showToast({ type: 'fail', message: error?.message || '保存失败' })
   }
 }
+
+getBirthday()
 </script>
 
 <style scoped>

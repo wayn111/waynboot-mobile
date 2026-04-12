@@ -10,72 +10,90 @@
     />
 
     <div class="list">
-      <list-item />
+      <list-item :selected-address="selectedAddress" />
     </div>
   </div>
 </template>
 
-<script>
-import { mapGetters, mapMutations } from 'vuex'
+<script setup>
+import {
+  reactive,
+  toRefs,
+  computed,
+  onActivated,
+  onDeactivated,
+  watch,
+} from 'vue'
+import { useRouter } from 'vue-router'
 
+import { useStore } from 'vuex'
 import ListItem from './modules/ListItem'
 
-export default {
-  name: 'OrderConfirm',
-  components: {
-    ListItem
-  },
-  data() {
-    return {
-      contact: {
-        type: 'add',
-        name: '',
-        tel: ''
-      }
-    }
-  },
-  computed: {
-    ...mapGetters(['selectedAddress'])
-  },
-  mounted() {
-  },
-  activated() {
-    // 对于使用了keep-alive的组件
-    // 使用activated这个生命周期钩子刷新地址
-    // 在页面加载时读取sessionStorage里的状态信息
-    if (!this.selectedAddress.id && sessionStorage.getItem('contact')) {
-      this['address/SET_SELECTED_ADDRESS'](JSON.parse(sessionStorage.getItem('contact')))
-      sessionStorage.removeItem('contact')
-    }
+const router = useRouter()
+const store = useStore()
+const selectedAddress = computed(() => store.getters.selectedAddress || {})
 
-    if (this.selectedAddress.id) {
-      const { name, tel } = this.selectedAddress
-      this.contact.type = 'edit'
-      this.contact.name = name
-      this.contact.tel = tel
-    } else {
-      this.contact.type = 'add'
-    }
-
-    // 在页面刷新时将vuex里的信息保存到sessionStorage里
-    window.addEventListener('beforeunload', () => {
-      sessionStorage.setItem('contact', JSON.stringify(this.selectedAddress))
-    })
+const state = reactive({
+  contact: {
+    type: 'add',
+    name: '',
+    tel: '',
   },
-  methods: {
-    onContact() {
-      this.$router.push({
-        path: '/address'
-      })
-    },
-    ...mapMutations([
-      'address/SET_SELECTED_ADDRESS' // 将 `this.increment()` 映射为 `this.$store.commit('increment')`
-    ])
+})
+const { contact } = toRefs(state)
+
+const updateContactCard = () => {
+  if (selectedAddress.value.id) {
+    const { name, tel } = selectedAddress.value
+    contact.value.type = 'edit'
+    contact.value.name = name || ''
+    contact.value.tel = tel || ''
+    return
+  }
+
+  contact.value.type = 'add'
+  contact.value.name = ''
+  contact.value.tel = ''
+}
+
+const syncContactToSession = () => {
+  if (selectedAddress.value.id) {
+    sessionStorage.setItem('contact', JSON.stringify(selectedAddress.value))
   }
 }
+
+const restoreContactFromSession = () => {
+  if (selectedAddress.value.id) {
+    return
+  }
+
+  const cached = sessionStorage.getItem('contact')
+  if (cached) {
+    store.commit('address/SET_SELECTED_ADDRESS', JSON.parse(cached))
+    sessionStorage.removeItem('contact')
+  }
+}
+
+watch(selectedAddress, updateContactCard, { immediate: true })
+
+const onContact = () => {
+  router.push({
+    path: '/address',
+  })
+}
+
+onActivated(() => {
+  restoreContactFromSession()
+  updateContactCard()
+  window.addEventListener('beforeunload', syncContactToSession)
+})
+
+onDeactivated(() => {
+  window.removeEventListener('beforeunload', syncContactToSession)
+})
 </script>
 
- <style lang="scss" scoped>
+<style lang="scss" scoped>
 .order-confirm {
   min-height: 100vh;
   background: #f5f5f5;

@@ -1,15 +1,14 @@
 <template>
   <div class="search-nav-bar">
     <van-icon
-      size="16"
+      class="back-icon"
       name="arrow-left"
-      style="padding: 12px 0 12px 12px"
       @click="$router.back()"
     />
     <van-search
       v-model="keyword"
       shape="round"
-      style="width: 100%"
+      class="search-input"
       :placeholder="defaultSearch"
       show-action
       clearable
@@ -25,55 +24,57 @@
   </div>
 </template>
 
-<script>
-import variables from '@/styles/variables.scss'
+<script setup>
+import { computed } from 'vue'
+import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
+import { showToast } from 'vant'
 
-export default {
-  props: {
-    value: {
-      type: String,
-      default: ''
-    },
-    defaultSearch: {
-      type: String,
-      default: ''
-    }
+const router = useRouter()
+const store = useStore()
+
+const props = defineProps({
+  modelValue: {
+    type: String,
+    default: '',
   },
-  computed: {
-    variables() {
-      return variables
-    },
-    keyword: {
-      get() {
-        return this.value
-      },
-      set(val) {
-        this.$emit('input', val)
-      }
-    }
+  defaultSearch: {
+    type: String,
+    default: '',
   },
-  // watch: {
-  //   defaultSearch(val1, val2) {
-  //   }
-  // },
-  methods: {
-    onFocus() {
-      this.$emit('handleFocus')
-    },
-    onSearch() {
-      const key = this.keyword.trim() || this.defaultSearch.trim()
-      if (!key) {
-        this.$toast('请输入要搜索内容')
-        return
-      }
-      this.$store.dispatch('search/setKey', key)
-      this.$emit('handleSearch', key)
-    },
-    onCancel() {
-      this.value = ''
-      this.$router.back()
-    }
+})
+
+const emit = defineEmits(['update:modelValue', 'handleFocus', 'handleSearch'])
+
+const keyword = computed({
+  get() {
+    return props.modelValue
+  },
+  set(val) {
+    emit('update:modelValue', val)
+  },
+})
+
+const onFocus = () => {
+  emit('handleFocus')
+}
+
+const onSearch = () => {
+  const key = keyword.value.trim() || props.defaultSearch.trim()
+  if (!key) {
+    showToast({
+      type: 'fail',
+      message: '请输入要搜索的内容',
+    })
+    return
   }
+  store.dispatch('search/setKey', key)
+  emit('handleSearch', key)
+}
+
+const onCancel = () => {
+  keyword.value = ''
+  router.back()
 }
 </script>
 
@@ -81,5 +82,14 @@ export default {
 .search-nav-bar {
   display: flex;
   align-items: center;
+
+  .back-icon {
+    font-size: 40px;
+    padding: 24px 0 24px 24px;
+  }
+
+  .search-input {
+    width: 100%;
+  }
 }
 </style>

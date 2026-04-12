@@ -1,27 +1,23 @@
-<template>
+﻿<template>
   <div>
     <van-count-down v-bind="$attrs">
-      <template v-slot="timeData">
-        <span class="item">{{ timeData.hours | padZero }}</span>
-        <span class="item">{{ timeData.minutes | padZero }}</span>
-        <span class="item red">{{ timeData.seconds | padZero }}</span>
+      <template #default="timeData">
+        <span class="item">{{ padZero(timeData.hours) }}</span>
+        <span class="item">{{ padZero(timeData.minutes) }}</span>
+        <span class="item red">{{ padZero(timeData.seconds) }}</span>
       </template>
     </van-count-down>
   </div>
 </template>
 
-<script>
-export default {
-  filters: {
-    padZero: function(value) {
-      return `${value}`.padStart(2, '0')
-    }
-  }
+<script setup>
+const padZero = (value) => {
+  return `${value}`.padStart(2, '0')
 }
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/variables.scss';
+@use '@/styles/variables.scss' as *;
 
 .item {
   display: inline-block;
@@ -35,6 +31,7 @@ export default {
   height: 40px;
   line-height: 40px;
 }
+
 .red {
   background: $red;
 }
