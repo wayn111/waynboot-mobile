@@ -97,7 +97,7 @@ onMounted(() => {
 <style lang="scss" scoped>
 .home {
   background: #f5f5f5;
-  min-height: 100vh;
+  min-height: 1334px;
   .logo {
     display: block;
     width: 200px;

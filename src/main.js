@@ -3,10 +3,11 @@ import { createApp } from 'vue'
 // A modern alternative to CSS resets
 // https://github.com/necolas/normalize.css
 import 'normalize.css/normalize.css'
+import 'vant/lib/index.css'
+import './utils/flexible'
 import './styles/index.scss'
 import './assets/iconfont/iconfont.css'
 import 'virtual:svg-icons-register'
-import 'vant/lib/index.css'
 
 import App from './App.vue'
 import router from './router'

@@ -2,7 +2,7 @@
   <div class="category">
     <Header />
     <van-tree-select
-      height="calc(100vh - 50px)"
+      height="calc(1334px - 50px)"
       :items="categoryList"
       v-model:main-active-index="active"
       @click-nav="onL1CateClick"

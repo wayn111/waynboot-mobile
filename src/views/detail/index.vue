@@ -305,7 +305,7 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .detail {
-  min-height: 100vh;
+  min-height: 1334px;
   background: #f5f5f5;
 }
 </style>

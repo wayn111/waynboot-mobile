@@ -41,7 +41,7 @@
             :discount="item.counterPrice"
             :is-new="item.isNew"
             :is-hot="item.isHot"
-            style="margin-bottom: 1vw"
+            style="margin-bottom: 7.5px"
             @getCartGoodsCount="handleGetCartGoodsCount"
           />
         </van-list>
@@ -159,11 +159,11 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .product {
-  min-height: 100vh;
+  min-height: 1334px;
   background: #f5f5f5;
 }
 
 .main {
-  padding: 1vw 0 0 0;
+  padding: 7.5px 0 0 0;
 }
 </style>

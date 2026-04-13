@@ -95,7 +95,7 @@ onDeactivated(() => {
 
 <style lang="scss" scoped>
 .order-confirm {
-  min-height: 100vh;
+  min-height: 1334px;
   background: #f5f5f5;
 }
 </style>

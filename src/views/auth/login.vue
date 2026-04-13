@@ -30,7 +30,13 @@
         :rules="[{ required: true, message: '验证码不能为空' }]"
       >
         <template #button>
-          <span class="code-btn" @click.stop="getMobileCode">{{ btnText }}</span>
+          <span
+            class="code-btn"
+            :class="{ 'is-disabled': disabled }"
+            @click.stop="getMobileCode"
+          >
+            {{ btnText }}
+          </span>
         </template>
       </van-field>
 
@@ -177,9 +183,16 @@ onBeforeUnmount(() => {
 
 <style lang="scss" scoped>
 .login-container {
+  min-height: 1334px;
+  padding: 200px 24px 48px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+
   .form {
-    margin-top: 200px;
-    padding: 24px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 
     .title-big {
       font-size: 42px;
@@ -204,30 +217,38 @@ onBeforeUnmount(() => {
   }
 
   .agreement {
-    position: absolute;
-    bottom: -40vh;
-    left: 50%;
-    transform: translateX(-50%);
-    width: max-content;
+    margin-top: auto;
+    padding: 120px 20px 0;
+    width: 100%;
+    box-sizing: border-box;
+    justify-content: center;
+    align-items: flex-start;
 
     :deep(.van-checkbox__label) {
       color: #b6b6b6;
+      line-height: 40px;
+      white-space: normal;
     }
   }
 
   .code-btn {
     color: #1989fa;
+    font-size: 28px;
+  }
+
+  .code-btn.is-disabled {
+    color: #b6b6b6;
   }
 
   .submitDiv {
-    margin: 15vw auto 0;
-    width: max-content;
+    margin-top: 112.5px;
+    width: 100%;
   }
 
   .submitBtn {
     background-color: crimson;
     border: none;
-    width: 500px;
+    width: 100%;
     font-size: 30px;
   }
 }

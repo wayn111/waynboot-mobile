@@ -91,6 +91,6 @@ const displayPrice = computed(() => {
 }
 
 .van-submit-bar {
-  bottom: 50px;
+  bottom: 115px;
 }
 </style>

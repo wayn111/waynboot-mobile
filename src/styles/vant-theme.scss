@@ -1,23 +1,133 @@
 @use './variables.scss' as *;
 
 :root {
+  /* Base Typography */
+  --van-font-size-xs: 20px;
+  --van-font-size-sm: 24px;
+  --van-font-size-md: 28px;
+  --van-font-size-lg: 32px;
+  --van-line-height-xs: 28px;
+  --van-line-height-sm: 36px;
+  --van-line-height-md: 40px;
+  --van-line-height-lg: 44px;
+  --van-padding-base: 8px;
+  --van-padding-xs: 16px;
+  --van-padding-sm: 24px;
+  --van-padding-md: 32px;
+  --van-padding-lg: 48px;
+  --van-padding-xl: 64px;
+
+  /* NavBar */
+  --van-nav-bar-height: 92px;
+  --van-nav-bar-title-font-size: 32px;
+  --van-nav-bar-icon-size: 36px;
+  --van-nav-bar-text-color: #333;
+  --van-nav-bar-arrow-size: 36px;
+
   /* Tabbar */
   --van-tabbar-height: 110px;
   --van-tabbar-item-font-size: 24px;
   --van-tabbar-item-icon-size: 44px;
-  --van-tabbar-item-margin-bottom: 10px;
-  
+  --van-tabbar-item-icon-margin-bottom: 10px;
+
   /* Search */
   --van-search-padding: 20px 24px;
   --van-search-input-height: 68px;
   --van-search-action-font-size: 28px;
   --van-search-label-font-size: 28px;
   --van-search-action-padding: 0 16px;
+  --van-search-content-background: #f7f8fa;
+  --van-search-input-font-size: 28px;
 
   /* Badge */
   --van-badge-size: 32px;
   --van-badge-font-size: 20px;
   --van-badge-padding: 0 8px;
+
+  /* Cell / Field */
+  --van-cell-font-size: 28px;
+  --van-cell-line-height: 40px;
+  --van-cell-vertical-padding: 24px;
+  --van-cell-horizontal-padding: 32px;
+  --van-field-label-width: 140px;
+  --van-field-label-color: #333;
+  --van-field-input-text-color: #333;
+  --van-field-input-font-size: 28px;
+  --van-field-placeholder-text-color: #999;
+  --van-field-error-message-font-size: 24px;
+  --van-field-error-message-line-height: 32px;
+
+  /* Button */
+  --van-button-default-height: 88px;
+  --van-button-default-font-size: 28px;
+  --van-button-small-height: 64px;
+  --van-button-small-font-size: 24px;
+  --van-button-mini-height: 48px;
+  --van-button-mini-font-size: 20px;
+  --van-button-large-height: 96px;
+  --van-button-border-radius: 12px;
+  --van-button-round-border-radius: 999px;
+
+  /* SubmitBar / ActionBar */
+  --van-submit-bar-height: 100px;
+  --van-submit-bar-price-font-size: 40px;
+  --van-submit-bar-price-integer-font-size: 40px;
+  --van-submit-bar-price-color: #ea625b;
+  --van-submit-bar-button-width: 220px;
+  --van-submit-bar-text-color: #333;
+  --van-action-bar-height: 100px;
+  --van-action-bar-icon-size: 40px;
+  --van-action-bar-icon-font-size: 24px;
+  --van-action-bar-button-height: 80px;
+  --van-action-bar-button-font-size: 28px;
+
+  /* Dialog / Popup / NoticeBar */
+  --van-popup-round-radius: 24px;
+  --van-dialog-width: 640px;
+  --van-dialog-font-size: 28px;
+  --van-dialog-message-font-size: 28px;
+  --van-dialog-message-line-height: 40px;
+  --van-dialog-button-height: 88px;
+  --van-dialog-confirm-button-text-color: #ea625b;
+  --van-notice-bar-height: 72px;
+  --van-notice-bar-font-size: 24px;
+  --van-notice-bar-line-height: 36px;
+  --van-notice-bar-icon-size: 32px;
+
+  /* Tabs / Picker / TreeSelect */
+  --van-tabs-line-height: 88px;
+  --van-tab-font-size: 28px;
+  --van-tab-active-text-color: #333;
+  --van-tab-text-color: #666;
+  --van-tabbar-z-index: 10;
+  --van-picker-title-font-size: 32px;
+  --van-picker-option-font-size: 28px;
+  --van-picker-action-font-size: 28px;
+  --van-tree-select-font-size: 28px;
+  --van-sidebar-font-size: 28px;
+  --van-sidebar-line-height: 40px;
+  --van-sidebar-padding: 28px 24px;
+  --van-tree-select-nav-item-padding: 28px 24px;
+  --van-tree-select-item-height: 72px;
+  --van-tree-select-item-selected-size: 28px;
+
+  /* Card / Stepper / Checkbox / Radio / Uploader / Rate */
+  --van-card-font-size: 24px;
+  --van-card-title-font-size: 28px;
+  --van-card-desc-font-size: 24px;
+  --van-card-price-font-size: 32px;
+  --van-card-origin-price-font-size: 24px;
+  --van-card-thumb-size: 176px;
+  --van-stepper-input-width: 64px;
+  --van-stepper-input-height: 56px;
+  --van-stepper-input-font-size: 28px;
+  --van-checkbox-size: 32px;
+  --van-checkbox-label-font-size: 28px;
+  --van-radio-size: 32px;
+  --van-radio-label-font-size: 28px;
+  --van-uploader-size: 160px;
+  --van-uploader-icon-size: 48px;
+  --van-rate-icon-size: 32px;
 }
 
 //商品卡片
@@ -32,7 +142,7 @@ div.van-card {
 }
 
 div.van-card__footer {
-	font-size: 12px;	
+	font-size: 24px;	
 	color: $font-color-gray;
 }
 

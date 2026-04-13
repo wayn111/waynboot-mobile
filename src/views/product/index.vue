@@ -28,7 +28,7 @@
             :desc="item.brief"
             :price="item.retailPrice"
             :discount="item.counterPrice"
-            style="margin-bottom: 1vw"
+            style="margin-bottom: 7.5px"
             @getCartGoodsCount="getCartGoodsCount"
           />
         </van-list>
@@ -158,7 +158,7 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .product {
-  min-height: 100vh;
+  min-height: 1334px;
   background: #f5f5f5;
 }
 </style>

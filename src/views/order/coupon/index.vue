@@ -117,7 +117,7 @@ onMounted(() => {
 <style lang="scss" scoped>
 .coupon {
   background: #f5f5f5;
-  min-height: 100vh;
+  min-height: 1334px;
 
   .content {
     margin: 20px 30px;

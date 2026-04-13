@@ -161,7 +161,7 @@ onMounted(() => {
   img {
     vertical-align: middle;
     position: relative;
-    top: -2.467vw;
+    top: -18.5px;
   }
 }
 </style>

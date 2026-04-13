@@ -10,7 +10,7 @@ import Header from './modules/Header'
 
 <style lang="scss" scoped>
 .order-status {
-  min-height: 100vh;
+  min-height: 1334px;
   background: #f5f5f5;
 }
 </style>

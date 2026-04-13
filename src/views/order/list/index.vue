@@ -22,7 +22,7 @@
       >
         <van-pull-refresh
           v-model="refreshing"
-          style="min-height: calc(100vh - 84px)"
+          style="min-height: calc(1334px - 84px)"
           @refresh="onRefresh"
         >
           <van-list

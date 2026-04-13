@@ -29,6 +29,6 @@ const onClick = (jumpUrl) => {
 
 <style scoped>
 :deep(.van-image__img ){
-  max-height: 42vw;
+  max-height: 315px;
 }
 </style>

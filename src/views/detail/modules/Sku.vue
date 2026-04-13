@@ -64,12 +64,13 @@
 </template>
 
 <script setup>
-import { computed, reactive, watch } from 'vue'
+import { computed, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { showToast } from 'vant'
 import _ from 'lodash'
 
 import { addCart } from '@/api/cart'
+import { createSkuState } from './skuState.mjs'
 
 const router = useRouter()
 
@@ -109,42 +110,19 @@ const isShow = computed({
   },
 })
 
-const state = reactive({
-  selectedValues: {},
-  selectedNum: props.initialSku?.selectedNum || 1,
-})
-
-const { selectedValues, selectedNum } = state
+const { selectedValues, selectedNum, selectedNames, syncSelectedFromInitial } = createSkuState(
+  props.initialSku
+)
 
 const displayPrice = computed(() => {
   return ((Number(props.skuData.price || 0)) / 100).toFixed(2)
 })
 
-const selectedNames = computed(() => {
-  return Object.values(selectedValues)
-    .map((item) => item?.name)
-    .filter(Boolean)
-})
-
-const syncSelectedFromInitial = () => {
-  const nextSelected = {}
-  ;(props.skuData.tree || []).forEach((spec) => {
-    const selectedId = props.initialSku?.[spec.k_s]
-    if (!selectedId) return
-    const target = (spec.v || []).find((item) => item.id === selectedId)
-    if (target) {
-      nextSelected[spec.k_s] = target
-    }
-  })
-  state.selectedValues = nextSelected
-  state.selectedNum = props.initialSku?.selectedNum || 1
-}
-
 watch(
   () => props.modelValue,
   (visible) => {
     if (visible) {
-      syncSelectedFromInitial()
+      syncSelectedFromInitial(props.skuData.tree || [], props.initialSku)
     }
   },
   { immediate: true }
@@ -154,7 +132,7 @@ watch(
   () => props.initialSku,
   () => {
     if (props.modelValue) {
-      syncSelectedFromInitial()
+      syncSelectedFromInitial(props.skuData.tree || [], props.initialSku)
     }
   },
   { deep: true }
@@ -166,8 +144,8 @@ const onClosed = () => {
 
 const emitSkuChange = (skuKeyStr, item) => {
   const selectedSku = {}
-  Object.keys(state.selectedValues).forEach((key) => {
-    selectedSku[key] = state.selectedValues[key]?.id || ''
+  Object.keys(selectedValues.value).forEach((key) => {
+    selectedSku[key] = selectedValues.value[key]?.id || ''
   })
 
   emit('initSku', {
@@ -177,24 +155,30 @@ const emitSkuChange = (skuKeyStr, item) => {
 }
 
 const onSelectSpec = (key, item) => {
-  if (state.selectedValues[key]?.id === item.id) {
-    delete state.selectedValues[key]
+  if (selectedValues.value[key]?.id === item.id) {
+    const nextSelected = { ...selectedValues.value }
+    delete nextSelected[key]
+    selectedValues.value = nextSelected
     emitSkuChange(key, { name: '' })
     return
   }
 
-  state.selectedValues[key] = item
+  selectedValues.value = {
+    ...selectedValues.value,
+    [key]: item,
+  }
   emitSkuChange(key, item)
 }
 
 const onStepperChange = (num) => {
+  selectedNum.value = num
   emit('initSkuNum', num)
 }
 
 const findProductId = () => {
-  const selectedIds = Object.keys(state.selectedValues)
+  const selectedIds = Object.keys(selectedValues.value)
     .sort()
-    .map((key) => state.selectedValues[key]?.id)
+    .map((key) => selectedValues.value[key]?.id)
     .filter(Boolean)
 
   if (selectedIds.length <= 0) {
@@ -216,7 +200,7 @@ const findProductId = () => {
 const validateSkuData = () => {
   const treeKeys = (props.skuData.tree || []).map((item) => item.k_s)
   for (const key of treeKeys) {
-    if (!state.selectedValues[key]) {
+    if (!selectedValues.value[key]) {
       showToast({ type: 'fail', message: '请选择完整规格' })
       return false
     }
@@ -230,7 +214,7 @@ const validateSkuData = () => {
 
   return {
     goodsId: props.goods.goodsId,
-    number: state.selectedNum,
+    number: selectedNum.value,
     productId,
   }
 }
@@ -313,8 +297,8 @@ const getProductIdByOne = (s1) => {
   background: #fff;
   display: flex;
   flex-direction: column;
-  min-height: 50vh;
-  max-height: 80vh;
+  min-height: 667px;
+  max-height: 1067.2px;
 
   .sku-header {
     display: flex;

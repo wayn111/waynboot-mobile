@@ -7,6 +7,7 @@
     "build:dev": "vite build --mode development",
     "build:prod": "vite build --mode production",
     "lint": "eslint src --ext .js,.vue",
+    "test:node": "node --test tests/sku-state.test.mjs",
     "svgo": "svgo -f src/icons/svg --config=src/icons/svgo.yml"
   },
   "dependencies": {
@@ -51,7 +52,7 @@
     "less": "^3.13.1",
     "less-loader": "^5.0.0",
     "postcss-preset-env": "^6.7.0",
-    "postcss-px-to-viewport": "^1.1.1",
+    "postcss-pxtorem": "^6.1.0",
     "sass": "^1.66.1",
     "svgo": "^1.3.2",
     "vite": "^4.4.9",

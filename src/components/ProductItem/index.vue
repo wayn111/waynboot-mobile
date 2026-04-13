@@ -142,7 +142,7 @@ const onAddCart = async () => {
           color: $gray;
 
           .praise__rate {
-            margin-left: 2vw;
+            margin-left: 15px;
           }
         }
       }

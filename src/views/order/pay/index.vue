@@ -166,18 +166,18 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-$mb2vw: 2vw;
+$mb2px: 15px;
 
 .payment {
-  min-height: 100vh;
+  min-height: 1334px;
   background: #f5f5f5;
 
   .van-notice-bar {
-    margin-bottom: $mb2vw;
+    margin-bottom: $mb2px;
   }
 
   .payment_group {
-    margin-bottom: $mb2vw;
+    margin-bottom: $mb2px;
   }
 
   .pay_submit {
@@ -191,7 +191,7 @@ $mb2vw: 2vw;
   }
 
   .pay_way_title {
-    padding: 5vw 4vw;
+    padding: 37.5px 30px;
     background-color: #fff;
   }
 

@@ -63,7 +63,7 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .tabbar {
-  width: 100vw;
+  width: 750px;
   position: fixed;
   bottom: 0;
   left: 0;

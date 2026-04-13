@@ -121,13 +121,13 @@ onMounted(() => {
   padding: 10px 20px;
 
   > div:nth-child(-n + 11) {
-    margin-top: 1vh;
+    margin-top: 13.34px;
   }
 
   .van-card {
     background-color: #f9f8f8;
     padding: 15px 20px;
-    margin-top: 2vh;
+    margin-top: 26.68px;
   }
 
   .van-card__header {
