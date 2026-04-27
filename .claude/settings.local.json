@@ -2,7 +2,20 @@
   "permissions": {
     "allow": [
       "Bash(xargs ls:*)",
-      "Bash(xargs wc:*)"
+      "Bash(xargs wc:*)",
+      "Bash(curl -s --max-time 2 http://localhost:8080 -o /dev/null -w \"%{http_code}\")",
+      "Bash(curl *)",
+      "mcp__plugin_ecc_playwright__browser_navigate",
+      "mcp__chrome-devtools__new_page",
+      "mcp__chrome-devtools__resize_page",
+      "mcp__chrome-devtools__navigate_page",
+      "mcp__chrome-devtools__take_screenshot",
+      "mcp__chrome-devtools__evaluate_script",
+      "mcp__chrome-devtools__list_pages",
+      "Bash(claude *)",
+      "Bash(npm *)",
+      "Bash(npx eslint *)",
+      "Bash(echo \"Exit: $?\")"
     ]
   }
 }

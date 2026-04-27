@@ -1,78 +1,45 @@
 <template>
-  <div class="home-diamond">
-    <div ref="scrollRef" class="scroll-wrapper">
-      <div class="scroll-content">
-        <div
-          v-for="(cate, idx) in pageList"
-          :key="idx"
-          class="scroll-item__wrapper"
-        >
-          <div
-            v-for="item in cate"
-            :key="item.id"
-            class="scroll-item"
-            @click="onNavigate(item)"
-          >
-            <img :src="item.iconUrl" alt="分类图标" />
-            <p class="text">{{ item.name }}</p>
-          </div>
-        </div>
-      </div>
+  <section class="home-kongo">
+    <div class="home-kongo__head">
+      <h2 class="home-kongo__title">分类</h2>
+      <button type="button" class="home-kongo__link" @click="goAllCategory">
+        全部
+        <van-icon name="arrow" />
+      </button>
     </div>
 
-    <div v-if="pageList.prev.length > 5" class="dot-wrapper">
-      <div class="dot" :style="{ transform: `translateX(${rate})` }" />
+    <div class="home-kongo__grid">
+      <button
+        v-for="(item, index) in visibleList"
+        :key="item.id"
+        type="button"
+        class="home-kongo__item"
+        @click="onNavigate(item)"
+      >
+        <span class="home-kongo__thumb" :class="`home-kongo__thumb--${index % 5}`">
+          <img :src="item.iconUrl" :alt="item.name" />
+        </span>
+        <span class="home-kongo__name">{{ item.name }}</span>
+      </button>
     </div>
-  </div>
+  </section>
 </template>
 
 <script setup>
-import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
+import { computed } from 'vue'
 import { useRouter } from 'vue-router'
-import BScroll from '@better-scroll/core'
 
 const router = useRouter()
 
 const props = defineProps({
   diamondList: {
     type: Array,
-    default() {
-      return []
-    },
+    default: () => [],
   },
 })
 
-const scrollRef = ref(null)
-const rate = ref('0%')
-let bs = null
-
-const pageList = computed(() => {
-  const data = props.diamondList || []
-  const len = data.length
-
-  if (len <= 5) {
-    return {
-      prev: data,
-      next: [],
-    }
-  }
-
-  if (len <= 10) {
-    return {
-      prev: data.slice(0, 5),
-      next: data.slice(5),
-    }
-  }
-
-  const middle = Math.ceil(len / 2)
-  return {
-    prev: data.slice(0, middle),
-    next: data.slice(middle),
-  }
-})
-
-const totalPages = computed(() => {
-  return pageList.value.next.length > 0 ? 2 : 1
+const visibleList = computed(() => {
+  return props.diamondList.slice(0, 10)
 })
 
 const onNavigate = (item) => {
@@ -85,109 +52,116 @@ const onNavigate = (item) => {
   })
 }
 
-const initScroll = async () => {
-  await nextTick()
-
-  if (!scrollRef.value || totalPages.value <= 1) {
-    if (bs) {
-      bs.destroy()
-      bs = null
-    }
-    rate.value = '0%'
-    return
-  }
-
-  if (bs) {
-    bs.destroy()
-  }
-
-  bs = new BScroll(scrollRef.value, {
-    scrollX: true,
-    scrollY: false,
-    click: true,
-    probeType: 3,
-  })
-
-  const totalX = Math.abs(bs.maxScrollX)
-  bs.on('scroll', (pos) => {
-    const currentX = Math.abs(pos.x)
-    rate.value = totalX > 0 ? `${Number((currentX / totalX) * 100).toFixed(2)}%` : '0%'
-  })
+const goAllCategory = () => {
+  router.push({ path: '/category' })
 }
-
-watch(
-  () => props.diamondList,
-  () => {
-    initScroll()
-  },
-  { immediate: true, deep: true }
-)
-
-onBeforeUnmount(() => {
-  if (bs) {
-    bs.destroy()
-    bs = null
-  }
-})
 </script>
 
 <style lang="scss" scoped>
-@use '@/styles/variables.scss' as *;
+.home-kongo {
+  padding: 0 4px;
+}
 
-.home-diamond {
-  padding: 24px 0 12px 0;
-  background: #fff;
+.home-kongo__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+  padding: 0 4px;
+}
 
-  .scroll-wrapper {
-    width: 100%;
-    white-space: nowrap;
-    overflow: hidden;
+.home-kongo__title {
+  font-size: 34px;
+  line-height: 1.08;
+  font-weight: 700;
+  color: #1d1d1f;
+  letter-spacing: -0.2px;
+}
+
+.home-kongo__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: rgba(29, 29, 31, 0.42);
+  font-size: 26px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.home-kongo__grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 18px 10px;
+}
+
+.home-kongo__item {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  text-align: center;
+  cursor: pointer;
+}
+
+.home-kongo__thumb {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 22px;
+  background: #ffffff;
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.05);
+}
+
+.home-kongo__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.home-kongo__thumb--0 {
+  background: linear-gradient(135deg, #ffe8cf 0%, #ffd7ab 100%);
+}
+
+.home-kongo__thumb--1 {
+  background: linear-gradient(135deg, #dbeafe 0%, #c7d2fe 100%);
+}
+
+.home-kongo__thumb--2 {
+  background: linear-gradient(135deg, #e5e7eb 0%, #d1d5db 100%);
+}
+
+.home-kongo__thumb--3 {
+  background: linear-gradient(135deg, #cfeaff 0%, #a7d7ff 100%);
+}
+
+.home-kongo__thumb--4 {
+  background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%);
+}
+
+.home-kongo__name {
+  display: block;
+  margin-top: 12px;
+  font-size: 24px;
+  line-height: 1.25;
+  font-weight: 500;
+  color: #1d1d1f;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 375px) {
+  .home-kongo__grid {
+    gap: 16px 8px;
   }
 
-  .scroll-content {
-    display: inline-block;
-
-    .scroll-item__wrapper {
-      .scroll-item {
-        font-size: $mini;
-        display: inline-block;
-        text-align: center;
-        color: $black;
-        padding: 0 25px 24px 25px;
-
-        img {
-          display: block;
-          width: 100px;
-          height: 100px;
-          overflow: hidden;
-          background: #f5f5f5;
-          margin: 0 auto;
-        }
-
-        .text {
-          width: 100px;
-          margin-top: 12px;
-          font-size: 23px;
-        }
-      }
-    }
-  }
-
-  .dot-wrapper {
-    width: 80px;
-    height: 4px;
-    background: rgba(0, 0, 0, 0.1);
-    border-radius: 3px;
-    margin: 0 auto;
-    overflow: hidden;
-
-    .dot {
-      box-sizing: border-box;
-      width: 40px;
-      height: 4px;
-      transition: all 0.4s linear;
-      background: $red;
-    }
+  .home-kongo__thumb {
+    border-radius: 20px;
   }
 }
 </style>

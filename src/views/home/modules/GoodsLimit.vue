@@ -66,18 +66,40 @@ const loading = computed({
 
 <style lang="scss" scoped>
 .home-goods {
-  margin-top: 12px;
+  overflow: hidden;
+  border-radius: 32px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.08);
+
   .main {
-    background: #fff;
     box-sizing: border-box;
-    padding: 0 10px;
+    padding: 12px 20px 20px;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
+    gap: 12px;
   }
 }
+
+:deep(.van-cell) {
+  padding: 32px 28px 0;
+  background: transparent;
+}
+
+:deep(.van-cell__title) {
+  font-size: 42px;
+  line-height: 1.1;
+  letter-spacing: -0.22px;
+  font-weight: 600;
+}
+
+:deep(.van-cell__value) {
+  color: #0066cc;
+  font-size: 24px;
+}
+
 :deep(.van-cell:after ){
   display: none;
 }

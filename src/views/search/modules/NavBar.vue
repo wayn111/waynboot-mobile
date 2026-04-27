@@ -1,24 +1,22 @@
 <template>
   <div class="search-nav-bar">
-    <van-icon
-      class="back-icon"
-      name="arrow-left"
-      @click="$router.back()"
-    />
+    <button type="button" class="search-nav-bar__back" @click="$router.back()">
+      <van-icon name="arrow-left" />
+    </button>
+
     <van-search
       v-model="keyword"
-      shape="round"
-      class="search-input"
-      :placeholder="defaultSearch"
+      class="search-nav-bar__input"
+      :placeholder="defaultSearch || '搜索商品、分类、关键词'"
       show-action
       clearable
-      autofocus
+      :autofocus="autofocus"
       @focus="onFocus"
       @search="onSearch"
       @cancel="onCancel"
     >
       <template #action>
-        <div @click="onSearch">搜索</div>
+        <button type="button" class="search-nav-bar__action" @click="onSearch">搜索</button>
       </template>
     </van-search>
   </div>
@@ -41,6 +39,10 @@ const props = defineProps({
   defaultSearch: {
     type: String,
     default: '',
+  },
+  autofocus: {
+    type: Boolean,
+    default: true,
   },
 })
 
@@ -82,14 +84,87 @@ const onCancel = () => {
 .search-nav-bar {
   display: flex;
   align-items: center;
+  gap: 12px;
+  width: 100%;
+  max-width: var(--wb-content-width);
+  margin: 0 auto;
+  padding: calc(max(env(safe-area-inset-top, 0px), 0px) + 12px) 24px 16px;
+}
 
-  .back-icon {
-    font-size: 40px;
-    padding: 24px 0 24px 24px;
+.search-nav-bar__back {
+  width: 52px;
+  height: 52px;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  appearance: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+  color: #1d1d1f;
+}
+
+.search-nav-bar__back :deep(.van-icon) {
+  font-size: 32px;
+}
+
+.search-nav-bar__input {
+  flex: 1;
+
+  :deep(.van-search) {
+    padding: 0;
+    background: transparent;
   }
 
-  .search-input {
-    width: 100%;
+  :deep(.van-search__content) {
+    min-height: 72px;
+    padding-left: 8px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.94);
+    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+  }
+
+  :deep(.van-search__field) {
+    padding-left: 2px;
+  }
+
+  :deep(.van-field__control) {
+    font-size: 30px;
+    color: #1d1d1f;
+  }
+
+  :deep(.van-field__control::placeholder) {
+    color: rgba(29, 29, 31, 0.38);
+  }
+
+  :deep(.van-field__left-icon),
+  :deep(.van-icon-clear) {
+    color: rgba(29, 29, 31, 0.48);
+  }
+}
+
+.search-nav-bar__action {
+  min-width: 116px;
+  height: 50px;
+  padding: 0 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  appearance: none;
+  border-radius: 999px;
+  background: #1677ff;
+  color: #ffffff;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+@media (max-width: 375px) {
+  .search-nav-bar {
+    padding-left: 20px;
+    padding-right: 20px;
   }
 }
 </style>

@@ -178,7 +178,7 @@ const routes = [
   },
   // 金刚位跳转商品列表
   {
-    path: '/diamondGoodsList/:diamondId',
+    path: '/diamondGoodsList/:diamondId?',
     name: 'Diamand',
     props: true,
     component: defineAsyncComponent(
@@ -310,7 +310,7 @@ const routes = [
       () => import('@/views/order/coupon/index.vue')
     ),
     meta: {
-      title: '优惠券',
+      title: '领券中心',
       showTab: true
     }
   },
@@ -319,10 +319,10 @@ const routes = [
     path: '/order/my',
     name: 'couponMy',
     component: defineAsyncComponent(
-      () => import('@/views/order/my/index.vue')
+      () => import('@/views/order/my/page.vue')
     ),
     meta: {
-      title: '优惠券',
+      title: '我的优惠券',
       showTab: true
     }
   },

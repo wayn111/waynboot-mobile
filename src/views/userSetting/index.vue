@@ -1,41 +1,53 @@
 <template>
-  <div class="user-information">
+  <div class="user-setting wb-page">
     <nav-bar :title="$route.meta.title" />
 
-    <van-cell-group>
-      <van-cell title="头像" class="cell_middle">
+    <main class="user-setting__body">
+      <section class="user-setting__profile">
         <van-uploader :after-read="afterRead">
-          <div class="user_avatar_upload">
+          <div class="user-setting__avatar">
             <img v-if="userInfo.avatar" :src="userInfo.avatar" alt="头像" />
             <van-icon v-else class-prefix="iconfont" name="camera" />
           </div>
         </van-uploader>
-      </van-cell>
+        <div class="user-setting__profile__copy">
+          <span class="user-setting__profile__label">头像</span>
+          <strong class="user-setting__profile__name">
+            {{ userInfo.nickname || '未设置昵称' }}
+          </strong>
+        </div>
+        <van-uploader :after-read="afterRead">
+          <span class="user-setting__profile__action">更换</span>
+        </van-uploader>
+      </section>
 
-      <van-cell
-        title="昵称"
-        to="/userSetting/nickname"
-        :value="userInfo.nickname"
-        is-link
-      />
-      <van-cell
-        title="性别"
-        :value="genderText"
-        is-link
-        @click="showGender = true"
-      />
-      <van-cell
-        title="生日"
-        :value="userInfo.birthday || ''"
-        is-link
-        @click="showBirthday = true"
-      />
-    </van-cell-group>
+      <section class="user-setting__panel">
+        <van-cell-group>
+          <van-cell
+            title="昵称"
+            to="/userSetting/nickname"
+            :value="userInfo.nickname"
+            is-link
+          />
+          <van-cell
+            title="性别"
+            :value="genderText"
+            is-link
+            @click="showGender = true"
+          />
+          <van-cell
+            title="生日"
+            :value="userInfo.birthday || ''"
+            is-link
+            @click="showBirthday = true"
+          />
+        </van-cell-group>
+      </section>
+    </main>
 
     <van-popup v-model:show="showBirthday" round position="bottom">
-      <van-datetime-picker
+      <van-date-picker
         v-model="currentDate"
-        type="date"
         title="选择年月日"
         :min-date="minDate"
         :max-date="maxDate"
@@ -71,11 +83,11 @@ const state = reactive({
   showGender: false,
   columns: [
     { text: '男', value: 1 },
-    { text: 'Ů', value: 2 },
+    { text: '女', value: 2 },
   ],
   minDate: new Date(1960, 0, 1),
   maxDate: new Date(),
-  currentDate: new Date(),
+  currentDate: [],
 })
 
 const { showBirthday, showGender, columns, minDate, maxDate, currentDate } = toRefs(state)
@@ -87,7 +99,7 @@ const genderText = computed(() => {
     return '男'
   }
   if (userInfo.value.gender === 2) {
-    return 'Ů'
+    return '女'
   }
   return ''
 })
@@ -95,13 +107,18 @@ const genderText = computed(() => {
 watch(
   () => userInfo.value.birthday,
   (birthday) => {
-    if (!birthday) {
-      currentDate.value = new Date()
-      return
+    let targetDate = dayjs()
+    if (birthday) {
+      const parsedDate = dayjs(birthday, 'YYYY-MM-DD')
+      if (parsedDate.isValid()) {
+        targetDate = parsedDate
+      }
     }
-
-    const parsedDate = dayjs(birthday, 'YYYY-MM-DD')
-    currentDate.value = parsedDate.isValid() ? parsedDate.toDate() : new Date()
+    currentDate.value = [
+      targetDate.format('YYYY'),
+      targetDate.format('MM'),
+      targetDate.format('DD'),
+    ]
   },
   { immediate: true }
 )
@@ -112,7 +129,7 @@ const refreshUserInfo = async () => {
 
 const afterRead = async (file) => {
   showLoadingToast({
-      message: '正在上传...',
+    message: '正在上传...',
     forbidClick: true,
     duration: 0,
   })
@@ -149,8 +166,8 @@ const afterRead = async (file) => {
   }
 }
 
-const confirmBirthday = async (value) => {
-  const birthday = dayjs(value).format('YYYY-MM-DD')
+const confirmBirthday = async ({ selectedValues }) => {
+  const birthday = selectedValues.join('-')
   const res = await profile({ birthday })
 
   if (res.code !== 200) {
@@ -195,27 +212,153 @@ const onConfirmGender = async ({ selectedOptions = [] }) => {
 </script>
 
 <style lang="scss" scoped>
-.user-information {
-  .user_avatar_upload {
-    width: 100px;
-    height: 100px;
+.user-setting {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #f5f5f7 0%, #ffffff 50%, #f5f5f7 100%);
+}
 
-    img {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      display: inline-block;
-      vertical-align: middle;
-    }
+.user-setting__body {
+  width: 100%;
+  max-width: var(--wb-content-width);
+  margin: 0 auto;
+  padding: 18px 18px 36px;
+}
 
-    i {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 50px;
-      color: #e5e5e5;
-    }
+.user-setting__profile {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 18px;
+  padding: 24px;
+  border-radius: 30px;
+  background: #ffffff;
+  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.06);
+}
+
+.user-setting__avatar {
+  position: relative;
+  width: 112px;
+  height: 112px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 50%;
+  background: #f5f5f7;
+  box-shadow: inset 0 0 0 1px rgba(29, 29, 31, 0.06);
+}
+
+.user-setting__avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.user-setting__avatar i {
+  font-size: 48px;
+  color: rgba(29, 29, 31, 0.28);
+}
+
+.user-setting__profile__copy {
+  min-width: 0;
+}
+
+.user-setting__profile__label {
+  display: block;
+  font-size: 28px;
+  line-height: 1.2;
+  color: rgba(29, 29, 31, 0.5);
+}
+
+.user-setting__profile__name {
+  display: block;
+  margin-top: 8px;
+  font-size: 36px;
+  line-height: 1.18;
+  font-weight: 700;
+  color: #1d1d1f;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.user-setting__profile__action {
+  flex: none;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: #f2f7ff;
+  color: #0066cc;
+  font-size: 28px;
+  line-height: 1.2;
+  font-weight: 600;
+}
+
+.user-setting__panel {
+  margin-top: 18px;
+  overflow: hidden;
+  border-radius: 30px;
+  background: #ffffff;
+  box-shadow: 0 14px 34px rgba(15, 23, 42, 0.06);
+}
+
+:deep(.van-cell-group) {
+  background: transparent;
+}
+
+:deep(.van-cell) {
+  align-items: center;
+  padding: 26px 24px;
+  background: #ffffff;
+}
+
+:deep(.van-cell::after) {
+  right: 24px;
+  left: 24px;
+  border-color: rgba(29, 29, 31, 0.08);
+}
+
+:deep(.van-cell__title) {
+  color: #1d1d1f;
+  font-size: 30px;
+  line-height: 1.25;
+  font-weight: 600;
+}
+
+:deep(.van-cell__value) {
+  color: rgba(29, 29, 31, 0.56);
+  font-size: 28px;
+  line-height: 1.25;
+}
+
+:deep(.van-cell__right-icon) {
+  color: rgba(29, 29, 31, 0.34);
+  font-size: 32px;
+}
+
+:deep(.van-popup) {
+  background: #ffffff;
+}
+
+:deep(.van-picker__toolbar),
+:deep(.van-picker-column__item),
+:deep(.van-picker__confirm),
+:deep(.van-picker__cancel) {
+  font-size: 28px;
+}
+
+@media (max-width: 375px) {
+  .user-setting__body {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+
+  .user-setting__profile {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .user-setting__profile__action {
+    grid-column: 2;
+    justify-self: start;
   }
 }
 </style>

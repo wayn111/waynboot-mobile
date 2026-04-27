@@ -16,12 +16,27 @@
   --van-padding-md: 32px;
   --van-padding-lg: 48px;
   --van-padding-xl: 64px;
+  --van-primary-color: #0071e3;
+  --van-success-color: #0071e3;
+  --van-danger-color: #1d1d1f;
+  --van-warning-color: #0071e3;
+  --van-text-color: #1d1d1f;
+  --van-text-color-2: rgba(29, 29, 31, 0.72);
+  --van-text-color-3: rgba(29, 29, 31, 0.48);
+  --van-border-color: rgba(29, 29, 31, 0.08);
+  --van-background: #f5f5f7;
+  --van-background-2: rgba(255, 255, 255, 0.92);
+  --van-active-color: rgba(29, 29, 31, 0.04);
+  --van-divider-margin: 0;
 
   /* NavBar */
   --van-nav-bar-height: 92px;
   --van-nav-bar-title-font-size: 32px;
   --van-nav-bar-icon-size: 36px;
-  --van-nav-bar-text-color: #333;
+  --van-nav-bar-text-color: #1d1d1f;
+  --van-nav-bar-icon-color: #1d1d1f;
+  --van-nav-bar-title-text-color: #1d1d1f;
+  --van-nav-bar-background: rgba(255, 255, 255, 0.72);
   --van-nav-bar-arrow-size: 36px;
 
   /* Tabbar */
@@ -36,7 +51,7 @@
   --van-search-action-font-size: 28px;
   --van-search-label-font-size: 28px;
   --van-search-action-padding: 0 16px;
-  --van-search-content-background: #f7f8fa;
+  --van-search-content-background: rgba(245, 245, 247, 0.88);
   --van-search-input-font-size: 28px;
 
   /* Badge */
@@ -65,16 +80,22 @@
   --van-button-mini-height: 48px;
   --van-button-mini-font-size: 20px;
   --van-button-large-height: 96px;
-  --van-button-border-radius: 12px;
+  --van-button-border-radius: 999px;
   --van-button-round-border-radius: 999px;
+  --van-button-primary-background: #0071e3;
+  --van-button-primary-border-color: #0071e3;
+  --van-button-info-background: #0071e3;
+  --van-button-info-border-color: #0071e3;
+  --van-button-default-color: #0066cc;
+  --van-button-default-border-color: rgba(0, 102, 204, 0.2);
 
   /* SubmitBar / ActionBar */
   --van-submit-bar-height: 100px;
   --van-submit-bar-price-font-size: 40px;
   --van-submit-bar-price-integer-font-size: 40px;
-  --van-submit-bar-price-color: #ea625b;
-  --van-submit-bar-button-width: 220px;
-  --van-submit-bar-text-color: #333;
+  --van-submit-bar-price-color: #1d1d1f;
+  --van-submit-bar-button-width: 240px;
+  --van-submit-bar-text-color: #1d1d1f;
   --van-action-bar-height: 100px;
   --van-action-bar-icon-size: 40px;
   --van-action-bar-icon-font-size: 24px;
@@ -88,7 +109,7 @@
   --van-dialog-message-font-size: 28px;
   --van-dialog-message-line-height: 40px;
   --van-dialog-button-height: 88px;
-  --van-dialog-confirm-button-text-color: #ea625b;
+  --van-dialog-confirm-button-text-color: #0071e3;
   --van-notice-bar-height: 72px;
   --van-notice-bar-font-size: 24px;
   --van-notice-bar-line-height: 36px;
@@ -110,6 +131,9 @@
   --van-tree-select-nav-item-padding: 28px 24px;
   --van-tree-select-item-height: 72px;
   --van-tree-select-item-selected-size: 28px;
+  --van-tabs-bottom-bar-color: #0071e3;
+  --van-tab-active-text-color: #1d1d1f;
+  --van-tab-text-color: rgba(29, 29, 31, 0.62);
 
   /* Card / Stepper / Checkbox / Radio / Uploader / Rate */
   --van-card-font-size: 24px;
@@ -128,59 +152,62 @@
   --van-uploader-size: 160px;
   --van-uploader-icon-size: 48px;
   --van-rate-icon-size: 32px;
+  --van-checkbox-checked-icon-color: #0071e3;
+  --van-radio-checked-icon-color: #0071e3;
 }
 
 //商品卡片
 .van-card__footer {
-	width: 100%;
-	padding-left: 130px;
-	box-sizing: border-box;
+  width: 100%;
+  padding-left: 130px;
+  box-sizing: border-box;
 }
 
 div.van-card {
-	background-color: #fff;
+  background-color: transparent;
 }
 
 div.van-card__footer {
-	font-size: 24px;	
-	color: $font-color-gray;
+  font-size: 24px;
+  color: $font-color-gray;
 }
 
 //cell
-.van-cell__title{
-	vertical-align: middle;
+.van-cell__title {
+  vertical-align: middle;
 }
 
 //商品详情
 .item_detail .van-picker__cancel {
-	color: #000;
+  color: #000;
 }
 
 .item_detail .van-picker__confirm {
-	color: $red;
+  color: $red;
 }
 
 //购物车
 .tab-cart > .card-goods .van-checkbox {
-	padding-left: 10px;
-	box-sizing: border-box;
+  padding-left: 10px;
+  box-sizing: border-box;
 }
 
 .tab-cart > .card-goods .van-card {
-	flex: 1;
+  flex: 1;
 }
-.tab-cart .van-card:not(:first-child){
-	margin-top: 0;
-	padding-top: 10px;
-	padding-bottom: 10px;
+
+.tab-cart .van-card:not(:first-child) {
+  margin-top: 0;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 //设置昵称
-.set_nickname .van-field__control{
-	text-align: right
+.set_nickname .van-field__control {
+  text-align: right;
 }
 
 //商品列表
-.item_list .van-tab--disabled{
-	color: #000;
+.item_list .van-tab--disabled {
+  color: #000;
 }

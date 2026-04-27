@@ -1,86 +1,91 @@
 <template>
-  <div class="registration">
+  <div class="registration wb-form-shell">
     <nav-bar :title="$route.meta.title">
       <van-icon :color="variables.black" size="18" />
     </nav-bar>
 
-    <van-form
-      class="form"
-      validate-trigger="onSubmit"
-      :show-error="false"
-      @submit="onSubmit"
-    >
-      <van-field
-        v-model="form.mobile"
-        type="text"
-        required
-        clearable
-        name="手机号"
-        label="手机号"
-        placeholder="请输入手机号"
-        :rules="[
-          {
-            validator: checkPhone,
-            required: true,
-            message: '请输入正确的手机号!',
-          },
-        ]"
-      />
+    <div class="registration__panel wb-form-panel">
+      <div class="registration__title wb-form-title">注册</div>
+      <div class="registration__subtitle wb-form-subtitle">填写手机号和密码创建账号</div>
 
-      <van-field
-        v-model="form.password"
-        type="password"
-        required
-        clearable
-        name="设置密码"
-        label="设置密码"
-        placeholder="请设置密码"
-        :rules="[{ required: true, message: '请设置密码' }]"
-      />
-
-      <van-field
-        v-model="form.confirmPassword"
-        type="password"
-        required
-        clearable
-        name="确认密码"
-        label="确认密码"
-        placeholder="请再次输入密码确认"
-        :rules="[{ required: true, message: '请再次输入密码确认' }]"
-      />
-
-      <van-field
-        v-model="form.captchaCode"
-        type="text"
-        required
-        center
-        clearable
-        name="图形验证码"
-        maxlength="4"
-        label="图形验证码"
-        placeholder="请输入图形验证码"
-        :rules="[{ required: true, message: '请输入正确的图形验证码！' }]"
+      <van-form
+        class="form"
+        validate-trigger="onSubmit"
+        :show-error="false"
+        @submit="onSubmit"
       >
-        <template #button>
-          <div class="regist-code">
-            <img :src="captchaImg" @click="getCaptcha" />
-          </div>
-        </template>
-      </van-field>
+        <van-field
+          v-model="form.mobile"
+          type="text"
+          required
+          clearable
+          name="手机号"
+          label="手机号"
+          placeholder="请输入手机号"
+          :rules="[
+            {
+              validator: checkPhone,
+              required: true,
+              message: '请输入正确的手机号!',
+            },
+          ]"
+        />
 
-      <div style="margin: 36px">
-        <van-button
-          round
-          block
-          :loading="loading"
-          type="info"
-          loading-text="注册中..."
-          native-type="submit"
+        <van-field
+          v-model="form.password"
+          type="password"
+          required
+          clearable
+          name="设置密码"
+          label="设置密码"
+          placeholder="请设置密码"
+          :rules="[{ required: true, message: '请设置密码' }]"
+        />
+
+        <van-field
+          v-model="form.confirmPassword"
+          type="password"
+          required
+          clearable
+          name="确认密码"
+          label="确认密码"
+          placeholder="请再次输入密码确认"
+          :rules="[{ required: true, message: '请再次输入密码确认' }]"
+        />
+
+        <van-field
+          v-model="form.captchaCode"
+          type="text"
+          required
+          center
+          clearable
+          name="图形验证码"
+          maxlength="4"
+          label="图形验证码"
+          placeholder="请输入图形验证码"
+          :rules="[{ required: true, message: '请输入正确的图形验证码！' }]"
         >
-          注册
-        </van-button>
-      </div>
-    </van-form>
+          <template #button>
+            <div class="regist-code">
+              <img :src="captchaImg" @click="getCaptcha" />
+            </div>
+          </template>
+        </van-field>
+
+        <div class="registration__submit">
+          <van-button
+            round
+            block
+            :loading="loading"
+            type="info"
+            loading-text="注册中..."
+            native-type="submit"
+          >
+            注册
+          </van-button>
+        </div>
+      </van-form>
+    </div>
   </div>
 </template>
 
@@ -151,8 +156,32 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
+.registration__panel {
+  padding-bottom: 36px;
+}
+
+.registration__title {
+  padding-bottom: 18px;
+}
+
+.registration__subtitle {
+  padding-bottom: 40px;
+}
+
 .form {
-  padding: 24px;
+  :deep(.van-cell) {
+    padding: 24px 0;
+    background: transparent;
+    border-bottom: 1px solid rgba(29, 29, 31, 0.08);
+  }
+
+  :deep(.van-cell:after) {
+    display: none;
+  }
+}
+
+.registration__submit {
+  margin-top: 36px;
 }
 
 .regist-code {

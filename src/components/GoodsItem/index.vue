@@ -4,16 +4,21 @@
       <image-pic
         fill="cover"
         align="center"
-        width="150"
-        height="150"
+        width="180"
+        height="180"
         :src="img"
       />
     </div>
-    <p class="title">{{ title }}</p>
-    <div class="num">
-      <span class="num__now">¥</span>{{ yuan(price) }}
+    <div class="meta">
+      <p class="title">{{ title }}</p>
+      <p v-if="desc" class="brief">{{ desc }}</p>
+      <div class="footer">
+        <div class="num">
+          <span class="num__now">¥</span>{{ yuan(price) }}
+        </div>
+        <div class="desc">销量 {{ virtualSales || 0 }}</div>
+      </div>
     </div>
-    <div class="desc">销量：{{ virtualSales || 0 }}</div>
   </div>
 </template>
 
@@ -67,76 +72,77 @@ const onNavigate = () => {
 
 .goods-item {
   position: relative;
-  width: 360px;
+  width: calc(50% - 10px);
   overflow: hidden;
-  border-top: 1px solid #ebedf0;
-  border-right: 1px solid #ebedf0;
+  border: 1px solid rgba(29, 29, 31, 0.06);
   display: flex;
   flex-direction: column;
-  align-items: center;
-
-  &:nth-child(2n + 2) {
-    border-right: none;
-  }
+  background: rgba(255, 255, 255, 0.94);
+  border-radius: 28px;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.08);
+  margin-bottom: 16px;
 
   .pic {
     display: block;
-    padding: 14px;
+    height: 240px;
+    padding: 22px;
+    background: #f5f5f7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
-  .title {
-    margin-bottom: 10px;
-    height: 66px;
-    max-width: 320px;
-    font-size: $small;
-    color: $black;
-    text-align: center;
-    @include text-multiple-ellipsis;
-  }
+  .meta {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 22px;
 
-  .desc {
-    padding: 14px;
-    padding-top: 0;
-    font-size: $small;
-    color: $gray;
-    text-align: center;
-    @include text-ellipsis;
-  }
+    .title {
+      min-height: 72px;
+      font-size: 30px;
+      color: $black;
+      line-height: 1.16;
+      letter-spacing: -0.2px;
+      @include text-multiple-ellipsis;
+    }
 
-  .num {
-    padding-bottom: 25px;
-    text-align: center;
-    font-size: 36px;
-    color: $black;
-    font-weight: 500;
-    text-decoration-line: underline;
-    text-decoration-color: #969799;
+    .brief {
+      margin-top: 12px;
+      min-height: 60px;
+      font-size: 22px;
+      color: $gray;
+      line-height: 1.4;
+      @include text-multiple-ellipsis;
+    }
+
+    .footer {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .desc {
+      font-size: 20px;
+      color: $gray;
+      text-align: right;
+      @include text-ellipsis;
+    }
+
+    .num {
+      font-size: 34px;
+      color: $black;
+      font-weight: 600;
+      line-height: 1;
+    }
 
     .num__now {
       font-family: DIN-Medium, DIN;
-      font-size: 24px;
-    }
-
-    .num__old {
-      font-family: DIN-Medium, DIN;
-      font-size: 24px;
-      font-weight: 400;
-      color: $gray;
-      text-decoration: line-through;
-      margin-right: 10px;
-    }
-  }
-
-  .btn-wrapper {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    padding-bottom: 24px;
-
-    .btn {
-      background: $red;
-      color: #fff;
-      border: none;
+      font-size: 20px;
+      margin-right: 2px;
     }
   }
 }

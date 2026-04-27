@@ -307,10 +307,10 @@ const getProductIdByOne = (s1) => {
     &__img {
       width: 192px;
       height: 192px;
-      border-radius: 8px;
+      border-radius: 24px;
       overflow: hidden;
       margin-right: 24px;
-      background: #f7f8fa;
+      background: #f5f5f7;
     }
 
     &__info {
@@ -321,8 +321,8 @@ const getProductIdByOne = (s1) => {
     }
 
     &__price {
-      color: $red;
-      font-weight: bold;
+      color: $black;
+      font-weight: 600;
       margin-bottom: 8px;
 
       .currency {
@@ -337,7 +337,7 @@ const getProductIdByOne = (s1) => {
 
     &__stock {
       font-size: 24px;
-      color: #999;
+      color: #666;
       margin-bottom: 8px;
     }
 
@@ -370,14 +370,14 @@ const getProductIdByOne = (s1) => {
           padding: 12px 24px;
           font-size: 26px;
           color: #323233;
-          background: #f7f8fa;
-          border-radius: 8px;
+          background: #f5f5f7;
+          border-radius: 999px;
           border: 2px solid transparent;
 
           &--active {
-            color: $red;
-            background: rgba(255, 68, 68, 0.1);
-            border-color: $red;
+            color: $theme;
+            background: rgba(0, 113, 227, 0.1);
+            border-color: $theme;
           }
         }
       }

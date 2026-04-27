@@ -1,12 +1,17 @@
 <template>
-  <div class="goods-comment">
+  <div class="goods-comment wb-page">
     <nav-bar :title="$route.meta.title">
       <span style="color: #333">
         <svg-icon icon-class="share" :width="15" :height="15" />
       </span>
     </nav-bar>
 
-    <van-form @submit="onSubmit">
+    <section class="goods-comment__hero">
+      <span class="goods-comment__hero__eyebrow">Comment</span>
+      <h1 class="goods-comment__hero__title">分享你的真实感受。</h1>
+    </section>
+
+    <van-form class="goods-comment__form" @submit="onSubmit">
       <van-field
         label="商品评价"
         :rules="[{ validator: rateValidator, message: '请选择商品评价' }]"
@@ -39,7 +44,7 @@
         </template>
       </van-field>
 
-      <div style="margin: 16px">
+      <div class="goods-comment__submit">
         <van-button round block type="info" native-type="submit">
           提交
         </van-button>
@@ -133,6 +138,39 @@ const onSubmit = async () => {
 </script>
 
 <style lang="scss" scoped>
+.goods-comment {
+  background: linear-gradient(180deg, #000000 0, #000000 260px, #f5f5f7 260px, #f5f5f7 100%);
+}
+
+.goods-comment__hero {
+  padding: 20px 24px 24px;
+  color: #fff;
+}
+
+.goods-comment__hero__eyebrow {
+  font-size: 22px;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.goods-comment__hero__title {
+  margin-top: 14px;
+  font-size: 46px;
+  line-height: 1.08;
+  font-weight: 600;
+}
+
+.goods-comment__form {
+  margin: 0 24px 24px;
+  padding: 12px 0 24px;
+  border-radius: 32px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.08);
+}
+
+.goods-comment__submit {
+  margin: 16px;
+}
+
 :deep(.van-uploader__wrapper) {
   justify-content: space-between;
 }

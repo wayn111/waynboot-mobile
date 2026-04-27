@@ -99,36 +99,84 @@ const itemClick = (tagType) => {
 @use '@/styles/variables.scss' as *;
 
 .comment {
-  background: #fff;
+  margin-top: 16px;
+  overflow: hidden;
+  border-radius: 32px;
+  background: #ffffff;
+  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.06);
+
+  :deep(.van-cell) {
+    align-items: center;
+    padding: 26px 24px;
+    background: transparent;
+  }
+
+  :deep(.van-cell::after) {
+    right: 24px;
+    left: 24px;
+    border-color: rgba(29, 29, 31, 0.08);
+  }
+
+  :deep(.van-cell__title) {
+    color: #1d1d1f;
+    font-size: 32px;
+    line-height: 1.2;
+    font-weight: 700;
+  }
+
+  :deep(.van-cell__value) {
+    color: #0066cc;
+    font-size: 28px;
+    line-height: 1.25;
+    font-weight: 600;
+  }
+
+  :deep(.van-cell__right-icon) {
+    color: rgba(29, 29, 31, 0.34);
+    font-size: 32px;
+  }
 
   .tags {
     display: flex;
     flex-wrap: wrap;
-    padding: 12px 24px;
+    gap: 10px;
+    padding: 0 24px 14px;
 
     .tags__item {
-      color: #ad0000;
-      background-color: #ffe1e1;
-      margin: 0 24px 0 0;
-      padding: 10px 16px;
-      border-radius: 18px;
+      color: #0066cc;
+      background-color: rgba(0, 113, 227, 0.08);
+      margin: 0;
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-size: 28px;
+      line-height: 1.2;
+      font-weight: 600;
     }
   }
 
   .custom-num {
     margin-left: 8px;
-    font-size: 24px;
-    font-weight: 400;
-    color: $gray;
+    font-size: 28px;
+    font-weight: 600;
+    color: rgba(29, 29, 31, 0.48);
   }
 
   .main {
-    padding: 0 24px;
+    padding: 0 24px 18px;
 
     .main__btn {
       display: flex;
       justify-content: center;
-      padding: 24px;
+      padding: 24px 0 4px;
+
+      :deep(.van-button) {
+        height: 56px;
+        padding: 0 24px;
+        border-color: rgba(0, 102, 204, 0.22);
+        color: #0066cc !important;
+        font-size: 28px;
+        font-weight: 600;
+      }
     }
   }
 }

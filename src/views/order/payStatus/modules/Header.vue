@@ -1,16 +1,21 @@
-﻿<template>
-  <div class="header">
-    <div class="header__title">
-      <van-icon :name="isSuccess ? 'checked' : 'clear'" color="#fff" size="25" />
-      <span class="header__title__text">{{ statusText }}</span>
+<template>
+  <div class="pay-status-card">
+    <div class="pay-status-card__icon" :class="`pay-status-card__icon--${iconTone}`">
+      <van-icon :name="isSuccess ? 'checked' : 'clear'" size="34" />
     </div>
 
-    <p v-if="isSuccess" class="header__desc">我们将尽快为您配货</p>
-    <p v-else class="header__desc">请联系客服处理~</p>
+    <div class="pay-status-card__copy">
+      <h1 class="pay-status-card__title">{{ statusText }}</h1>
+      <p class="pay-status-card__desc">{{ statusDesc }}</p>
+    </div>
 
-    <div class="header__btn">
-      <router-link class="header__btn__item" to="/" replace>返回首页</router-link>
-      <router-link class="header__btn__item" :to="`/user/order/list/${orderStatus}`" replace>
+    <div class="pay-status-card__actions">
+      <router-link class="pay-status-card__action" to="/" replace>返回首页</router-link>
+      <router-link
+        class="pay-status-card__action pay-status-card__action--primary"
+        :to="`/user/order/list/${orderStatus}`"
+        replace
+      >
         查看订单
       </router-link>
     </div>
@@ -43,63 +48,106 @@ const statusText = computed(() => {
   return isSuccess.value ? '支付成功' : '支付失败'
 })
 
+const statusDesc = computed(() => {
+  if (currentStatus.value === 'cancel') {
+    return '订单仍保留在列表中，稍后可以重新选择支付方式。'
+  }
+  return isSuccess.value
+    ? '订单已提交，后续发货和售后进度可在订单列表继续查看。'
+    : '本次支付没有完成，可返回订单列表重新发起支付。'
+})
+
+const iconTone = computed(() => {
+  return isSuccess.value ? 'success' : 'muted'
+})
+
 const orderStatus = computed(() => {
   return isSuccess.value ? 2 : 0
 })
 </script>
 
 <style lang="scss" scoped>
-@use '@/styles/variables.scss' as *;
+.pay-status-card {
+  padding: 42px 28px 30px;
+  border-radius: 36px;
+  background: #ffffff;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+}
 
-.header {
-  width: 100%;
-  height: 390px;
-  background: $red;
+.pay-status-card__icon {
+  width: 88px;
+  height: 88px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  margin: 0 auto;
+}
 
-  .header__title {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    padding-top: 92px;
+.pay-status-card__icon--success {
+  background: rgba(0, 113, 227, 0.1);
+  color: #0071e3;
+}
 
-    .header__title__text {
-      font-size: 42px;
-      font-weight: 500;
-      color: #fff;
-      margin-left: 12px;
-    }
+.pay-status-card__icon--muted {
+  background: rgba(29, 29, 31, 0.08);
+  color: rgba(29, 29, 31, 0.72);
+}
+
+.pay-status-card__copy {
+  margin-top: 24px;
+  text-align: center;
+}
+
+.pay-status-card__title {
+  font-size: 44px;
+  line-height: 1.08;
+  font-weight: 600;
+  color: #1d1d1f;
+}
+
+.pay-status-card__desc {
+  margin-top: 16px;
+  font-size: 28px;
+  line-height: 1.5;
+  color: rgba(29, 29, 31, 0.68);
+}
+
+.pay-status-card__actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 32px;
+}
+
+.pay-status-card__action {
+  min-height: 56px;
+  padding: 0 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid rgba(29, 29, 31, 0.12);
+  background: #ffffff;
+  color: #1d1d1f;
+  font-size: 28px;
+  line-height: 1.2;
+  font-weight: 600;
+}
+
+.pay-status-card__action--primary {
+  border-color: #0071e3;
+  background: #0071e3;
+  color: #ffffff;
+}
+
+@media (max-width: 375px) {
+  .pay-status-card {
+    padding: 36px 20px 24px;
   }
 
-  .header__desc {
-    font-size: 26px;
-    color: #fff;
-    margin-top: 27px;
-    text-align: center;
-    opacity: 0.9;
-  }
-
-  .header__btn {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    margin-top: 48px;
-
-    .header__btn__item {
-      width: 180px;
-      height: 60px;
-      border-radius: 33px;
-      border: 1px solid #fff;
-      line-height: 60px;
-      text-align: center;
-      font-size: 26px;
-      color: #fff;
-
-      &:last-child {
-        margin-left: 60px;
-      }
-    }
+  .pay-status-card__actions {
+    grid-template-columns: 1fr;
   }
 }
 </style>

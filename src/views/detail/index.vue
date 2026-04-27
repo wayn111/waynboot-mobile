@@ -1,36 +1,40 @@
 <template>
-  <div class="detail">
+  <div class="detail wb-page">
     <nav-bar :title="info.name">
       <!-- 预留分享入口 -->
     </nav-bar>
 
-    <Swiper :banner="banner" />
+    <section class="detail__hero">
+      <Swiper :banner="banner" />
 
-    <Overview
-      :title="info.name"
-      :desc="info.brief"
-      :price="info.retailPrice"
-      :discount="info.counterPrice"
-      :virtual-sales="info.virtualSales"
-    />
+      <Overview
+        :title="info.name"
+        :desc="info.brief"
+        :price="info.retailPrice"
+        :discount="info.counterPrice"
+        :virtual-sales="info.virtualSales"
+      />
+    </section>
 
-    <Section
-      :stock-num="stockNum"
-      :name="name"
-      :attr="attributes"
-      :freight-limit="mallConfig.freightLimit"
-      @update:value="isSkuShow = $event"
-    />
+    <section class="detail__content">
+      <Section
+        :stock-num="stockNum"
+        :name="name"
+        :attr="attributes"
+        :freight-limit="mallConfig.freightLimit"
+        @update:value="isSkuShow = $event"
+      />
 
-    <Comment
-      :rate="comment.rate"
-      :num="comment.num"
-      :tags="comment.tags"
-      :list="comment.list"
-      :goods-id="goodsId"
-    />
+      <Comment
+        :rate="comment.rate"
+        :num="comment.num"
+        :tags="comment.tags"
+        :list="comment.list"
+        :goods-id="goodsId"
+      />
 
-    <Description :description="description" />
+      <Description :description="description" />
+    </section>
 
     <Sku
       v-if="isSkuShow"
@@ -305,7 +309,32 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .detail {
-  min-height: 1334px;
-  background: #f5f5f5;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background: linear-gradient(180deg, #f5f5f7 0%, #ffffff 48%, #f5f5f7 100%);
+
+  .detail__hero {
+    width: 100%;
+    max-width: var(--wb-content-width);
+    margin: 0 auto;
+    padding: 18px 18px 0;
+  }
+
+  .detail__content {
+    width: 100%;
+    max-width: var(--wb-content-width);
+    margin: 0 auto;
+    padding: 18px 18px 180px;
+  }
+}
+
+@media (max-width: 375px) {
+  .detail {
+    .detail__hero,
+    .detail__content {
+      padding-right: 16px;
+      padding-left: 16px;
+    }
+  }
 }
 </style>

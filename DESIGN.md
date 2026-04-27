@@ -2,312 +2,246 @@
 
 ## 1. Visual Theme & Atmosphere
 
-Apple's website is a masterclass in controlled drama — vast expanses of pure black and near-white serve as cinematic backdrops for products that are photographed as if they were sculptures in a gallery. The design philosophy is reductive to its core: every pixel exists in service of the product, and the interface itself retreats until it becomes invisible. This is not minimalism as aesthetic preference; it is minimalism as reverence for the object.
+Apple's web language is a precision editorial system that alternates between gallery-like calm and retail-density information blocks. The visual tone stays restrained: broad neutral canvases, quiet chrome, and product imagery given almost all of the expressive weight. The interface is engineered to disappear so hardware, materials, and finish options become the narrative foreground.
 
-The typography anchors everything. San Francisco (SF Pro Display for large sizes, SF Pro Text for body) is Apple's proprietary typeface, engineered with optical sizing that automatically adjusts letterforms depending on point size. At display sizes (56px), weight 600 with a tight line-height of 1.07 and subtle negative letter-spacing (-0.28px) creates headlines that feel machined rather than typeset — precise, confident, and unapologetically direct. At body sizes (17px), the tracking loosens slightly (-0.374px) and line-height opens to 1.47, creating a reading rhythm that is comfortable without ever feeling slack.
+Across the five analyzed pages, the rhythm is consistent but not monolithic. Marketing surfaces (homepage and Environment) use cinematic black-and-light chaptering, while commerce surfaces (Store and Shop flows) introduce tighter spacing, more utility controls, and denser card stacks without breaking the core brand grammar. The result is one system with two gears: showcase mode and transaction mode.
 
-The color story is starkly binary. Product sections alternate between pure black (`#000000`) backgrounds with white text and light gray (`#f5f5f7`) backgrounds with near-black text (`#1d1d1f`). This creates a cinematic pacing — dark sections feel immersive and premium, light sections feel open and informational. The only chromatic accent is Apple Blue (`#0071e3`), reserved exclusively for interactive elements: links, buttons, and focus states. This singular accent color in a sea of neutrals gives every clickable element unmistakable visibility.
+Typography is the stabilizer. SF Pro Display carries hero and merchandising hierarchy with compact line heights and controlled tracking, while SF Pro Text handles product metadata, navigation, filters, and dense selection UI. The typography stays understated, but the scale range is wide enough to support both billboard hero messaging and micro utility labels.
 
 **Key Characteristics:**
-- SF Pro Display/Text with optical sizing — letterforms adapt automatically to size context
-- Binary light/dark section rhythm: black (`#000000`) alternating with light gray (`#f5f5f7`)
-- Single accent color: Apple Blue (`#0071e3`) reserved exclusively for interactive elements
-- Product-as-hero photography on solid color fields — no gradients, no textures, no distractions
-- Extremely tight headline line-heights (1.07-1.14) creating compressed, billboard-like impact
-- Full-width section layout with centered content — the viewport IS the canvas
-- Pill-shaped CTAs (980px radius) creating soft, approachable action buttons
-- Generous whitespace between sections allowing each product moment to breathe
+- Binary section rhythm: deep black scenes (`#000000`) alternating with pale neutral fields (`#f5f5f7`)
+- Single blue accent family for action and link semantics (`#0071e3`, `#0066cc`, `#2997ff`)
+- Dual operating modes in one system: cinematic showcase modules and dense commerce configurators
+- Heavy reliance on imagery and material finishes; UI chrome remains visually thin
+- Tight headline metrics (SF Pro Display, semibold) paired with compact body/link typography (SF Pro Text)
+- Pill and capsule geometry as signature action language (`18px` to `980px` and circular controls)
+- Depth used sparingly; contrast and surface separation do most of the layering work
+- Multi-page color-block rhythm: black hero chapters -> pale neutral merchandising fields -> utility white retail surfaces -> dark micro-surfaces for controls
 
 ## 2. Color Palette & Roles
 
+> **Source Pages:** `https://www.apple.com/`, `https://www.apple.com/environment/`, `https://www.apple.com/store`, `https://www.apple.com/shop/buy-iphone/iphone-17-pro`, `https://www.apple.com/shop/accessories/all`
+
 ### Primary
-- **Pure Black** (`#000000`): Hero section backgrounds, immersive product showcases. The darkest canvas for the brightest products.
-- **Light Gray** (`#f5f5f7`): Alternate section backgrounds, informational areas. Not white — the slight blue-gray tint prevents sterility.
-- **Near Black** (`#1d1d1f`): Primary text on light backgrounds, dark button fills. Slightly warmer than pure black for comfortable reading.
+- **Absolute Black** (`#000000`): Immersive hero canvases, high-drama product chapters, deep UI anchors.
+- **Pale Apple Gray** (`#f5f5f7`): Main light surface for feature bands, comparison blocks, and editorial transitions.
+- **Near-Black Ink** (`#1d1d1f`): Primary text and dark-fill control color on light canvases.
 
-### Interactive
-- **Apple Blue** (`#0071e3`): `--sk-focus-color`, primary CTA backgrounds, focus rings. The ONLY chromatic color in the interface.
-- **Link Blue** (`#0066cc`): `--sk-body-link-color`, inline text links. Slightly darker than Apple Blue for text-level readability.
-- **Bright Blue** (`#2997ff`): Links on dark backgrounds. Higher luminance for contrast on black sections.
+### Secondary & Accent
+- **Apple Action Blue** (`#0071e3`): Primary action fill and focus-signaling brand accent.
+- **Body Link Blue** (`#0066cc`): Inline link color optimized for long-form readability.
+- **High-Luminance Link Blue** (`#2997ff`): Bright link treatment on darker scenes where stronger contrast is required.
 
-### Text
-- **White** (`#ffffff`): Text on dark backgrounds, button text on blue/dark CTAs.
-- **Near Black** (`#1d1d1f`): Primary body text on light backgrounds.
-- **Black 80%** (`rgba(0, 0, 0, 0.8)`): Secondary text, nav items on light backgrounds. Slightly softened.
-- **Black 48%** (`rgba(0, 0, 0, 0.48)`): Tertiary text, disabled states, carousel controls.
+### Surface & Background
+- **Pure White Canvas** (`#ffffff`): Retail/product-list backgrounds and dense transactional sections.
+- **Graphite Surface A** (`#272729`): Dark card and media-control context layer.
+- **Graphite Surface B** (`#262629`): Slightly deeper dark utility layer for control groupings.
+- **Graphite Surface C** (`#28282b`): Elevated dark supporting surfaces.
+- **Graphite Surface D** (`#2a2a2c`): Darkest elevated step used for separation in richer dark scenes.
 
-### Surface & Dark Variants
-- **Dark Surface 1** (`#272729`): Card backgrounds in dark sections.
-- **Dark Surface 2** (`#262628`): Subtle surface variation in dark contexts.
-- **Dark Surface 3** (`#28282a`): Elevated cards on dark backgrounds.
-- **Dark Surface 4** (`#2a2a2d`): Highest dark surface elevation.
-- **Dark Surface 5** (`#242426`): Deepest dark surface tone.
+### Neutrals & Text
+- **Secondary Neutral Gray** (`#6e6e73`): Body secondary copy, helper descriptions, tertiary metadata.
+- **Soft Border Gray** (`#d2d2d7`): Dividers, subtle outlines, and muted utility containment.
+- **Mid Border Gray** (`#86868b`): Stronger field outlines in product-configuration and filter contexts.
+- **Utility Dark Gray** (`#424245`): Dark-neutral text/surface crossover in store contexts.
 
-### Button States
-- **Button Active** (`#ededf2`): Active/pressed state for light buttons.
-- **Button Default Light** (`#fafafc`): Search/filter button backgrounds.
-- **Overlay** (`rgba(210, 210, 215, 0.64)`): Media control scrims, overlays.
-- **White 32%** (`rgba(255, 255, 255, 0.32)`): Hover state on dark modal close buttons.
+### Semantic & Accent
+- **Selection/Focus Signal** (`#0071e3`): Shared focus and selected-state signal across marketing and commerce contexts.
+- **Error/Warning/Success**: No distinct semantic palette was consistently visible in the extracted surface set.
 
-### Shadows
-- **Card Shadow** (`rgba(0, 0, 0, 0.22) 3px 5px 30px 0px`): Soft, diffused elevation for product cards. Offset and wide blur create a natural, photographic shadow.
+### Gradient System
+- The extracted pages are overwhelmingly solid-surface driven. Visual richness comes from photography and finish rendering rather than persistent UI gradients.
 
 ## 3. Typography Rules
 
 ### Font Family
-- **Display**: `SF Pro Display`, with fallbacks: `SF Pro Icons, Helvetica Neue, Helvetica, Arial, sans-serif`
-- **Body**: `SF Pro Text`, with fallbacks: `SF Pro Icons, Helvetica Neue, Helvetica, Arial, sans-serif`
-- SF Pro Display is used at 20px and above; SF Pro Text is optimized for 19px and below.
+- **Display Family:** `SF Pro Display`, fallbacks `SF Pro Icons, Helvetica Neue, Helvetica, Arial, sans-serif`
+- **Text Family:** `SF Pro Text`, fallbacks `SF Pro Icons, Helvetica Neue, Helvetica, Arial, sans-serif`
+- **Usage Split:** Display family handles hero/product headlines and merchandising headings; Text family handles navigation, controls, labels, and dense commerce copy.
 
 ### Hierarchy
-
-| Role | Font | Size | Weight | Line Height | Letter Spacing | Notes |
-|------|------|------|--------|-------------|----------------|-------|
-| Display Hero | SF Pro Display | 56px (3.50rem) | 600 | 1.07 (tight) | -0.28px | Product launch headlines, maximum impact |
-| Section Heading | SF Pro Display | 40px (2.50rem) | 600 | 1.10 (tight) | normal | Feature section titles |
-| Tile Heading | SF Pro Display | 28px (1.75rem) | 400 | 1.14 (tight) | 0.196px | Product tile headlines |
-| Card Title | SF Pro Display | 21px (1.31rem) | 700 | 1.19 (tight) | 0.231px | Bold card headings |
-| Sub-heading | SF Pro Display | 21px (1.31rem) | 400 | 1.19 (tight) | 0.231px | Regular card headings |
-| Nav Heading | SF Pro Text | 34px (2.13rem) | 600 | 1.47 | -0.374px | Large navigation headings |
-| Sub-nav | SF Pro Text | 24px (1.50rem) | 300 | 1.50 | normal | Light sub-navigation text |
-| Body | SF Pro Text | 17px (1.06rem) | 400 | 1.47 | -0.374px | Standard reading text |
-| Body Emphasis | SF Pro Text | 17px (1.06rem) | 600 | 1.24 (tight) | -0.374px | Emphasized body text, labels |
-| Button Large | SF Pro Text | 18px (1.13rem) | 300 | 1.00 (tight) | normal | Large button text, light weight |
-| Button | SF Pro Text | 17px (1.06rem) | 400 | 2.41 (relaxed) | normal | Standard button text |
-| Link | SF Pro Text | 14px (0.88rem) | 400 | 1.43 | -0.224px | Body links, "Learn more" |
-| Caption | SF Pro Text | 14px (0.88rem) | 400 | 1.29 (tight) | -0.224px | Secondary text, descriptions |
-| Caption Bold | SF Pro Text | 14px (0.88rem) | 600 | 1.29 (tight) | -0.224px | Emphasized captions |
-| Micro | SF Pro Text | 12px (0.75rem) | 400 | 1.33 | -0.12px | Fine print, footnotes |
-| Micro Bold | SF Pro Text | 12px (0.75rem) | 600 | 1.33 | -0.12px | Bold fine print |
-| Nano | SF Pro Text | 10px (0.63rem) | 400 | 1.47 | -0.08px | Legal text, smallest size |
+| Role | Size | Weight | Line Height | Letter Spacing | Notes |
+|------|------|--------|-------------|----------------|-------|
+| Hero Display XL | 80px | 600 | 1.00-1.05 | -1.2px | Environment/store hero scale |
+| Hero Display L | 56px | 600 | 1.07 | -0.28px | Homepage hero moments |
+| Section Display | 48px | 500-600 | 1.08 | -0.144px | Major chapter headings |
+| Product Heading | 40px | 600 | 1.10 | normal | Product and campaign section titles |
+| Feature Display | 38px | 600 | 1.21 | 0.152px | Device and merchandising callouts |
+| Promo Display | 32px | 300-600 | 1.09-1.13 | 0.128px to 0.352px | Module-level sub-heroes |
+| Card/Product Title | 28px | 600 | 1.14 | 0.196px | Tile-level naming and key copy |
+| Utility Heading | 24px | 600 | 1.17 | 0.216px / -0.2px | Configurator and grouped content headers |
+| Link/Action Heading | 21px | 600 | 1.14-1.38 | 0.231px | Larger promotional links |
+| Subhead | 19px | 600 | 1.21 | 0.228px | Compact section intros |
+| Body Primary | 17px | 400 | 1.47 | -0.374px | Standard body and retail descriptions |
+| Body Emphasis | 17px | 600 | 1.24 | -0.374px | Emphasized labels and key values |
+| Control Label | 14px | 400-600 | 1.29-1.47 | -0.224px | Buttons, helper labels, compact nav text |
+| Micro UI | 12px | 400-600 | 1.00-1.33 | -0.12px | Fine print, micro labels |
+| Legal/Meta | 10px | 400 | 1.30-1.47 | -0.08px | Dense metadata and legal support text |
 
 ### Principles
-- **Optical sizing as philosophy**: SF Pro automatically switches between Display and Text optical sizes. Display versions have wider letter spacing and thinner strokes optimized for large sizes; Text versions are tighter and sturdier for small sizes. This means the font literally changes its DNA based on context.
-- **Weight restraint**: The scale spans 300 (light) to 700 (bold) but most text lives at 400 (regular) and 600 (semibold). Weight 300 appears only on large decorative text. Weight 700 is rare, used only for bold card titles.
-- **Negative tracking at all sizes**: Unlike most systems that only track headlines, Apple applies subtle negative letter-spacing even at body sizes (-0.374px at 17px, -0.224px at 14px, -0.12px at 12px). This creates universally tight, efficient text.
-- **Extreme line-height range**: Headlines compress to 1.07 while body text opens to 1.47, and some button contexts stretch to 2.41. This dramatic range creates clear visual hierarchy through rhythm alone.
+- **Continuity across page types:** The same typographic DNA spans cinematic launches and product-purchase flows, preventing a brand split between marketing and commerce.
+- **Compression at scale:** Display tiers use tight leading and controlled tracking to feel machined and product-first.
+- **Readable density at retail depth:** SF Pro Text balances compactness with enough vertical rhythm for long product lists and option matrices.
+- **Measured weight ladder:** 600 is the dominant emphasis weight; 700 appears selectively; 300 is used sparingly for contrast in larger lines.
+
+### Note on Font Substitutes
+- Closest freely available substitutes: `Inter` for text-heavy implementation and `SF Pro Display-like` metrics approximated with `Inter Tight` for headings.
+- When substituting, increase line-height slightly (+0.02 to +0.06) on body sizes and reduce negative tracking intensity to preserve readability.
 
 ## 4. Component Stylings
 
 ### Buttons
-
-**Primary Blue (CTA)**
-- Background: `#0071e3` (Apple Blue)
-- Text: `#ffffff`
-- Padding: 8px 15px
-- Radius: 8px
-- Border: 1px solid transparent
-- Font: SF Pro Text, 17px, weight 400
-- Hover: background brightens slightly
-- Active: `#ededf2` background shift
-- Focus: `2px solid var(--sk-focus-color, #0071E3)` outline
-- Use: Primary call-to-action ("Buy", "Shop iPhone")
-
-**Primary Dark**
-- Background: `#1d1d1f`
-- Text: `#ffffff`
-- Padding: 8px 15px
-- Radius: 8px
-- Font: SF Pro Text, 17px, weight 400
-- Use: Secondary CTA, dark variant
-
-**Pill Link (Learn More / Shop)**
-- Background: transparent
-- Text: `#0066cc` (light bg) or `#2997ff` (dark bg)
-- Radius: 980px (full pill)
-- Border: 1px solid `#0066cc`
-- Font: SF Pro Text, 14px-17px
-- Hover: underline decoration
-- Use: "Learn more" and "Shop" links — the signature Apple inline CTA
-
-**Filter / Search Button**
-- Background: `#fafafc`
-- Text: `rgba(0, 0, 0, 0.8)`
-- Padding: 0px 14px
-- Radius: 11px
-- Border: 3px solid `rgba(0, 0, 0, 0.04)`
-- Focus: `2px solid var(--sk-focus-color, #0071E3)` outline
-- Use: Search bars, filter controls
-
-**Media Control**
-- Background: `rgba(210, 210, 215, 0.64)`
-- Text: `rgba(0, 0, 0, 0.48)`
-- Radius: 50% (circular)
-- Active: scale(0.9), background shifts
-- Focus: `2px solid var(--sk-focus-color, #0071e3)` outline, white bg, black text
-- Use: Play/pause, carousel arrows
+- **Primary Fill Action:** `#0071e3` background, `#ffffff` text, 8px radius, compact horizontal padding (commonly 8px 15px). Used for decisive purchase/progression actions.
+- **Dark Fill Action:** `#1d1d1f` background, `#ffffff` text, 8px radius. Used when light surfaces need a restrained high-contrast primary.
+- **Pill/Capsule Action Family:** large capsule actions at `18px`-`56px` radii and extreme pill links at `980px`. Establishes Apple’s soft but precise call-to-action silhouette.
+- **Utility Filter/Button Shells:** light shells (`#fafafc` or translucent white) with subtle gray borders (`#d2d2d7` / `#86868b`) for dense configuration contexts.
+- **Pressed Behavior:** active controls commonly reduce scale or shift fill slightly to indicate physical press confirmation.
 
 ### Cards & Containers
-- Background: `#f5f5f7` (light) or `#272729`-`#2a2a2d` (dark)
-- Border: none (borders are rare in Apple's system)
-- Radius: 5px-8px
-- Shadow: `rgba(0, 0, 0, 0.22) 3px 5px 30px 0px` for elevated product cards
-- Content: centered, generous padding
-- Hover: no standard hover state — cards are static, links within them are interactive
+- **Editorial/Product Cards:** light cards on `#f5f5f7` or white fields with minimal framing and image-first composition.
+- **Dark Utility Cards:** graphite steps (`#272729` to `#2a2a2c`) used for overlays, media controls, and dark-context modules.
+- **Configurator Panels:** rounded containers (often 12px-18px) with clear but restrained border definition.
+- **Carousel/Spotlight Modules:** larger rounded shells (`28px`-`36px`) for featured content lanes.
+
+### Inputs & Forms
+- **Retail Input Fields:** translucent or white backgrounds, dark text (`#1d1d1f`), border-led containment (`#86868b`).
+- **Selection Controls:** circular/toggle-like control geometry appears frequently in product selection interfaces.
+- **Density Strategy:** form fields remain visually quiet to keep device imagery and pricing hierarchy dominant.
 
 ### Navigation
-- Background: `rgba(0, 0, 0, 0.8)` (translucent dark) with `backdrop-filter: saturate(180%) blur(20px)`
-- Height: 48px (compact)
-- Text: `#ffffff` at 12px, weight 400
-- Active: underline on hover
-- Logo: Apple logomark (SVG) centered or left-aligned, 17x48px viewport
-- Mobile: collapses to hamburger with full-screen overlay menu
-- The nav floats above content, maintaining its dark translucent glass regardless of section background
+- **Global Marketing Nav:** compact dark translucent bar with small-type links and restrained iconography.
+- **Store/Sub-shop Nav Layers:** additional utility bars, chips, and segmented controls for category and product narrowing.
+- **Link Hierarchy:** link blues remain the primary interactive signal while neutral text supports dense navigation sets.
 
 ### Image Treatment
-- Products on solid-color fields (black or white) — no backgrounds, no context, just the object
-- Full-bleed section images that span the entire viewport width
-- Product photography at extremely high resolution with subtle shadows
-- Lifestyle images confined to rounded-corner containers (12px+ radius)
+- **Object-First Photography:** hardware and accessories are foregrounded on controlled solid surfaces.
+- **High-fidelity finish rendering:** reflective/material details are central to visual persuasion.
+- **Mixed framing:** full-bleed hero scenes coexist with rounded retail cards and tightly cropped merchandising thumbnails.
 
-### Distinctive Components
-
-**Product Hero Module**
-- Full-viewport-width section with solid background (black or `#f5f5f7`)
-- Product name as the primary headline (SF Pro Display, 56px, weight 600)
-- One-line descriptor below in lighter weight
-- Two pill CTAs side by side: "Learn more" (outline) and "Buy" / "Shop" (filled)
-
-**Product Grid Tile**
-- Square or near-square card on contrasting background
-- Product image dominating 60-70% of the tile
-- Product name + one-line description below
-- "Learn more" and "Shop" link pair at bottom
-
-**Feature Comparison Strip**
-- Horizontal scroll of product variants
-- Each variant as a vertical card with image, name, and key specs
-- Minimal chrome — the products speak for themselves
+### Other Distinctive Components
+- **Product Configurator Matrix:** option stacks and selectors combining chips, radio-style controls, and contextual pricing/summary blocks.
+- **Carousel Control Dots/Arrows:** circular control vocabulary in muted overlays for gallery progression.
+- **Environment Story Panels:** narrative chapters that blend editorial typography with cinematic product/environment visuals.
 
 ## 5. Layout Principles
 
 ### Spacing System
-- Base unit: 8px
-- Scale: 2px, 4px, 5px, 6px, 7px, 8px, 9px, 10px, 11px, 14px, 15px, 17px, 20px, 24px
-- Notable characteristic: the scale is dense at small sizes (2-11px) with granular 1px increments, then jumps in larger steps. This allows precise micro-adjustments for typography and icon alignment.
+- Base unit is effectively `8px`, but the system supports dense micro-steps for precision alignment.
+- Frequently reused spacing values across pages: `2`, `4`, `6`, `7`, `8`, `9`, `10`, `12`, `14`, `17`, `20` px.
+- Universal rhythm constants visible across both marketing and retail flows: `8px` unit scaffolding with `14-20px` utility intervals for component padding and list spacing.
 
 ### Grid & Container
-- Max content width: approximately 980px (the recurring "980px radius" in pill buttons echoes this width)
-- Hero: full-viewport-width sections with centered content block
-- Product grids: 2-3 column layouts within centered container
-- Single-column for hero moments — one product, one message, full attention
-- No visible grid lines or gutters — spacing creates implied structure
+- **Showcase pages:** large central columns with broad horizontal breathing room and full-width color chapters.
+- **Commerce pages:** tighter multi-column product and control grids with frequent modular stacking.
+- **Container behavior:** constrained readable core with generous outer margins at desktop widths.
 
 ### Whitespace Philosophy
-- **Cinematic breathing room**: Each product section occupies a full viewport height (or close to it). The whitespace between products is not empty — it is the pause between scenes in a film.
-- **Vertical rhythm through color blocks**: Rather than using spacing alone to separate sections, Apple uses alternating background colors (black, `#f5f5f7`, white). Each color change signals a new "scene."
-- **Compression within, expansion between**: Text blocks are tightly set (negative letter-spacing, tight line-heights) while the space surrounding them is vast. This creates a tension between density and openness.
+- **Scene pacing:** major visual chapters use broad top/bottom breathing room.
+- **Information compaction where needed:** retail pages deliberately compress spacing to expose more actionable information per viewport.
+- **Contrast-led separation:** section transitions rely more on surface changes than decorative separators.
 
 ### Border Radius Scale
-- Micro (5px): Small containers, link tags
-- Standard (8px): Buttons, product cards, image containers
-- Comfortable (11px): Search inputs, filter buttons
-- Large (12px): Feature panels, lifestyle image containers
-- Full Pill (980px): CTA links ("Learn more", "Shop"), navigation pills
-- Circle (50%): Media controls (play/pause, arrows)
+- **5px:** tiny utility links/tags and minor small shells.
+- **8px-12px:** standard controls and compact fields.
+- **16px-18px:** cards, module frames, and commerce panels.
+- **28px-36px:** larger module and spotlight containers.
+- **56px / 100px / 980px:** capsules, large pills, and signature elongated CTA forms.
+- **50%:** circular media and selection controls.
 
 ## 6. Depth & Elevation
 
 | Level | Treatment | Use |
-|-------|-----------|-----|
-| Flat (Level 0) | No shadow, solid background | Standard content sections, text blocks |
-| Navigation Glass | `backdrop-filter: saturate(180%) blur(20px)` on `rgba(0,0,0,0.8)` | Sticky navigation bar — the glass effect |
-| Subtle Lift (Level 1) | `rgba(0, 0, 0, 0.22) 3px 5px 30px 0px` | Product cards, floating elements |
-| Media Control | `rgba(210, 210, 215, 0.64)` background with scale transforms | Play/pause buttons, carousel controls |
-| Focus (Accessibility) | `2px solid #0071e3` outline | Keyboard focus on all interactive elements |
+|------|-----------|-----|
+| Level 0 | Flat neutral surfaces (`#ffffff`, `#f5f5f7`, `#000000`) | Main narrative and product stages |
+| Level 1 | Subtle border containment (`#d2d2d7`, `#86868b`) | Filters, input fields, utility cards |
+| Level 2 | Soft shadow (`rgba(0,0,0,0.08)` to `rgba(0,0,0,0.22)` where present) | Highlighted cards and elevated merchandise modules |
+| Level 3 | Dark-surface stepping (`#272729` -> `#2a2a2c`) | Overlays, media controls, dark utility clusters |
+| Accessibility | Blue focus signal (`#0071e3`) | Keyboard and selection emphasis |
 
-**Shadow Philosophy**: Apple uses shadow extremely sparingly. The primary shadow (`3px 5px 30px` with 0.22 opacity) is soft, wide, and offset — mimicking a diffused studio light casting a natural shadow beneath a physical object. This reinforces the "product as physical sculpture" metaphor. Most elements have NO shadow at all; elevation comes from background color contrast (dark card on darker background, or light card on slightly different gray).
+Depth is intentionally restrained. Apple favors tonal contrast, surface stepping, and compositional hierarchy over heavy shadow stacks.
 
 ### Decorative Depth
-- Navigation glass: the translucent, blurred navigation bar is the most recognizable depth element, creating a sense of floating UI above scrolling content
-- Section color transitions: depth is implied by the alternation between black and light gray sections rather than by shadows
-- Product photography shadows: the products themselves cast shadows in their photography, so the UI doesn't need to add synthetic ones
+- Decorative depth is primarily created by photographic realism and material rendering, not synthetic UI effects.
+- Translucent overlays and glass-like utility bars provide mild atmospheric layering in navigation and controls.
 
 ## 7. Do's and Don'ts
 
 ### Do
-- Use SF Pro Display at 20px+ and SF Pro Text below 20px — respect the optical sizing boundary
-- Apply negative letter-spacing at all text sizes (not just headlines) — Apple tracks tight universally
-- Use Apple Blue (`#0071e3`) ONLY for interactive elements — it must be the singular accent
-- Alternate between black and light gray (`#f5f5f7`) section backgrounds for cinematic rhythm
-- Use 980px pill radius for CTA links — the signature Apple link shape
-- Keep product imagery on solid-color fields with no competing visual elements
-- Use the translucent dark glass (`rgba(0,0,0,0.8)` + blur) for sticky navigation
-- Compress headline line-heights to 1.07-1.14 — Apple headlines are famously tight
+- Use the neutral triad (`#000000`, `#f5f5f7`, `#ffffff`) as the structural foundation.
+- Reserve blue accents for genuine action and navigation semantics.
+- Keep typography tight and deliberate, especially at display scales.
+- Maintain the capsule/circle geometry language for controls and key actions.
+- Let product imagery carry visual drama; keep chrome understated.
+- Use border-led containment in dense retail contexts instead of heavy card ornamentation.
+- Preserve clear separation between showcase modules and transactional modules while keeping core tokens shared.
 
 ### Don't
-- Don't introduce additional accent colors — the entire chromatic budget is spent on blue
-- Don't use heavy shadows or multiple shadow layers — Apple's shadow system is one soft diffused shadow or nothing
-- Don't use borders on cards or containers — Apple almost never uses visible borders (except on specific buttons)
-- Don't apply wide letter-spacing to SF Pro — it is designed to run tight at every size
-- Don't use weight 800 or 900 — the maximum is 700 (bold), and even that is rare
-- Don't add textures, patterns, or gradients to backgrounds — solid colors only
-- Don't make the navigation opaque — the glass blur effect is essential to the Apple UI identity
-- Don't center-align body text — Apple body copy is left-aligned; only headlines center
-- Don't use rounded corners larger than 12px on rectangular elements (980px is for pills only)
+- Don’t introduce broad secondary accent palettes that compete with Apple blue.
+- Don’t overuse shadows, glow effects, or decorative gradients in core UI chrome.
+- Don’t mix unrelated font families or loosen tracking indiscriminately.
+- Don’t flatten all corners to a single radius; Apple uses purposeful radius tiers.
+- Don’t overload commerce modules with thick borders or loud visual effects.
+- Don’t remove neutral contrast cadence between dark and light chapters.
+- Don’t treat marketing and purchase flows as separate design systems.
 
 ## 8. Responsive Behavior
 
 ### Breakpoints
 | Name | Width | Key Changes |
 |------|-------|-------------|
-| Small Mobile | <360px | Minimum supported, single column |
-| Mobile | 360-480px | Standard mobile layout |
-| Mobile Large | 480-640px | Wider single column, larger images |
-| Tablet Small | 640-834px | 2-column product grids begin |
-| Tablet | 834-1024px | Full tablet layout, expanded nav |
-| Desktop Small | 1024-1070px | Standard desktop layout begins |
-| Desktop | 1070-1440px | Full layout, max content width |
-| Large Desktop | >1440px | Centered with generous margins |
+| Small Mobile | 374px and below | Tightened retail controls, single-column product stacks |
+| Mobile | 375px-640px | One-column modules, compact action rows, condensed selectors |
+| Tablet | 641px-833px | Expanded cards and mixed 1-2 column transitions |
+| Tablet Wide | 834px-1023px | More stable multi-column merchandising, larger text blocks |
+| Desktop | 1024px-1240px | Full retail layouts and product comparison structures |
+| Desktop Wide | 1241px-1440px | Marketing hero expansion and broader section spacing |
+| Large Desktop | 1441px+ | Maximum chapter breathing room and wide editorial composition |
 
 ### Touch Targets
-- Primary CTAs: 8px 15px padding creating ~44px touch height
-- Navigation links: 48px height with adequate spacing
-- Media controls: 50% radius circular buttons, minimum 44x44px
-- "Learn more" pills: generous padding for comfortable tapping
+- Primary and secondary actions are generally presented in tap-friendly pill/button geometries.
+- Circular media and selection controls align with minimum touchable intent in mobile contexts.
+- Dense commerce UI uses compact labels but maintains clear hit regions via surrounding shape padding.
 
 ### Collapsing Strategy
-- Hero headlines: 56px Display → 40px → 28px on mobile, maintaining tight line-height proportionally
-- Product grids: 3-column → 2-column → single column stacked
-- Navigation: full horizontal nav → compact mobile menu (hamburger)
-- Product hero modules: full-bleed maintained at all sizes, text scales down
-- Section backgrounds: maintain full-width color blocks at all breakpoints — the cinematic rhythm never breaks
-- Image sizing: products scale proportionally, never crop — the product silhouette is sacred
+- Marketing hero typography scales down in discrete tiers while preserving hierarchy contrast.
+- Product and commerce grids collapse from multi-column to stacked cards with persistent selector visibility.
+- Utility navigation compresses into simpler link/control groupings while preserving key actions.
+- Option/configuration clusters become vertically sequenced to keep purchase flow linear on small screens.
 
 ### Image Behavior
-- Product photography maintains aspect ratio at all breakpoints
-- Hero product images scale down but stay centered
-- Full-bleed section backgrounds persist at every size
-- Lifestyle images may crop on mobile but maintain their rounded corners
-- Lazy loading for below-fold product images
+- Product imagery preserves aspect and centrality through breakpoints.
+- Hero visuals remain dominant on mobile, with text repositioned around media priority.
+- Retail thumbnails stay legible via tighter crop logic and denser card stacking.
+- Image-led modules continue to anchor the rhythm as layout density increases.
 
 ## 9. Agent Prompt Guide
 
 ### Quick Color Reference
-- Primary CTA: Apple Blue (`#0071e3`)
-- Page background (light): `#f5f5f7`
-- Page background (dark): `#000000`
-- Heading text (light): `#1d1d1f`
-- Heading text (dark): `#ffffff`
-- Body text: `rgba(0, 0, 0, 0.8)` on light, `#ffffff` on dark
-- Link (light bg): `#0066cc`
-- Link (dark bg): `#2997ff`
-- Focus ring: `#0071e3`
-- Card shadow: `rgba(0, 0, 0, 0.22) 3px 5px 30px 0px`
+- Primary action blue: **Apple Action Blue** (`#0071e3`)
+- Inline link blue: **Body Link Blue** (`#0066cc`)
+- Dark chapter canvas: **Absolute Black** (`#000000`)
+- Light chapter canvas: **Pale Apple Gray** (`#f5f5f7`)
+- Primary text on light: **Near-Black Ink** (`#1d1d1f`)
+- Secondary text: **Secondary Neutral Gray** (`#6e6e73`)
+- Retail border soft: **Soft Border Gray** (`#d2d2d7`)
+- Retail border strong: **Mid Border Gray** (`#86868b`)
 
 ### Example Component Prompts
-- "Create a hero section on black background. Headline at 56px SF Pro Display weight 600, line-height 1.07, letter-spacing -0.28px, color white. One-line subtitle at 21px SF Pro Display weight 400, line-height 1.19, color white. Two pill CTAs: 'Learn more' (transparent bg, white text, 1px solid white border, 980px radius) and 'Buy' (Apple Blue #0071e3 bg, white text, 8px radius, 8px 15px padding)."
-- "Design a product card: #f5f5f7 background, 8px border-radius, no border, no shadow. Product image top 60% of card on solid background. Title at 28px SF Pro Display weight 400, letter-spacing 0.196px, line-height 1.14. Description at 14px SF Pro Text weight 400, color rgba(0,0,0,0.8). 'Learn more' and 'Shop' links in #0066cc at 14px."
-- "Build the Apple navigation: sticky, 48px height, background rgba(0,0,0,0.8) with backdrop-filter: saturate(180%) blur(20px). Links at 12px SF Pro Text weight 400, white text. Apple logo left, links centered, search and bag icons right."
-- "Create an alternating section layout: first section black bg with white text and centered product image, second section #f5f5f7 bg with #1d1d1f text. Each section near full-viewport height with 56px headline and two pill CTAs below."
-- "Design a 'Learn more' link: text #0066cc on light bg or #2997ff on dark bg, 14px SF Pro Text, underline on hover. After the text, include a right-arrow chevron character (>). Wrap in a container with 980px border-radius for pill shape when used as a standalone CTA."
+- "Design an Apple-style product hero on a black canvas (`#000000`) with SF Pro Display semibold headline (48-56px), concise supporting copy, and two capsule CTAs using `#0071e3` and `#1d1d1f`."
+- "Create a commerce configuration panel on white (`#ffffff`) with 18px rounded cards, `#86868b` border fields, SF Pro Text 17px body copy, and compact option selectors."
+- "Build a merchandising card grid alternating `#f5f5f7` and white surfaces, with image-first cards, restrained shadows, and 14-17px SF Pro Text metadata."
+- "Generate a carousel control cluster using circular buttons (50% radius), muted gray overlays, and clear active feedback for gallery navigation."
+- "Compose a mixed marketing + retail page rhythm: dark showcase chapter -> light feature chapter -> dense product list module while keeping blue accents only for actions and links."
 
 ### Iteration Guide
-1. Every interactive element gets Apple Blue (`#0071e3`) — no other accent colors
-2. Section backgrounds alternate: black for immersive moments, `#f5f5f7` for informational moments
-3. Typography optical sizing: SF Pro Display at 20px+, SF Pro Text below — never mix
-4. Negative letter-spacing at all sizes: -0.28px at 56px, -0.374px at 17px, -0.224px at 14px, -0.12px at 12px
-5. The navigation glass effect (translucent dark + blur) is non-negotiable — it defines the Apple web experience
-6. Products always appear on solid color fields — never on gradients, textures, or lifestyle backgrounds in hero modules
-7. Shadow is rare and always soft: `3px 5px 30px 0.22 opacity` or nothing at all
-8. Pill CTAs use 980px radius — this creates the signature Apple rounded-rectangle-that-looks-like-a-capsule shape
+1. Lock the neutral foundation first (`#000000`, `#f5f5f7`, `#ffffff`) before tuning accents.
+2. Keep blue accents scarce and purposeful; if everything is blue, hierarchy collapses.
+3. Tune typography in this order: display scale, body readability, then micro labels.
+4. Match radius by component class (field, card, capsule, circle) rather than one-size-fits-all rounding.
+5. Increase density gradually when moving from showcase sections to commerce sections.
+6. Validate that product imagery remains the strongest visual layer after each revision.
+
+### Known Gaps
+- Distinct semantic status colors (error/warning/success) were not consistently visible in the extracted page set.
+- Some interaction micro-states vary by module and are not represented as universal system tokens.
+- A few retail modules expose context-specific typography overrides that do not appear across all five pages.

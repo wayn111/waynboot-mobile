@@ -93,7 +93,7 @@ const closePopup = () => {
 .section {
   .van-button--default {
     border: none;
-    border-radius: 0px;
+    border-radius: 0;
   }
 }
 </style>
@@ -102,11 +102,47 @@ const closePopup = () => {
 @use '@/styles/variables.scss' as *;
 
 .section {
-  margin-top: 12px;
-  background: #fff;
+  margin-top: 0;
+  overflow: hidden;
+  border-radius: 32px;
+  background: #ffffff;
+  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.06);
 
-  .van-cell__value {
-    min-width: 80%;
+  :deep(.van-cell-group) {
+    background: transparent;
+  }
+
+  :deep(.van-cell) {
+    align-items: center;
+    padding: 26px 24px;
+    background: transparent;
+  }
+
+  :deep(.van-cell::after) {
+    right: 24px;
+    left: 24px;
+    border-color: rgba(29, 29, 31, 0.08);
+  }
+
+  :deep(.van-cell__title) {
+    flex: none;
+    width: 96px;
+    color: #1d1d1f;
+    font-size: 30px;
+    line-height: 1.25;
+    font-weight: 700;
+  }
+
+  :deep(.van-cell__value) {
+    color: rgba(29, 29, 31, 0.66);
+    font-size: 28px;
+    line-height: 1.35;
+    text-align: right;
+  }
+
+  :deep(.van-cell__right-icon) {
+    color: rgba(29, 29, 31, 0.34);
+    font-size: 32px;
   }
 }
 </style>

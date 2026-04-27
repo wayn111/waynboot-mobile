@@ -9,7 +9,7 @@
 <script setup>
 
 
-const props = defineProps({name: {
+defineProps({name: {
       type: String,
       default: '',
     },})
@@ -20,19 +20,27 @@ const props = defineProps({name: {
 .home-title {
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  padding: 26px;
+  padding: 32px 28px 14px;
+
+  &::after {
+    content: '继续浏览';
+    font-size: 24px;
+    color: #0066cc;
+    line-height: 1.2;
+  }
+
   .line {
-    display: inline-block;
-    width: 40px;
-    height: 2px;
-    background: #999;
+    display: none;
   }
   .text {
-    font-size: $small;
+    font-size: 42px;
     color: $black;
-    padding: 0 20px;
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.22px;
+    padding: 0;
   }
 }
 </style>

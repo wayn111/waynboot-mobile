@@ -1,19 +1,19 @@
 // base color
-$theme: #f1574f;
-$bg-gradient: linear-gradient(90deg, #0af, #0085ff);
-$black: #333;
-$gray: #0000008a;
-$gray-deep: #999;
-$red: #ea625b;
-$pink: #e7b7b5;
-$green: #38ca73;
+$theme: #0071e3;
+$bg-gradient: linear-gradient(180deg, #fbfbfd, #f5f5f7);
+$black: #1d1d1f;
+$gray: rgba(29, 29, 31, 0.72);
+$gray-deep: rgba(29, 29, 31, 0.48);
+$red: #0071e3;
+$pink: rgba(0, 113, 227, 0.1);
+$green: #0071e3;
 
 // font-size
 $large: 38px;
 $normal: 32px;
 $small: 28px;
 $mini: 20px;
-$font-size-normal: 14px;
+$font-size-normal: 32px;
 
 //字体变量
 $font-color-gray: $gray-deep;

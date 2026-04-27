@@ -10,15 +10,16 @@
       @load="onReachBottom"
     >
       <div class="main">
-        <van-card
+        <goods-item
           v-for="item in goodsList"
           :key="item.id"
-          :desc="item.brief"
+          :goods-id="item.id"
+          :img="item.picUrl"
           :title="item.name"
-          :thumb="item.picUrl"
-          :price="yuan(item.retailPrice)"
-          :origin-price="yuan(item.counterPrice)"
-          @click="itemClick(item.id)"
+          :desc="item.brief"
+          :price="item.retailPrice"
+          :discount="item.counterPrice"
+          :virtual-sales="item.virtualSales"
         />
       </div>
     </van-list>
@@ -27,12 +28,10 @@
 
 <script setup>
 import { computed } from 'vue'
-import { useRouter } from 'vue-router'
 
-import { yuan } from '@/filter'
+import GoodsItem from '@/components/GoodsItem'
 import Title from './Title'
 
-const router = useRouter()
 const emit = defineEmits(['onReachBottom', 'update:modelValue'])
 
 const props = defineProps({
@@ -60,12 +59,6 @@ const onReachBottom = () => {
   emit('onReachBottom')
 }
 
-const itemClick = (goodsId) => {
-  router.push({
-    path: `/detail/${goodsId}`,
-  })
-}
-
 const loading = computed({
   get() {
     return props.modelValue
@@ -78,10 +71,17 @@ const loading = computed({
 
 <style lang="scss" scoped>
 .home-goods {
-  margin-top: 12px;
+  overflow: hidden;
+  border-radius: 32px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.08);
 
   .main {
-    background: #fff;
+    box-sizing: border-box;
+    padding: 0 20px 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
   }
 }
 </style>

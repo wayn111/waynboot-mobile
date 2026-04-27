@@ -9,12 +9,12 @@
         @click="cartClick"
       />
       <van-action-bar-button
-        type="warning"
+        class="detail-action__cart"
         text="加入购物车"
         @click="handleClick"
       />
       <van-action-bar-button
-        :color="variables.red"
+        class="detail-action__buy"
         text="立即购买"
         @click="handleClick"
       />
@@ -27,7 +27,6 @@
 import { onMounted, reactive, toRefs } from 'vue'
 import { useRouter } from 'vue-router'
 import { getCartGoodsCount } from '@/api/cart'
-import variables from '@/styles/variables.scss?inline'
 
 const router = useRouter()
 const emit = defineEmits(['update:value'])
@@ -66,4 +65,46 @@ onMounted(() => {
 })
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+.tab-bar {
+  :deep(.van-action-bar) {
+    left: 18px;
+    right: 18px;
+    bottom: 16px;
+    width: auto;
+    overflow: hidden;
+    border: 1px solid rgba(29, 29, 31, 0.08);
+    border-radius: 32px;
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 18px 46px rgba(15, 23, 42, 0.12);
+    backdrop-filter: saturate(180%) blur(18px);
+  }
+
+  :deep(.van-action-bar-icon) {
+    color: rgba(29, 29, 31, 0.72);
+    background: transparent;
+    font-size: 28px;
+  }
+
+  :deep(.van-action-bar-icon .van-icon) {
+    font-size: 34px;
+  }
+
+  :deep(.van-action-bar-button) {
+    height: 68px;
+    border-radius: 999px;
+    font-size: 28px;
+    font-weight: 700;
+  }
+
+  :deep(.detail-action__cart) {
+    color: #0066cc;
+    background: #f2f7ff;
+  }
+
+  :deep(.detail-action__buy) {
+    color: #ffffff;
+    background: #0071e3;
+  }
+}
+</style>

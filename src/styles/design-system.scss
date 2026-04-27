@@ -1,0 +1,452 @@
+@use './variables.scss' as *;
+
+:root {
+  --wb-black: #000000;
+  --wb-surface: #f5f5f7;
+  --wb-surface-page: linear-gradient(180deg, #fbfbfd 0%, #f7f7fa 38%, #f5f5f7 100%);
+  --wb-surface-elevated: rgba(255, 255, 255, 0.92);
+  --wb-surface-glass: rgba(255, 255, 255, 0.74);
+  --wb-surface-subtle: rgba(255, 255, 255, 0.78);
+  --wb-surface-dark: #1d1d1f;
+  --wb-surface-dark-elevated: rgba(39, 39, 41, 0.92);
+  --wb-text: #1d1d1f;
+  --wb-text-secondary: rgba(29, 29, 31, 0.72);
+  --wb-text-tertiary: rgba(29, 29, 31, 0.48);
+  --wb-text-inverse: #ffffff;
+  --wb-blue: #0071e3;
+  --wb-blue-link: #0066cc;
+  --wb-blue-dark: #2997ff;
+  --wb-border: rgba(29, 29, 31, 0.08);
+  --wb-border-strong: rgba(29, 29, 31, 0.12);
+  --wb-shadow-card: 0 12px 40px rgba(15, 23, 42, 0.08);
+  --wb-shadow-float: 0 20px 56px rgba(15, 23, 42, 0.12);
+  --wb-radius-card: 32px;
+  --wb-radius-soft: 24px;
+  --wb-radius-pill: 999px;
+  --wb-content-width: 702px;
+}
+
+html,
+body {
+  min-height: 100%;
+  background: var(--wb-surface-page);
+  color: var(--wb-text);
+  font-family:
+    'SF Pro Text',
+    'SF Pro Display',
+    'PingFang SC',
+    'Helvetica Neue',
+    Helvetica,
+    Arial,
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  line-height: 1.47;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+#app {
+  min-height: 100vh;
+  background: var(--wb-surface-page);
+  color: var(--wb-text);
+}
+
+.wb-page {
+  min-height: 100vh;
+  background: var(--wb-surface-page) !important;
+  color: var(--wb-text);
+}
+
+.wb-page--tabbed {
+  padding-bottom: 156px;
+}
+
+.wb-page--dark {
+  background: var(--wb-surface-page) !important;
+  color: var(--wb-text);
+}
+
+.wb-hero {
+  position: relative;
+  overflow: hidden;
+  padding: 116px 24px 32px;
+  color: var(--wb-text);
+  text-align: left;
+}
+
+.wb-hero__eyebrow {
+  display: inline-block;
+  margin-bottom: 12px;
+  font-size: 22px;
+  line-height: 1.33;
+  letter-spacing: -0.12px;
+  color: var(--wb-text-tertiary);
+}
+
+.wb-hero__title {
+  font-size: 44px;
+  line-height: 1.12;
+  letter-spacing: -0.24px;
+  font-weight: 600;
+}
+
+.wb-hero__desc {
+  margin: 12px 0 0;
+  max-width: 620px;
+  font-size: 22px;
+  line-height: 1.35;
+  letter-spacing: -0.22px;
+  color: var(--wb-text-secondary);
+}
+
+.wb-section {
+  padding: 24px;
+}
+
+.wb-panel {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--wb-radius-card);
+  background: var(--wb-surface-glass);
+  box-shadow: var(--wb-shadow-card);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.72);
+}
+
+.wb-panel--dark {
+  background: var(--wb-surface-dark);
+  color: var(--wb-text-inverse);
+}
+
+.wb-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 28px 32px 0;
+}
+
+.wb-panel__title {
+  font-size: 42px;
+  line-height: 1.1;
+  letter-spacing: -0.22px;
+  font-weight: 600;
+}
+
+.wb-panel__meta {
+  font-size: 24px;
+  line-height: 1.33;
+  letter-spacing: -0.12px;
+  color: var(--wb-text-secondary);
+}
+
+.wb-copy {
+  font-size: 26px;
+  line-height: 1.47;
+  letter-spacing: -0.22px;
+  color: var(--wb-text-secondary);
+}
+
+.wb-pill-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 68px;
+  padding: 0 26px;
+  border: 1px solid rgba(0, 102, 204, 0.2);
+  border-radius: var(--wb-radius-pill);
+  color: var(--wb-blue-link);
+  background: transparent;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: -0.12px;
+}
+
+.wb-pill-link--dark {
+  border-color: rgba(255, 255, 255, 0.28);
+  color: var(--wb-blue-dark);
+}
+
+.wb-info-grid {
+  display: grid;
+  gap: 20px;
+}
+
+.wb-form-shell {
+  padding: 96px 24px 48px;
+  min-height: 100vh;
+  background: var(--wb-surface-page) !important;
+}
+
+.wb-form-panel {
+  overflow: hidden;
+  padding: 42px 32px;
+  border-radius: 32px;
+  background: var(--wb-surface-glass);
+  box-shadow: var(--wb-shadow-float);
+  border: 1px solid rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(28px);
+}
+
+.wb-form-title {
+  font-size: 44px;
+  line-height: 1.1;
+  letter-spacing: -0.28px;
+  font-weight: 600;
+  color: var(--wb-text);
+}
+
+.wb-form-subtitle {
+  margin-top: 12px;
+  font-size: 18px;
+  line-height: 1.47;
+  letter-spacing: -0.22px;
+  color: var(--wb-text-secondary);
+}
+
+.wb-action-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.van-button {
+  letter-spacing: -0.22px;
+}
+
+.van-button--primary,
+.van-button--info {
+  border-color: var(--wb-blue);
+  background: var(--wb-blue);
+  color: var(--wb-text-inverse);
+  box-shadow: none;
+}
+
+.van-button--default {
+  border-color: rgba(0, 102, 204, 0.22);
+  color: var(--wb-blue-link);
+  background: transparent;
+}
+
+.van-button--round,
+.van-submit-bar__button {
+  border-radius: var(--wb-radius-pill);
+}
+
+.van-tag {
+  border-radius: var(--wb-radius-pill);
+  border: none;
+  padding: 8px 18px;
+  color: var(--wb-blue);
+  background: rgba(0, 113, 227, 0.1);
+}
+
+.van-cell,
+.van-card,
+.van-submit-bar,
+.van-address-item,
+.van-contact-card,
+.van-dropdown-menu__bar,
+.van-tabs__wrap,
+.van-sidebar,
+.van-sidebar-item,
+.van-empty__image,
+.van-field,
+.van-search,
+.van-search__content {
+  box-sizing: border-box;
+}
+
+.van-cell,
+.van-card,
+.van-contact-card,
+.van-address-item,
+.van-submit-bar,
+.van-dropdown-menu__bar,
+.van-sidebar,
+.van-tabs__wrap,
+.van-tabbar {
+  background: var(--wb-surface-glass);
+  // backdrop-filter: blur(22px);
+  // border: 1px solid rgba(255, 255, 255, 0.7);
+}
+
+.van-cell::after,
+.van-field::after,
+.van-cell-group::after,
+.van-cell-group::before,
+.van-card:not(:first-child)::after,
+.van-hairline--top-bottom::after,
+.van-hairline-unset--top-bottom::after,
+.van-hairline--top::after,
+.van-hairline--bottom::after {
+  border-color: var(--wb-border);
+}
+
+.van-cell__title,
+.van-field__label,
+.van-card__title,
+.van-nav-bar__title,
+.van-dropdown-menu__title,
+.van-tab {
+  color: var(--wb-text);
+}
+
+.van-cell__value,
+.van-field__value,
+.van-card__desc,
+.van-field__control,
+.van-empty__description {
+  color: var(--wb-text-secondary);
+}
+
+.van-search {
+  background: transparent;
+}
+
+.van-search__content {
+  border: 1px solid var(--wb-border);
+  border-radius: var(--wb-radius-pill);
+  background: rgba(245, 245, 247, 0.88);
+}
+
+.van-search__field {
+  background: transparent;
+}
+
+.van-dropdown-menu__bar {
+  height: 72px;
+  padding: 0 18px;
+  border-radius: var(--wb-radius-pill);
+  box-shadow: none;
+}
+
+.van-dropdown-menu__title::after {
+  border-color: transparent transparent var(--wb-text-secondary) var(--wb-text-secondary);
+}
+
+.van-tabs__nav {
+  background: transparent;
+}
+
+.van-tabs__line {
+  background: var(--wb-blue);
+  border-radius: var(--wb-radius-pill);
+}
+
+.van-sidebar {
+  width: 212px;
+}
+
+.van-sidebar-item {
+  color: var(--wb-text-secondary);
+  background: transparent;
+}
+
+.van-sidebar-item--select,
+.van-sidebar-item:active {
+  color: var(--wb-text);
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.van-sidebar-item--select::before {
+  background: var(--wb-blue);
+}
+
+.van-pull-refresh__head,
+.van-list__finished-text,
+.van-list__loading {
+  color: var(--wb-text-tertiary);
+}
+
+.van-empty {
+  padding: 120px 0;
+}
+
+.van-notice-bar {
+  border-radius: var(--wb-radius-soft);
+  background: rgba(255, 255, 255, 0.82);
+  color: var(--wb-text);
+  border: 1px solid rgba(0, 113, 227, 0.08);
+}
+
+.van-popup,
+.van-dialog {
+  border-radius: 32px 32px 0 0;
+  overflow: hidden;
+}
+
+.van-dialog {
+  border-radius: 32px;
+}
+
+.van-picker__toolbar,
+.van-dialog__header {
+  color: var(--wb-text);
+}
+
+.van-picker__confirm,
+.van-dialog__confirm,
+.van-address-item__edit {
+  color: var(--wb-blue);
+}
+
+.van-radio__icon--checked .van-badge__wrapper,
+.van-checkbox__icon--checked .van-badge__wrapper {
+  color: var(--wb-blue);
+}
+
+.van-rate__icon--full {
+  color: var(--wb-blue);
+}
+
+.van-submit-bar__price,
+.van-submit-bar__price-integer,
+.van-submit-bar__price-decimal,
+.van-card__price,
+.van-card__price-integer,
+.van-card__price-decimal {
+  color: var(--wb-text);
+}
+
+.van-card__origin-price {
+  color: var(--wb-text-tertiary);
+}
+
+.van-loading {
+  color: var(--wb-blue);
+}
+
+@media (max-width: 480px) {
+  .wb-hero {
+    padding-top: 104px;
+    padding-bottom: 24px;
+  }
+
+  .wb-hero__title {
+    font-size: 38px;
+  }
+
+  .wb-form-panel {
+    padding: 36px 28px;
+  }
+}

@@ -3,21 +3,23 @@
     <div class="title">
       <div class="title__left">
         <image-pic
+          class="comment-avatar"
           round
           :src="avatar"
-          width="25"
-          height="25"
-          style="margin-right: 6px"
+          width="56"
+          height="56"
         />
-        <span class="comment_name">{{ name }}</span>
-        <van-rate
-          :model-value="score"
-          readonly
-          :size="15"
-          :color="variables.red"
-          void-icon="star"
-          void-color="#eee"
-        />
+        <div class="title__user">
+          <span class="comment_name">{{ name }}</span>
+          <van-rate
+            :model-value="score"
+            readonly
+            :size="28"
+            color="#0071e3"
+            void-icon="star"
+            void-color="#eee"
+          />
+        </div>
       </div>
       <div class="title__right">{{ time }}</div>
     </div>
@@ -28,11 +30,11 @@
         <image-pic
           v-for="(item, idx) in imgs"
           :key="idx"
+          class="desc_img__pic"
           :src="item"
           fit="cover"
-          width="90"
-          height="90"
-          style="margin-right: 8px"
+          width="132"
+          height="132"
           @click="onClick(idx)"
         />
       </div>
@@ -45,7 +47,6 @@
 
 <script setup>
 import { showImagePreview } from 'vant'
-import variables from '@/styles/variables.scss?inline'
 
 const props = defineProps({
   avatar: {
@@ -92,59 +93,86 @@ const onClick = (index) => {
 @use '@/styles/variables.scss' as *;
 
 .comment-item-component {
-  border-top: 1px solid rgb(236, 231, 231);
-  padding: 15px 0 10px 0;
+  border-top: 1px solid rgba(29, 29, 31, 0.08);
+  padding: 22px 0;
 
   .title {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0px 0 18px 0;
+    gap: 16px;
+    padding: 0 0 18px;
 
     .title__left {
       display: flex;
       align-items: center;
+      gap: 10px;
       color: $black;
-      font-size: $small;
+      font-size: 28px;
+      min-width: 0;
+    }
+
+    .title__user {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
 
       .comment_name {
-        margin: 0 10px 0 6px;
         max-width: 180px;
         overflow: hidden;
         text-overflow: ellipsis;
-        -o-text-overflow: ellipsis;
         white-space: nowrap;
+        font-weight: 600;
       }
     }
 
     .title__right {
-      color: $gray;
-      font-size: $small;
+      flex: none;
+      color: rgba(29, 29, 31, 0.48);
+      font-size: 28px;
+      line-height: 1.2;
     }
   }
 
   .desc {
     .desc__text {
-      font-size: $small;
+      font-size: 28px;
       color: $black;
-      line-height: 38px;
+      line-height: 1.5;
       text-align: justify;
     }
 
     .desc_img {
       display: flex;
       flex-direction: row;
-      margin-top: 8px;
-      overflow: scroll;
+      gap: 12px;
+      margin-top: 12px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+
+    .desc_img::-webkit-scrollbar {
+      display: none;
+    }
+
+    .desc_img__pic {
+      flex: none;
     }
 
     .admin-reply {
-      font-size: $small;
+      padding: 16px;
+      border-radius: 18px;
+      background: #f5f5f7;
+      font-size: 28px;
       margin-top: 18px;
-      line-height: 34px;
+      line-height: 1.45;
 
       span {
-        color: #e26262;
+        color: #0066cc;
+        font-weight: 600;
       }
     }
   }

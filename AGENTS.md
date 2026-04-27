@@ -1,19 +1,152 @@
-# Repository Guidelines
+# 仓库开发指南 (Repository Guidelines)
 
-## Project Structure & Module Organization
-`src/` contains the application. Put page-level views in `src/views/`, shared UI in `src/components/`, API wrappers in `src/api/`, state in `src/store/`, routing in `src/router/`, and reusable helpers in `src/utils/`. Global styles live in `src/styles/`; SVG icons are under `src/icons/svg/` and static assets under `src/assets/`. Public files such as the favicon stay in `public/`. Build output is generated in `dist/` and should not be edited manually.
+基于项目的最新技术栈和迁移经验，本指南规范了 `waynboot-mobile` 的开发约定，以确保代码库的高质量和一致性。
 
-## Build, Test, and Development Commands
-Use `npm run dev` to start the Vite dev server. Use `npm run build:dev` for a development-mode build and `npm run build:prod` for a production bundle. Run `npm run lint` before opening a PR; it checks `.js` and `.vue` files under `src/`. Use `npm run svgo` after changing files in `src/icons/svg/` to normalize SVG assets.
+## 1. 核心技术栈与架构
 
-## Coding Style & Naming Conventions
-Follow `.editorconfig`: 2-space indentation, trim trailing whitespace, and end files with a newline. ESLint enforces single quotes, no semicolons, spaced blocks, and `eqeqeq`. Keep Vue single-file components in PascalCase for shared components such as `NavBar.vue`; view entry files commonly use `index.vue` inside feature folders like `src/views/order/confirm/index.vue`. Use camelCase for JavaScript variables and functions, and keep API modules grouped by domain, for example `src/api/order.js`.
+本项目已全面升级为现代前端技术栈，主要包括：
 
-## Testing Guidelines
-There is currently no dedicated automated test suite or `npm test` script. At minimum, run `npm run lint`, verify the affected route in the local dev server, and smoke-test mobile flows tied to your change. If you add tests, place them close to the feature or in a clearly named `tests/` directory and document the command in `package.json`.
+- **核心框架**：Vue 3 (Composition API, `<script setup>`)
+- **构建工具**：Vite 4
+- **UI 组件库**：Vant 4
+- **状态管理与路由**：Vuex 4 & Vue Router 4
+- **样式预处理**：Sass (Dart Sass，推荐使用 `@use` 语法) & 配合 `postcss-pxtorem` 进行移动端视口适配。
 
-## Commit & Pull Request Guidelines
-Recent history favors short, imperative commit messages in Chinese, often with a scope prefix such as `feat(注册): 新增用户注册页面及图标资源` or concise summaries like `代码优化`. Keep commits focused and describe the user-visible change. PRs should include a brief summary, affected screens or modules, linked issues when available, and screenshots or GIFs for UI work.
+### 目录结构规范
 
-## Configuration Tips
-Environment files live at `.env.development` and `.env.production`. Do not commit secrets. When changing request behavior or deployment settings, review both `vite.config.js` and `src/utils/request.js` to keep local and production behavior aligned.
+- `src/views/`：页面级视图组件，通常按功能模块划分（例如 `src/views/order/confirm/index.vue`）。
+- `src/components/`：全局共享或可复用的 UI 组件（推荐使用 `PascalCase` 命名，如 `NavBar.vue`）。
+- `src/api/`：API 接口封装，按业务领域（domain）分组，如 `order.js`。
+- `src/store/`：Vuex 状态管理模块。
+- `src/router/`：Vue Router 路由配置。
+- `src/styles/`：全局 SCSS/CSS 样式文件。
+- `src/icons/svg/`：SVG 图标资源目录。
+- `src/assets/`：图片等其他静态资源。
+
+## 2. 开发、测试与构建命令
+
+- **启动开发服务器**：`npm run dev` (通过 Vite 启动本地服务，默认代理 `/dev-api`)。
+- **构建生产包**：`npm run build:prod`。
+- **构建测试包**：`npm run build:dev`。
+- **代码规范检查**：`npm run lint` (检查 `src/` 下的 `.js` 和 `.vue` 文件)。
+- **SVG 图标优化**：在 `src/icons/svg/` 增删改图标后，运行 `npm run svgo` 进行压缩和规范化。
+
+> **测试说明**：目前项目未强制配置自动化测试用例，但在提交 PR 或推送代码前，务必在本地运行 `npm run lint`，并在移动端视图下完成相关功能的冒烟测试。
+
+## 3. 编码风格与规范
+
+遵循项目根目录的 `.editorconfig` 和 `.eslintrc.js` 规则：
+
+- **基础格式**：2 个空格缩进，删除行尾多余空格，文件末尾保留一个空行。
+- **JavaScript/Vue 规范**：
+  - 强制使用**单引号 (`'`)**。
+  - **不使用分号 (`;`)**。
+  - 使用全等号 (`===` / `!==`)。
+  - 变量和函数使用 `camelCase` (小驼峰命名法)。
+- **Vue 3 语法特别注意**：
+  - 全面使用 `<script setup>` 语法。
+  - **避免使用** **`this`**：使用 `useRouter`, `useRoute`, `useStore` 等 Composition API 替代原有的 `this.$router` 或 `this.$store`。
+  - **Vant 4 调用**：对于弹窗或轻提示，直接从 `vant` 导入函数式 API (如 `import { showToast, showDialog } from 'vant'`)，不要再使用挂载在原型上的方法（如 `this.$toast`）。
+  - **事件派发**：使用 `const emit = defineEmits(['xxx'])` 声明并调用 `emit('xxx')`，不要使用旧版的 `$emit(this, 'xxx')`。
+
+### UI 与设计规范
+
+#### 总体原则
+
+- 商城前台页面统一参考 `DESIGN.md`，但在本项目中采用“Apple 风格的浅色化、H5 化落地版本”，不是直接照搬官网的整页纯黑方案。
+- 默认设计取向为：`设计优先 > 美观优先 > 信息清晰 > 功能完整`。
+- 但任何视觉方案都不得破坏核心操作链路；当设计表现与下单、筛选、搜索、支付、跳转等关键操作冲突时，必须保证操作可达、状态清晰、信息可读。
+- 页面重构不是简单“堆效果”，必须先整理版式层级，再做视觉细化。
+
+#### 页面气质
+
+- 全站优先使用浅色背景体系：页面背景以 `#f5f5f7`、白色、浅灰为主，文字主色使用 `#1d1d1f`。
+- 交互强调色统一使用蓝色系，优先 `#0071e3`，链接或弱一级交互可使用 `#0066cc`。
+- 本项目中的 Apple 风格按浅色版本落地：强调留白、层级、字体、蓝色交互和轻模糊，不落地官网式大面积黑底。
+- 禁止在商城前台页面使用大面积纯黑背景；首页、分类、搜索、购物车、我的、订单、优惠券等 H5 页面中的主按钮、主区域背景也不得使用纯黑或近黑底色。
+- 不允许出现与商城功能无关的品牌文案、口号、长描述、装饰性说明文字。
+
+#### 版式与层级
+
+- 页面必须先建立清晰的主次结构：主视觉卡、分区标题、内容卡、底部动作区。
+- 首页、购物车、我的、分类、搜索、订单等页面，优先使用“主卡 + 分区卡 + 固定动作区”的结构，而不是连续堆叠同质模块。
+- 分区标题应直接落在页面背景上，卡片内容独立承载，避免“大卡包小卡”的无效嵌套。
+- 购物车、订单、搜索、分类等任务型页面允许更强的版式设计，但金额、规格、销量、数量、订单状态、筛选状态等关键信息必须一眼可见。
+- 我的页面允许使用一张高识别度的主视觉账户卡拉开层级，但下方功能区仍需回到浅色信息卡体系。
+
+#### 卡片与容器
+
+- 统一采用“单层容器”原则：一个区块只保留一层主体卡片或一层毛玻璃容器，禁止玻璃面板内再套玻璃卡片。
+- 正文内容区优先使用实体白卡或浅灰卡，不额外叠加高光蒙层、重复描边或多层阴影。
+- 卡片圆角可适当放大，允许比 `DESIGN.md` 更适合 H5 的大圆角处理，但要统一，同页不能多套圆角语言混用。
+- 阴影使用轻量、柔和、单层阴影，不允许厚重投影、彩色发光或多层堆叠阴影。
+
+#### 毛玻璃与深色使用边界
+
+- 毛玻璃主要用于顶部导航、搜索栏、少量底部固定操作条，不作为正文模块的默认视觉语言。
+- 如果顶部已经有毛玻璃搜索栏或导航，正文区块必须回到实体卡片，不再继续叠加玻璃效果。
+- 深色卡片只作为局部强调使用，例如账户主卡、主 CTA 区、强调状态区；不能让页面变成黑底白字的压迫式布局。
+
+#### 字体与可读性
+
+- 由于项目使用 `postcss-pxtorem`，所有字号必须按最终 H5 实际显示效果校准，不能机械照搬桌面端尺寸。
+- 正文、标签、筛选项、提示文案、按钮文案等常规阅读内容，默认按不小于可读基线处理；项目内实际落地时，通常不应低于 `28px` 这一视觉基准。
+- 标题、金额、统计数字可以更大，但正文和说明文字绝不能因为追求“精致”而变小。
+- 视觉上允许使用更紧凑的标题行高和更强的标题对比，但正文必须稳定、易扫读、不卡视线。
+
+#### 组件规则
+
+- 主按钮统一使用蓝底白字或深底白字，避免随机颜色。
+- 次级按钮优先浅底描边或浅灰底，不要出现同页面多套主按钮颜色。
+- 搜索栏必须完整、美观、输入区明确，不允许仅仅“能搜”但视觉粗糙。
+- 底部固定条、结算条、Tabbar 与页面内容之间必须留出清晰安全距离，不能互相遮挡。
+- Tabbar 风格必须克制，优先轻模糊或浅底悬浮，不做夸张液态玻璃、不做多层高光堆叠。
+
+#### 页面类型补充
+
+- 首页：突出主视觉与分区节奏，不要堆营销废话，不要多层玻璃嵌套，商品区块采用不同布局但整体风格统一。
+- 搜索/分类：强调搜索、筛选、切换和列表浏览效率，结构必须清楚，筛选项和排序项既要好看也要可点、可读。
+- 购物车/订单：优先形成强信息卡和明确结算区，金额、数量、状态、操作按钮必须稳定突出。
+- 我的：优先建立账户主卡、订单入口、常用工具三段式结构，减少无用说明文字。
+
+#### 禁止项
+
+- 禁止出现整页黑底或大面积压抑式深色背景。
+- 禁止无关营销文案、品牌宣言、占位描述、冗余辅助文字。
+- 禁止多层玻璃、玻璃里套玻璃、卡片里再套一层同类卡片。
+- 禁止小字体、弱对比度、点得到但看不清的筛选项或状态文字。
+- 禁止为追求“设计感”牺牲点击可用性、滚动体验、信息完整性。
+
+#### 设计验收与自检
+
+- 所有设计改动完成后，必须进行移动端 H5 自检，至少包含：移动端 viewport、移动端 UA、touch 环境，不能只在桌面浏览器缩窄宽度查看。
+- 验收时必须重点检查：字体是否偏小、固定底栏是否遮挡内容、筛选与按钮是否可点击、视觉层级是否混乱、是否还有无用文案。
+- 涉及 UI 改动的页面，提交前应保留截图或浏览器验证结果，优先检查首页、分类、搜索、购物车、我的、订单相关页面。
+
+## 4. 状态管理 (Vuex 4)
+
+- 避免使用 Vue 2 的 `mapGetters` 或 `mapState`。
+- 在 `<script setup>` 中，通过以下方式获取状态：
+  ```javascript
+  import { computed } from 'vue'
+  import { useStore } from 'vuex'
+  const store = useStore()
+
+  // 示例：获取地址列表
+  const addressList = computed(() => store.getters.addressList)
+  ```
+
+## 5. Git 提交与 PR 规范
+
+- **提交信息 (Commit Message)**：
+  - 提倡使用祈使语气的中文进行描述，并且最好附带作用域前缀。
+  - 示例：`feat(订单): 新增确认订单页面` 或 `fix(购物车): 修复全选计算金额错误的问题`。
+  - 保持每次 Commit 的颗粒度适中，确保一次提交只解决一个主要问题。
+- **Pull Request**：提交 PR 时应简要描述改动点，涉及 UI 界面的修改需附带截图或 GIF，以便 Code Review。
+
+## 6. 环境变量与配置
+
+- 环境变量文件为 `.env.development` 和 `.env.production`，支持以 `VITE_` 或 `VUE_APP_` 开头的变量注入。
+- **机密信息**：绝对不要将任何 API Keys 或敏感凭证硬编码并提交到仓库中。
+- **代理与网络**：如果需要调整本地代理目标，请修改 `.env.development` 中的 `VUE_APP_BASE_URL` 或直接核对 `vite.config.js` 中的 `/dev-api` 代理设置。
+
