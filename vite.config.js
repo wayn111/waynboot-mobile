@@ -1,7 +1,7 @@
 import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import path from 'path'
-import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
+import { createSvgIconsPlugin } from './build/svg-icons-plugin.js'
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
@@ -36,16 +36,6 @@ export default defineConfig(({ mode }) => {
         '/upload': {
           target: baseUrl,
           changeOrigin: true
-        }
-      }
-    },
-    css: {
-      preprocessorOptions: {
-        less: {
-          modifyVars: {
-            'tabbar-item-icon-size': '24px'
-          },
-          javascriptEnabled: true
         }
       }
     }

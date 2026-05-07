@@ -10,12 +10,12 @@
       <div class="search-list__shell">
         <section class="search-list__summary">
           <div>
-            <p class="search-list__eyebrow">搜索</p>
+            <p class="search-list__eyebrow">搜索结果</p>
             <div class="search-list__title">
               {{ keyword || '搜索结果' }}
             </div>
           </div>
-          <span class="search-list__meta">{{ list.length }} 件</span>
+          <span class="search-list__meta">{{ list.length }} 件已加载</span>
         </section>
         <filter-bar @changeGoods="changeGoods($event)" />
         <van-list
@@ -35,11 +35,12 @@
             >
               <span class="search-list__card__thumb">
                 <image-pic fit="cover" width="100%" height="100%" :src="item.picUrl" />
-                <span class="search-list__card__badge">销量 {{ item.virtualSales || 0 }}</span>
               </span>
               <span class="search-list__card__body">
+                <span class="search-list__card__badge">销量 {{ item.virtualSales || 0 }}</span>
                 <span class="search-list__card__title">{{ item.name }}</span>
-                <span v-if="item.brief" class="search-list__card__desc">{{ item.brief }}</span>
+                <span class="search-list__card__desc">{{ item.brief }}</span>
+                <span class="search-list__card__sales">已售 {{ item.virtualSales || 0 }}</span>
                 <span class="search-list__card__footer">
                   <span class="search-list__card__price">¥{{ yuan(item.retailPrice) }}</span>
                   <span v-if="item.counterPrice" class="search-list__card__compare">
@@ -50,7 +51,7 @@
             </button>
           </div>
         </van-list>
-        <van-empty v-if="list && list.length <= 0" description="暂无商品" />
+        <van-empty v-if="list && list.length <= 0" description="没有搜索到商品" />
       </div>
     </template>
     <template v-else>
@@ -67,7 +68,7 @@
 <script setup>
 import { reactive, toRefs, onMounted, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { closeToast, showLoadingToast } from 'vant'
+import { closeToast, showLoadingToast, showToast } from 'vant'
 
 import { getSearchList } from '@/api/search'
 import { yuan } from '@/filter'
@@ -250,15 +251,6 @@ watch(
 </script>
 
 <style lang="scss" scoped>
-.search-list {
-  min-height: 100vh;
-  overflow-x: hidden;
-  background:
-    radial-gradient(circle at 24% 0%, rgba(0, 113, 227, 0.1), transparent 32%),
-    linear-gradient(180deg, #f5f5f7 0%, #ffffff 46%, #f5f5f7 100%);
-  color: #1d1d1f;
-}
-
 .search-list__shell {
   width: 100%;
   max-width: var(--wb-content-width);
@@ -267,47 +259,42 @@ watch(
 }
 
 .search-list__summary {
-  margin: 0 24px 18px;
-  padding: 26px 24px;
+  margin: 0 24px 16px;
+  padding: 24px 24px 26px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 16px;
-  border: 1px solid rgba(210, 210, 215, 0.7);
-  border-radius: 32px;
+  border-radius: 30px;
   background: #ffffff;
-  box-shadow: 0 18px 44px rgba(15, 23, 42, 0.07);
+  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.06);
 }
 
 .search-list__eyebrow {
   font-size: 28px;
-  line-height: 1.25;
-  font-weight: 600;
-  color: #0066cc;
+  line-height: 1.2;
+  color: rgba(29, 29, 31, 0.48);
 }
 
 .search-list__title {
-  margin-top: 8px;
-  font-size: 46px;
-  line-height: 1.12;
+  margin-top: 10px;
+  font-size: 68px;
+  line-height: 1.04;
   font-weight: 600;
   color: #1d1d1f;
-  word-break: break-word;
 }
 
 .search-list__meta {
   flex: none;
-  min-height: 48px;
-  padding: 0 20px;
+  min-height: 44px;
+  padding: 0 18px;
   display: inline-flex;
   align-items: center;
-  justify-content: center;
   border-radius: 999px;
-  background: #f2f7ff;
-  font-size: 28px;
-  font-weight: 600;
+  background: rgba(22, 119, 255, 0.08);
+  font-size: 26px;
   white-space: nowrap;
-  color: #0066cc;
+  color: #1677ff;
 }
 
 .search-list__grid {
@@ -315,62 +302,52 @@ watch(
   padding: 0 24px;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 18px;
+  gap: 16px;
   align-items: start;
 }
 
 .search-list__card {
   overflow: hidden;
   padding: 0;
-  border: 1px solid rgba(210, 210, 215, 0.64);
-  border-radius: 32px;
+  border: none;
+  border-radius: 30px;
   background: #ffffff;
   text-align: left;
-  box-shadow: 0 18px 42px rgba(15, 23, 42, 0.07);
-  transition: transform 0.18s ease, box-shadow 0.18s ease;
-}
-
-.search-list__card:active {
-  transform: scale(0.985);
-  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.08);
+  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.06);
 }
 
 .search-list__card__thumb {
-  position: relative;
   display: block;
   overflow: hidden;
-  aspect-ratio: 1 / 0.92;
-  background: linear-gradient(180deg, #fbfbfd 0%, #f5f5f7 100%);
+  background: #f5f5f7;
 }
 
 .search-list__card__body {
   display: block;
-  padding: 18px 18px 20px;
+  padding: 16px 16px 18px;
 }
 
 .search-list__card__badge {
-  position: absolute;
-  left: 14px;
-  bottom: 14px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 104px;
-  min-height: 44px;
-  padding: 0 16px;
+  min-width: 84px;
+  height: 38px;
+  padding: 0 14px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.88);
-  color: #0066cc;
-  font-size: 28px;
+  background: rgba(22, 119, 255, 0.1);
+  color: #1677ff;
+  font-size: 24px;
   font-weight: 600;
-  backdrop-filter: blur(16px);
+  letter-spacing: 0.04em;
 }
 
 .search-list__card__title {
   display: block;
-  min-height: 82px;
-  font-size: 36px;
-  line-height: 1.14;
+  margin-top: 14px;
+  min-height: 84px;
+  font-size: 34px;
+  line-height: 1.26;
   font-weight: 600;
   color: #1d1d1f;
   overflow: hidden;
@@ -381,51 +358,47 @@ watch(
 
 .search-list__card__desc {
   display: block;
-  margin-top: 12px;
-  min-height: 76px;
-  font-size: 30px;
-  line-height: 1.28;
-  color: rgba(29, 29, 31, 0.58);
+  margin-top: 10px;
+  min-height: 72px;
+  font-size: 28px;
+  line-height: 1.42;
+  color: rgba(29, 29, 31, 0.46);
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
 }
 
+.search-list__card__sales {
+  display: block;
+  margin-top: 12px;
+  font-size: 28px;
+  line-height: 1.3;
+  color: rgba(29, 29, 31, 0.44);
+}
+
 .search-list__card__footer {
   display: flex;
-  flex-wrap: wrap;
   align-items: baseline;
   gap: 10px;
-  margin-top: 18px;
+  margin-top: 16px;
 }
 
 .search-list__card__price {
-  font-size: 40px;
+  font-size: 36px;
   line-height: 1;
   font-weight: 600;
-  color: #0071e3;
+  color: #1d1d1f;
 }
 
 .search-list__card__compare {
-  font-size: 28px;
-  color: rgba(29, 29, 31, 0.38);
+  font-size: 26px;
+  color: rgba(29, 29, 31, 0.34);
   text-decoration: line-through;
 }
 
 :deep(.van-empty) {
   padding: 72px 0 32px;
-}
-
-:deep(.van-empty__description) {
-  font-size: 30px;
-  line-height: 1.4;
-  color: rgba(29, 29, 31, 0.58);
-}
-
-:deep(.van-list__finished-text) {
-  font-size: 28px;
-  color: rgba(29, 29, 31, 0.42);
 }
 
 @media (max-width: 375px) {
@@ -435,7 +408,7 @@ watch(
   }
 
   .search-list__grid {
-    gap: 14px;
+    gap: 12px;
     padding: 0 20px;
   }
 }

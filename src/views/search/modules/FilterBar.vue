@@ -43,9 +43,6 @@
       v-model:show="showSortSheet"
       position="bottom"
       round
-      teleport="body"
-      :z-index="3000"
-      :overlay-style="overlayStyle"
       class="search-filter__popup"
     >
       <div class="search-filter__handle" />
@@ -62,6 +59,7 @@
         >
           <div class="search-filter__option__copy">
             <span class="search-filter__option__title">{{ option.text }}</span>
+            <span class="search-filter__option__desc">{{ option.desc }}</span>
           </div>
           <span class="search-filter__option__check">
             <van-icon v-if="value1 === option.value" name="success" />
@@ -74,9 +72,6 @@
       v-model:show="showFilterSheet"
       position="bottom"
       round
-      teleport="body"
-      :z-index="3000"
-      :overlay-style="overlayStyle"
       class="search-filter__popup"
     >
       <div class="search-filter__handle" />
@@ -86,15 +81,17 @@
         <div class="search-filter__switch-row">
           <div>
             <p class="search-filter__switch-title">新品</p>
+            <p class="search-filter__switch-desc">优先显示最近上新的商品</p>
           </div>
-          <van-switch v-model="switch1" size="28" @change="filterNew" />
+          <van-switch v-model="switch1" size="24" @change="filterNew" />
         </div>
 
         <div class="search-filter__switch-row">
           <div>
             <p class="search-filter__switch-title">热品</p>
+            <p class="search-filter__switch-desc">筛出当前更热门的商品</p>
           </div>
-          <van-switch v-model="switch2" size="28" @change="filterHot" />
+          <van-switch v-model="switch2" size="24" @change="filterHot" />
         </div>
       </div>
 
@@ -123,11 +120,6 @@ import { computed, reactive, toRefs } from 'vue'
 
 const emit = defineEmits(['changeGoods'])
 
-const overlayStyle = {
-  background: 'rgba(255, 255, 255, 0.42)',
-  backdropFilter: 'blur(2px)',
-}
-
 const state = reactive({
   value1: '',
   switch1: false,
@@ -140,14 +132,17 @@ const state = reactive({
     {
       text: '综合推荐',
       value: '',
+      desc: '为你推荐最合适的商品',
     },
     {
       text: '新品上架',
       value: 'isNew',
+      desc: '优先展示最新上架的商品',
     },
     {
       text: '人气推荐',
       value: 'isHot',
+      desc: '优先展示最受欢迎的商品',
     },
   ],
 })
@@ -227,33 +222,23 @@ const resetFilter = () => {
 
 <style lang="scss" scoped>
 .search-filter {
-  position: sticky;
-  top: 0;
-  z-index: 8;
   display: flex;
   align-items: center;
   gap: 12px;
   padding: 0 24px 18px;
   overflow-x: auto;
-  background: linear-gradient(180deg, rgba(245, 245, 247, 0.96), rgba(245, 245, 247, 0.72) 78%, transparent);
-  backdrop-filter: blur(18px);
-  scrollbar-width: none;
-}
-
-.search-filter::-webkit-scrollbar {
-  display: none;
 }
 
 .search-filter__chip {
   flex: none;
   min-width: 98px;
-  min-height: 56px;
+  height: 52px;
   padding: 0 20px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
-  border: 1px solid rgba(210, 210, 215, 0.72);
+  border: none;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.94);
   color: #1d1d1f;
@@ -267,15 +252,14 @@ const resetFilter = () => {
 }
 
 .search-filter__chip--active {
-  border-color: #0071e3;
-  background: #0071e3;
+  background: #1d1d1f;
   color: #ffffff;
-  box-shadow: 0 12px 24px rgba(0, 113, 227, 0.18);
+  box-shadow: none;
 }
 
 .search-filter__popup {
-  padding: 14px 24px calc(28px + env(safe-area-inset-bottom, 0px));
-  background: #f5f5f7;
+  padding: 14px 24px 28px;
+  background: #f9f9fb;
 }
 
 .search-filter__handle {
@@ -287,8 +271,8 @@ const resetFilter = () => {
 }
 
 .search-filter__popup__header {
-  font-size: 40px;
-  line-height: 1.12;
+  font-size: 52px;
+  line-height: 1.08;
   font-weight: 600;
   color: #1d1d1f;
 }
@@ -299,13 +283,12 @@ const resetFilter = () => {
 
 .search-filter__option {
   width: 100%;
-  min-height: 88px;
-  padding: 0 24px;
+  padding: 22px 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  border: 1px solid rgba(210, 210, 215, 0.72);
+  border: none;
   border-radius: 28px;
   background: #ffffff;
   text-align: left;
@@ -320,13 +303,20 @@ const resetFilter = () => {
   min-width: 0;
   display: flex;
   flex-direction: column;
+  gap: 8px;
 }
 
 .search-filter__option__title {
-  font-size: 34px;
-  line-height: 1.18;
+  font-size: 42px;
+  line-height: 1.15;
   font-weight: 600;
   color: #1d1d1f;
+}
+
+.search-filter__option__desc {
+  font-size: 28px;
+  line-height: 1.4;
+  color: rgba(29, 29, 31, 0.48);
 }
 
 .search-filter__option__check {
@@ -338,25 +328,24 @@ const resetFilter = () => {
   justify-content: center;
   border-radius: 50%;
   border: 2px solid rgba(29, 29, 31, 0.12);
-  color: #0071e3;
+  color: #1677ff;
 }
 
 .search-filter__option--active {
-  border-color: rgba(0, 113, 227, 0.28);
-  background: rgba(0, 113, 227, 0.06);
-  box-shadow: inset 0 0 0 1px rgba(0, 113, 227, 0.12);
+  background: rgba(22, 119, 255, 0.06);
+  box-shadow: inset 0 0 0 2px rgba(22, 119, 255, 0.12);
 }
 
 .search-filter__option--active .search-filter__option__title {
-  color: #0071e3;
+  color: #1677ff;
 }
 
 .search-filter__option--active .search-filter__option__check {
-  border-color: #0071e3;
+  border-color: #1677ff;
 }
 
 .search-filter__switch-row {
-  min-height: 92px;
+  min-height: 116px;
   padding: 0 24px;
   display: flex;
   align-items: center;
@@ -364,7 +353,6 @@ const resetFilter = () => {
   gap: 16px;
   border-radius: 28px;
   background: #ffffff;
-  border: 1px solid rgba(210, 210, 215, 0.72);
   box-shadow: 0 14px 32px rgba(15, 23, 42, 0.05);
 }
 
@@ -373,10 +361,17 @@ const resetFilter = () => {
 }
 
 .search-filter__switch-title {
-  font-size: 34px;
+  font-size: 38px;
   line-height: 1.16;
   font-weight: 600;
   color: #1d1d1f;
+}
+
+.search-filter__switch-desc {
+  margin-top: 8px;
+  font-size: 28px;
+  line-height: 1.38;
+  color: rgba(29, 29, 31, 0.48);
 }
 
 .search-filter__actions {
@@ -387,26 +382,22 @@ const resetFilter = () => {
 
 .search-filter__action {
   flex: 1;
-  min-height: 64px;
+  height: 58px;
   border-radius: 999px;
-  font-size: 30px;
+  font-size: 28px;
   font-weight: 600;
 }
 
 .search-filter__action--ghost {
-  border: 1px solid rgba(0, 113, 227, 0.24);
-  background: #ffffff;
-  color: #0066cc;
+  border: 1px solid rgba(22, 119, 255, 0.22);
+  background: transparent;
+  color: #1677ff;
 }
 
 .search-filter__action--primary {
   border: none;
-  background: #0071e3;
+  background: #1677ff;
   color: #ffffff;
-}
-
-:deep(.van-switch--on) {
-  background: #0071e3;
 }
 
 @media (max-width: 375px) {
