@@ -115,7 +115,7 @@ const { selectedValues, selectedNum, selectedNames, syncSelectedFromInitial } = 
 )
 
 const displayPrice = computed(() => {
-  return ((Number(props.skuData.price || 0)) / 100).toFixed(2)
+  return ((Number(props.skuData.price || 0))).toFixed(2)
 })
 
 watch(

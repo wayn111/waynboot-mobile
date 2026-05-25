@@ -6,7 +6,8 @@
           <svg-icon icon-class="search" :width="20" :height="20" />
         </span>
         <span class="search__placeholder">搜索商品、分类、关键词</span>
-        <span class="search__suffix">搜索</span>
+        <span class="search__divider" />
+        <span class="search__action">搜索</span>
       </button>
     </div>
     <div class="placeholder" />
@@ -30,24 +31,26 @@ const onSearch = () => {
   position: fixed;
   top: 0;
   left: 50%;
-  width: calc(100% - 32px);
-  max-width: calc(var(--wb-content-width) - 32px);
+  width: 100%;
+  max-width: var(--wb-content-width);
   transform: translateX(-50%);
   z-index: 90;
-  padding-top: calc(max(env(safe-area-inset-top, 0px), 0px) + 10px);
+  padding: calc(max(env(safe-area-inset-top, 0px), 0px) + 14px) 18px 14px;
+  background: rgba(245, 245, 247, 0.86);
+  backdrop-filter: saturate(180%) blur(18px);
+  -webkit-backdrop-filter: saturate(180%) blur(18px);
 
   .search {
     width: 100%;
-    min-height: 68px;
-    padding: 0 12px 0 18px;
+    min-height: 72px;
+    padding: 0 20px 0 18px;
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 12px;
     border: none;
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.9);
+    background: #ffffff;
     box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
-    backdrop-filter: blur(18px);
     text-align: left;
     color: #1d1d1f;
   }
@@ -68,17 +71,17 @@ const onSearch = () => {
     text-overflow: ellipsis;
   }
 
-  .search__suffix {
+  .search__divider {
+    width: 1px;
+    height: 24px;
     flex: none;
-    min-width: 106px;
-    height: 46px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 999px;
-    background: linear-gradient(135deg, #2d7dff 0%, #1667f5 100%);
-    color: #ffffff;
-    font-size: 26px;
+    background: rgba(29, 29, 31, 0.08);
+  }
+
+  .search__action {
+    flex: none;
+    color: #0071e3;
+    font-size: 28px;
     font-weight: 600;
   }
 }

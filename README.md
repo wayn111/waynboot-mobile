@@ -59,6 +59,7 @@ Vite 代理会将 `/dev-api` 和 `/upload` 转发到 `VUE_APP_BASE_URL`。
 | --- | --- |
 | `npm run dev` | 启动本地开发服务 |
 | `npm run lint` | 检查 `src/` 下的 `.js` 和 `.vue` 文件 |
+| `npm run test:node` | 运行 Node 回归测试 |
 | `npm run build:prod` | 生产模式构建，压缩并移除 `console` / `debugger` |
 | `npm run build:dev` | 开发模式构建，便于排查构建问题 |
 | `npm run svgo` | 压缩 `src/icons/svg/` 图标 |
@@ -202,10 +203,11 @@ Vite 代理会将 `/dev-api` 和 `/upload` 转发到 `VUE_APP_BASE_URL`。
 
 ```bash
 npm run lint
+npm run test:node
 npm run build:prod
 ```
 
-当前仓库没有固定的自动化测试入口。涉及 UI 的改动，除 lint 和构建外，还需要检查：
+涉及 UI 的改动，除自动化检查外，还需要检查：
 
 - 移动端首屏是否正常渲染。
 - 页面是否出现横向滚动。

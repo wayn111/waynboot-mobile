@@ -146,6 +146,10 @@ import {
   orderRefund,
 } from '@/api/order'
 import { yuan } from '@/filter'
+import {
+  buildOrderAmountRows,
+  getPayTypeText,
+} from './order-detail-view.mjs'
 
 const route = useRoute()
 const router = useRouter()
@@ -193,7 +197,7 @@ const heroRows = computed(() => {
     },
     {
       label: '支付方式',
-      value: orderInfo.value.payTypeText || '--',
+      value: getPayTypeText(orderInfo.value),
     },
     {
       label: '支付时间',
@@ -207,25 +211,7 @@ const heroRows = computed(() => {
 })
 
 const amountRows = computed(() => {
-  return [
-    {
-      label: '商品金额',
-      value: `¥${yuan(orderInfo.value.orderPrice || 0)}`,
-    },
-    {
-      label: '运费',
-      value: `¥${yuan(orderInfo.value.freightPrice || 0)}`,
-    },
-    {
-      label: '退款金额',
-      value: `¥${yuan(orderInfo.value.refundAmount || 0)}`,
-    },
-    {
-      label: '实付金额',
-      value: `¥${yuan(orderInfo.value.actualPrice || 0)}`,
-      emphasis: true,
-    },
-  ]
+  return buildOrderAmountRows(orderInfo.value)
 })
 
 const actionButtonList = computed(() => {
