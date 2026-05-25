@@ -16,18 +16,10 @@ const mutations = {
 
 const actions = {
   // 获取地址列表
-  getList({ commit }) {
-    return new Promise((resolve, reject) => {
-      getAddress()
-        .then((res) => {
-          const { data } = res
-          commit('SET_ADDRESS_LIST', data)
-          resolve(data)
-        })
-        .catch((error) => {
-          reject(error)
-        })
-    })
+  async getList({ commit }) {
+    const { data } = await getAddress()
+    commit('SET_ADDRESS_LIST', data)
+    return data
   },
   // 设置地址列表
   setList({ commit, state }, index) {

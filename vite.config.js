@@ -7,6 +7,7 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
   const port = env.port || env.npm_config_port || 4949
   const baseUrl = env.VUE_APP_BASE_URL || 'http://localhost:82'
+  const isProd = mode === 'production'
 
   return {
     base: '/mall/',
@@ -36,6 +37,21 @@ export default defineConfig(({ mode }) => {
         '/upload': {
           target: baseUrl,
           changeOrigin: true
+        }
+      }
+    },
+    build: {
+      minify: isProd ? 'terser' : false,
+      terserOptions: isProd ? {
+        compress: { drop_console: true, drop_debugger: true }
+      } : undefined,
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            'vue-vendor': ['vue', 'vue-router', 'vuex'],
+            'vant': ['vant'],
+            'wx': ['weixin-js-sdk'],
+          }
         }
       }
     }

@@ -44,7 +44,8 @@
             v-model:loading="loading"
             :finished="finished"
             :immediate-check="false"
-            @load="getOrderList"
+            finished-text="没有更多了"
+            @load="onLoad"
           >
             <div class="order-list__content">
               <div v-if="orderListEmptyShow" class="order-list__empty">
@@ -249,32 +250,9 @@ const hasActions = (order) => {
   )
 }
 
-const init = () => {
-  page.value = 0
-  orderList.value = []
-  finished.value = false
-  orderListEmptyShow.value = false
-  getOrderList(true)
-}
-
-const onRefresh = () => {
-  refreshing.value = true
-  page.value = 0
-  orderList.value = []
-  finished.value = false
-  getOrderList(true)
-}
-
-const getOrderList = async (initLoad = false) => {
-  if (loading.value || finished.value) {
-    refreshing.value = false
-    return
-  }
-
-  loading.value = true
-  orderListEmptyShow.value = false
+// van-list @load 回调 — 只负责加载下一页
+const onLoad = async () => {
   page.value += 1
-
   try {
     const res = await listOrder({
       showType: routeType.value,
@@ -284,32 +262,40 @@ const getOrderList = async (initLoad = false) => {
       sortName: 'updateTime,createTime',
       sortOrder: 'desc',
     })
-
     const list = res.data?.data || []
     orderList.value.push(...list)
     finished.value = (res.data?.page || 0) >= (res.data?.pages || 0)
-
-    if (initLoad && list.length <= 0) {
+    if (page.value === 1 && list.length === 0) {
       orderListEmptyShow.value = true
     }
   } catch (error) {
     page.value = Math.max(0, page.value - 1)
-    showToast({
-      type: 'fail',
-      message: error?.message || '订单列表加载失败',
-    })
+    showToast({ type: 'fail', message: error?.message || '订单列表加载失败' })
   } finally {
     loading.value = false
     refreshing.value = false
   }
 }
 
+// 重置状态，让 van-list 重新触发 @load
+const init = () => {
+  page.value = 0
+  orderList.value = []
+  finished.value = false
+  loading.value = false
+  orderListEmptyShow.value = false
+  onLoad()
+}
+
+const onRefresh = () => {
+  init()
+  onLoad()
+}
+
 const refreshListWithToast = (message) => {
   init()
-  showToast({
-    type: 'success',
-    message,
-  })
+  onLoad()
+  showToast({ type: 'success', message })
 }
 
 const delOrder = (id) => {
@@ -475,7 +461,7 @@ watch(
 }
 
 .order-list__refresh {
-  min-height: calc(100vh - 100px);
+  min-height: 50vh;
 }
 
 .order-list__content {
@@ -512,14 +498,14 @@ watch(
   width: 100%;
   max-width: var(--wb-content-width);
   margin: 0 auto;
-  padding: 0 18px 16px;
+  // padding: 0 18px 16px;
   background: rgba(245, 245, 247, 0.86);
   backdrop-filter: saturate(180%) blur(18px);
 }
 
 :deep(.van-tabs__nav) {
   padding: 8px;
-  border-radius: 999px;
+  // border-radius: 999px;
   background: #ffffff;
   box-shadow: 0 12px 30px rgba(15, 23, 42, 0.05);
 }
@@ -528,7 +514,7 @@ watch(
   bottom: 12px;
   width: 32px !important;
   height: 6px;
-  border-radius: 999px;
+  // border-radius: 999px;
   background: #0071e3;
 }
 

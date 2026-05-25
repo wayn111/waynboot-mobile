@@ -1,110 +1,220 @@
-## waynboot-mall项目
+# waynboot-mobile
 
-waynboot-mall是一套全部开源的微商城项目，包含一个运营后台、h5商城和后台接口。
-实现了一个商城所需的首页展示、商品分类、商品详情、sku详情、商品搜索、加入购物车、结算下单、订单状态流转、商品评论等一系列功能。
-技术上基于Springboot2.0，整合了Redis、RabbitMQ、ElasticSearch等常用中间件，
-贴近生产环境实际经验开发而来不断完善、优化、改进中。
+`waynboot-mobile` 是 `waynboot-mall` 的移动端 H5 商城前台，负责首页、分类、搜索、商品详情、购物车、下单、支付、订单、地址、优惠券和用户中心等核心购物链路。
 
-- [h5商城项目](https://github.com/wayn111/waynboot-mobile)
-- [运营后台项目](https://github.com/wayn111/waynboot-admin)  
-- [后台接口项目](https://github.com/wayn111/waynboot-mall)  
+项目已经迁移到 Vue 3 + Vite 6 + Vant 4。当前代码重点是移动端体验、浅色 Apple 风格 UI、清晰商品信息和稳定下单流程。
 
-## waynboot-mobile
+## 技术栈
 
-* 基于vue2 + VantUI开发的h5商城
-* 提供一般商城项目所需要的基本功能
-* `vw` 移动端适配，`css` 预处理器，浏览器默认样式处理
-* axios响应拦截，统一异常处理
-* 支持`svg-icon` 图标组件
+| 分类 | 方案 |
+| --- | --- |
+| 应用框架 | Vue 3、Composition API、`<script setup>` |
+| 构建工具 | Vite 6、`@vitejs/plugin-vue` |
+| UI 组件 | Vant 4 |
+| 路由 | Vue Router 4，Hash 路由，部署基础路径 `/mall/` |
+| 状态管理 | Vuex 4，模块自动注册 |
+| 请求 | Axios，统一 Token 注入和业务错误处理 |
+| 样式 | Sass、`postcss-pxtorem`、项目设计系统 |
+| 图标 | 本地 SVG 图标插件、FontAwesome、iconfont |
+| 微信能力 | `weixin-js-sdk` |
 
-> 如果有任何使用问题，欢迎提交Issue或加wx告知，方便互相交流反馈～ 💘。最后，喜欢的话麻烦给我个star
+## 快速开始
 
-关注我的公众号：程序员wayn，专注技术干货输出、分享开源项目。回复关键字：
+### 环境要求
 
-- **加群**：加群交流，探讨技术问题。
-- **演示账号**：获得 waynboot-mall 商城后台演示账号。
-- **开源项目**：获取我写的三个开源项目，包含PC、H5商城、后台权限管理系统等。
-- **wayn商城资料**：获取wayhboot-mall项目配套资料以及商城图片压缩包下载地址。
-- **加微信**：联系我。
+- Node.js >= 18
+- npm
 
-<img src="images/wx-mp-code.png" width = "100" />
+### 安装依赖
 
----
-
-## 文件目录
-```javascript
-|-- public                // public
-|-- config                // config配置文件
-|-- src
-|   |-- api               // 接口列表
-|   |-- assets            // 图片资源
-|   |-- components        // 公共组件
-|   |-- filter            // 全局过滤器
-|   |-- icons             // svg图标
-|   |-- router            // 路由
-|   |-- store             // vuex
-|   |-- styles            // 公共样式
-|   |-- types             // 文件声明
-|   |-- utils             // 工具函数
-|   |-- views             // 商城各级页面
-|   |   |-- ....          // ...
-|   |-- App.vue           // 主页面
-|   |-- main.js           // 入口文件
-|   |-- permission.js     // 权限控制文件
-|-- .eslintrc.js          // eslint配置
-|-- babel.config.js       // babel配置文件
-|-- jsconfig.config.js    // vscode配置文件
-|-- env.development       // 开发环境配置
-|-- env.production        // 生产环境配置
-|-- jsconfig.config.js    // vscode配置文件
-|-- package.json          // 客户端依赖
-|-- postcss.config.js     // postcss配置文件
-|-- vue.config.js         // vue相关配置文件
-|-- ...
-```
-
-## 本地开发
-```
-# 前置准备
-下载 nodejs v16.20.1 版本
-
-# 克隆项目
-git clone git@github.com:wayn111/waynboot-mobile.git
-
-# 进入项目目录
-cd waynboot-mobile
-
-// 清空缓存
-npm cache clean --force
-
-// 切换新淘宝源
-npm config set registry https://registry.npmmirror.com
-
-# 安装依赖
+```bash
 npm install
+```
 
-# 启动服务
+### 启动开发服务
+
+```bash
 npm run dev
 ```
 
-## 在线体验
+默认访问地址：
 
-演示地址以及账号：关注我的公众号【程序员wayn】，发送 演示账号
+```text
+http://localhost:4949/mall/#/
+```
 
-## 演示gif
+开发环境接口配置来自 `.env.development`：
 
-![Alt text](images/mall.gif)
+```text
+VUE_APP_BASE_PATH=/mall
+VUE_APP_BASE_API=/dev-api
+VUE_APP_BASE_URL=http://localhost:82
+```
 
-## waynboot-mall交流群
+Vite 代理会将 `/dev-api` 和 `/upload` 转发到 `VUE_APP_BASE_URL`。
 
-关注我的公众号【程序员wayn】，发送 加群，拉你进我的技术交流群
+## 常用命令
 
-## 感谢
+| 命令 | 说明 |
+| --- | --- |
+| `npm run dev` | 启动本地开发服务 |
+| `npm run lint` | 检查 `src/` 下的 `.js` 和 `.vue` 文件 |
+| `npm run build:prod` | 生产模式构建，压缩并移除 `console` / `debugger` |
+| `npm run build:dev` | 开发模式构建，便于排查构建问题 |
+| `npm run svgo` | 压缩 `src/icons/svg/` 图标 |
 
-- [panda-mall](https://github.com/Ewall1106/vue-h5-template)
-- [litemall](https://github.com/linlinjava/litemall)
-- [vant-ui](https://github.com/youzan/vant)
+## 目录结构
 
-# 捐助
+```text
+.
+├── build/                  # Vite 自定义插件
+├── public/                 # 公共静态资源
+├── src/
+│   ├── api/                # 业务接口封装
+│   ├── assets/             # 本地图片、iconfont 等资源
+│   ├── components/         # 全局可复用组件和插件注册
+│   ├── filter/             # 全局格式化方法
+│   ├── icons/svg/          # SVG 图标源文件
+│   ├── router/             # 路由配置
+│   ├── store/              # Vuex 入口与业务模块
+│   ├── styles/             # 全局样式、设计系统、Vant 覆盖
+│   ├── utils/              # 请求、鉴权、适配和通用工具
+│   ├── views/              # 页面级视图
+│   ├── App.vue             # 应用根组件
+│   ├── main.js             # 应用入口
+│   └── permission.js       # 路由权限守卫
+├── vite.config.js          # Vite 配置
+├── postcss.config.js       # PostCSS / pxtorem 配置
+├── package.json            # 脚本和依赖
+└── README.md
+```
 
-<img src="./images/捐助.jpg" width="260" alt="如果这个项目对你有所帮助，不如请作者喝杯咖啡吧">
+## 核心模块
+
+### 应用入口
+
+`src/main.js` 负责创建应用并注册核心能力：
+
+- `router`：页面路由。
+- `store`：Vuex 状态管理。
+- `setupVant(app)`：Vant 组件和兼容 API。
+- `setupWx(app)`：微信 SDK。
+- `setupFontAwesome(app)`：FontAwesome 图标。
+- `setupCommonComponents(app)`：`image-pic`、`nav-bar`、`svg-icon`、`back-top` 等公共组件。
+- `setupFilters(app)`：全局格式化方法。
+
+### 路由与权限
+
+路由位于 `src/router/index.js`，统一使用 `createWebHashHistory()` 和页面懒加载。
+
+`src/permission.js` 负责：
+
+- 根据 `meta.title` 设置页面标题。
+- 基于 Cookie Token 判断登录态。
+- 对购物车、订单、地址、用户中心等页面做登录拦截。
+- 未登录时跳转 `/login?redirect=...`。
+- 路由结束后关闭 Vant Toast。
+
+### 接口层
+
+`src/api/` 按业务域拆分：
+
+- `home.js`：首页数据。
+- `category.js`：分类。
+- `search.js`：搜索。
+- `product.js` / `diamond.js` / `detail.js`：商品列表、专题和详情。
+- `cart.js`：购物车。
+- `order.js` / `pay.js` / `coupon.js`：订单、支付和优惠券。
+- `login.js` / `user.js` / `address.js`：登录、用户和地址。
+
+统一请求实例在 `src/utils/request.js`：
+
+- 使用 `import.meta.env.VUE_APP_BASE_API` 作为 `baseURL`。
+- 请求时自动携带 `Authorization`。
+- 统一处理业务 `code`、登录失效和错误提示。
+- 提供 `formDataPost()` 兼容表单提交接口。
+
+### 状态管理
+
+`src/store/index.js` 通过 `import.meta.glob('./modules/*.js', { eager: true })` 自动注册模块。当前主要模块：
+
+- `user`：Token、用户信息、登录和退出。
+- `address`：地址列表、默认地址和当前选择。
+- `search`：搜索历史与搜索状态。
+
+### 移动端适配
+
+- `src/utils/flexible` 设置根字号。
+- `postcss-pxtorem` 将 `px` 转为 `rem`。
+- 项目样式 `rootValue` 为 `75`，Vant 样式 `rootValue` 为 `37.5`。
+- `.ignore` 选择器会跳过转换。
+
+## 页面入口
+
+| 路由 | 页面 |
+| --- | --- |
+| `/` | 首页 |
+| `/category` | 分类 |
+| `/search` | 搜索 |
+| `/search/list` | 搜索结果 |
+| `/product/:categoryLevel/:cateId` | 分类商品列表 |
+| `/diamondGoodsList/:diamondId` | 金刚位专题商品列表 |
+| `/detail/:goodsId` | 商品详情 |
+| `/cart` | 购物车 |
+| `/order/confirm` | 确认订单 |
+| `/order/pay` | 订单支付 |
+| `/order/payStatus` | 支付结果 |
+| `/user/order/list/:active` | 订单列表 |
+| `/order/detail/:orderSn` | 订单详情 |
+| `/order/coupon` | 领券中心 |
+| `/order/my` | 我的优惠券 |
+| `/address` | 地址管理 |
+| `/user` | 我的 |
+| `/userSetting` | 用户设置 |
+| `/login` | 登录 |
+| `/registry` | 注册 |
+
+## UI 与设计约束
+
+商城前台 UI 以 `DESIGN.md` 和 `AGENTS.md` 为准，落地为浅色 Apple 风格 H5：
+
+- 页面背景以 `#f5f5f7`、白色和浅灰为主。
+- 主文字使用 `#1d1d1f`，主交互使用 `#0071e3`。
+- 正文和按钮文字保持移动端可读，不使用过小字号。
+- 卡片遵循单层容器原则，避免玻璃嵌套和厚重阴影。
+- 首页、分类、搜索、购物车、订单、我的等前台页面禁止大面积黑底。
+- 不引入与商城功能无关的品牌口号、装饰性长文案和占位描述。
+- UI 改动后必须使用移动端 viewport、移动端 UA 和 touch 环境自检。
+
+## 开发约定
+
+- 新页面使用 Vue 3 `<script setup>`。
+- 页面放在 `src/views/<module>/`，仅当前页面使用的子组件放在页面 `modules/` 目录。
+- 可跨页面复用的组件放在 `src/components/`。
+- 业务接口按领域放在 `src/api/`。
+- Vant Toast、Dialog、Notify 优先使用函数式 API。
+- 路由组件直接使用 `() => import(...)` 懒加载。
+- 删除文件前必须先通过路由、导入和全局注册确认没有引用。
+
+## 提交前检查
+
+建议至少执行：
+
+```bash
+npm run lint
+npm run build:prod
+```
+
+当前仓库没有固定的自动化测试入口。涉及 UI 的改动，除 lint 和构建外，还需要检查：
+
+- 移动端首屏是否正常渲染。
+- 页面是否出现横向滚动。
+- 固定底栏、Tabbar、结算栏是否遮挡内容。
+- 搜索、筛选、加购、下单、支付、跳转等核心操作是否可点击。
+- 控制台是否出现新增 error / warn。
+
+## 相关项目
+
+- H5 商城：<https://github.com/wayn111/waynboot-mobile>
+- 运营后台：<https://github.com/wayn111/waynboot-admin>
+- 后台接口：<https://github.com/wayn111/waynboot-mall>

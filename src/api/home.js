@@ -8,18 +8,18 @@ export function getRecommonGoodsList(query) {
   })
 }
 
-export function getHomeData(data) {
+export function getHomeData(params) {
   return request({
     url: '/home/index',
     method: 'get',
-    data
+    params
   })
 }
 
-export function getMallConfig(data) {
+export function getMallConfig(params) {
   return request({
     url: '/home/mallConfig',
     method: 'get',
-    data
+    params
   })
 }

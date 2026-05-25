@@ -33,10 +33,6 @@ service.interceptors.response.use(
 
     // 返回码不正确
     if (res.code !== 200) {
-      // 5001订单不存在
-      // if (res.code !== 5001) {
-      //   showToast({ type: 'fail', message: res.msg })
-      // }
       // 401未登陆
       if (res.code === 401) {
         showDialog({
@@ -47,7 +43,7 @@ service.interceptors.response.use(
             router.push({ name: 'Login' })
           })
         })
-        return
+        return Promise.reject(new Error(res.msg || '未登录'))
       }
       // 订单轮询
       if (res.code === 5001) {

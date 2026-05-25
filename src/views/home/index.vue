@@ -42,7 +42,7 @@
 import { onMounted, reactive, toRefs } from 'vue'
 
 import { getHomeData, getRecommonGoodsList } from '@/api/home'
-import { orderCoupon } from '@/api/order'
+import { orderCoupon } from '@/api/coupon'
 import Header from './modules/Header'
 import Swiper from './modules/Swiper'
 import CouponEntry from './modules/CouponEntry'

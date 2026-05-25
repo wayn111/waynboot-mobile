@@ -1,9 +1,6 @@
 <template>
   <div class="user wb-page wb-page--tabbed">
     <div class="user__shell">
-      <header class="user__header">
-        <h1 class="user__title">我的</h1>
-      </header>
       <section class="user__hero">
         <Info />
       </section>

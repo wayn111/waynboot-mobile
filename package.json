@@ -1,13 +1,12 @@
 {
   "name": "waynboot-mall",
   "version": "2.2.1",
-  "author": "Ewall&熊猫 and wayn",
+  "author": "wayn",
   "scripts": {
     "dev": "vite",
     "build:dev": "vite build --mode development",
     "build:prod": "vite build --mode production",
     "lint": "eslint src --ext .js,.vue",
-    "test:node": "node --test tests/sku-state.test.mjs",
     "svgo": "svgo -f src/icons/svg --config=src/icons/svgo.yml"
   },
   "dependencies": {
@@ -46,6 +45,7 @@
     "postcss-pxtorem": "^6.1.0",
     "sass": "^1.66.1",
     "svgo": "^1.3.2",
+    "terser": "^5.48.0",
     "vite": "^6.4.2"
   },
   "engines": {

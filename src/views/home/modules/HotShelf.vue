@@ -152,7 +152,7 @@ const onAddCart = async (goodsId) => {
   aspect-ratio: 1 / 1.05;
   overflow: hidden;
   border-radius: 22px;
-  background: #f7f8fb;
+  // background: #f7f8fb;
 }
 
 .hot-shelf__item__media img {

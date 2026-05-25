@@ -1,39 +1,27 @@
 <template>
   <div class="skeleton">
-    <ContentLoader width="325" height="600">
-      <rect x="10" y="5" rx="3" ry="3" width="305" height="30" />
-
-      <rect x="10" y="42" rx="3" ry="3" width="305" height="80" />
-
-      <rect x="10" y="130" rx="3" ry="3" width="305" height="80" />
-
-      <rect x="10" y="220" rx="3" ry="3" width="305" height="80" />
-
-      <rect x="10" y="310" rx="3" ry="3" width="305" height="80" />
-
-      <rect x="10" y="400" rx="3" ry="3" width="305" height="20" />
-      <rect x="60" y="435" rx="3" ry="3" width="205" height="10" />
-      <rect x="60" y="460" rx="3" ry="3" width="205" height="10" />
+    <ContentLoader width="375" height="760" primary-color="#ffffff" secondary-color="#f5f5f7">
+      <rect x="24" y="24" rx="18" ry="18" width="327" height="220" />
+      <rect x="24" y="284" rx="18" ry="18" width="327" height="146" />
+      <rect x="24" y="450" rx="18" ry="18" width="327" height="146" />
+      <rect x="24" y="616" rx="18" ry="18" width="327" height="146" />
     </ContentLoader>
   </div>
 </template>
 
 <script setup>
-
-
-// https://github.com/egoist/vue-content-loader
 import { ContentLoader } from 'vue-content-loader'
 </script>
 
 <style lang="scss" scoped>
 .skeleton {
   position: fixed;
-  top: 0;
+  top: 92px;
   left: 0;
   right: 0;
   bottom: 0;
   z-index: 999;
   overflow: hidden;
-  background: #fff;
+  background: #f5f5f7;
 }
 </style>

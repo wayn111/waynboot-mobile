@@ -82,7 +82,7 @@ import { computed, onMounted, reactive, toRefs } from 'vue'
 import { useRouter } from 'vue-router'
 import { showToast } from 'vant'
 
-import { orderCouponMy } from '@/api/order'
+import { orderCouponMy } from '@/api/coupon'
 import NavBar from '@/components/NavBar'
 
 const router = useRouter()

@@ -48,7 +48,6 @@ router.beforeEach(async (to, from, next) => {
     }
   } else {
     if (pathMatcher(whiteList, to.path)) {
-      console.log(to.path)
       next()
     } else {
       // 反之则去登录页面

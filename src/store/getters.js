@@ -10,13 +10,7 @@ const getters = {
   selectedAddress: (state) => state.address.selectedAddress,
 
   // search
-  searchKey: (state) => {
-    if (state.search.searchKey.length <= 0) {
-      return JSON.parse(localStorage.getItem('searchKey')) || []
-    } else {
-      return state.search.searchKey
-    }
-  }
+  searchKey: (state) => state.search.searchKey
 }
 
 export default getters

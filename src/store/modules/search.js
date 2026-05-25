@@ -1,5 +1,5 @@
 const state = {
-  searchKey: []
+  searchKey: JSON.parse(localStorage.getItem('searchKey')) || []
 }
 
 const mutations = {
@@ -15,18 +15,10 @@ const mutations = {
 const actions = {
   // 保存搜索词
   setKey({ commit, state }, key) {
-    if (state.searchKey.length <= 0) {
-      const rlt = JSON.parse(localStorage.getItem('searchKey')) || []
-      if (rlt.indexOf(key) < 0) {
-        rlt.unshift(key)
-        commit('SET_KEY', rlt)
-      }
-    } else {
-      const rlt = [...state.searchKey]
-      if (rlt.indexOf(key) < 0) {
-        rlt.unshift(key)
-        commit('SET_KEY', rlt)
-      }
+    const rlt = [...state.searchKey]
+    if (rlt.indexOf(key) < 0) {
+      rlt.unshift(key)
+      commit('SET_KEY', rlt)
     }
   },
   // 删除搜索词

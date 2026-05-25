@@ -21,12 +21,7 @@ export function toDecimal2(x) {
 
 export const Valid = class Valid {
   static checkPhone(num) {
-    if (num === 123456789) return true
-    const reg = /^[1][3,4,5,7,8][0-9]{9}$/
-    if (reg.test(num)) {
-      return true
-    }
-    return false
+    return /^1[34578]\d{9}$/.test(num)
   }
 }
 
@@ -35,21 +30,11 @@ export function str2date(str, format) {
 }
 
 export function pathMatcher(matcherArr, path) {
-  let flag = false
-  matcherArr.forEach((item) => {
-    if (item.indexOf(path) > -1) {
-      flag = true
-      return
+  return matcherArr.some((item) => {
+    if (item.includes('**')) {
+      const prefix = item.slice(0, item.indexOf('**'))
+      return path.startsWith(prefix)
     }
-    if (item.indexOf('**') > -1) {
-      const newLocal = item.indexOf('**')
-      const matcher = item.substr(0, newLocal)
-      const target = path.substr(0, newLocal)
-      if (matcher === target) {
-        flag = true
-        return
-      }
-    }
+    return item === path
   })
-  return flag
 }

@@ -115,7 +115,7 @@ import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { showDialog, showToast } from 'vant'
 
-import { orderCoupon, orderReceive } from '@/api/order'
+import { orderCoupon, orderReceive } from '@/api/coupon'
 import { getToken } from '@/utils/auth'
 import NavBar from '@/components/NavBar'
 

@@ -117,45 +117,36 @@ const isItemSelectable = (item) => {
   return Number(item?.maxNum) >= Number(item?.number)
 }
 
+const selectableList = computed(() => list.value.filter(isItemSelectable))
+
 const amount = computed(() => {
-  return list.value
-    .filter((item) => isItemSelectable(item) && item.checked)
-    .reduce((total, item) => {
-      return total + Number(item.price || 0) * Number(item.number || 0)
-    }, 0)
+  return selectableList.value
+    .filter((item) => item.checked)
+    .reduce((total, item) => total + Number(item.price || 0) * Number(item.number || 0), 0)
 })
 
-const selectedCartIds = computed(() => {
-  return list.value
-    .filter((item) => isItemSelectable(item) && item.checked)
-    .map((item) => item.id)
-})
+const selectedCartIds = computed(() =>
+  selectableList.value.filter((item) => item.checked).map((item) => item.id)
+)
 
 const isAllSelect = computed(() => {
-  const selectableList = list.value.filter((item) => isItemSelectable(item))
-  if (selectableList.length <= 0) {
-    return false
-  }
-  return selectableList.every((item) => item.checked)
+  if (selectableList.value.length <= 0) return false
+  return selectableList.value.every((item) => item.checked)
 })
 
-const totalCount = computed(() => {
-  return list.value.reduce((total, item) => total + Number(item.number || 0), 0)
-})
+const totalCount = computed(() =>
+  list.value.reduce((total, item) => total + Number(item.number || 0), 0)
+)
 
-const selectedCount = computed(() => {
-  return list.value
-    .filter((item) => isItemSelectable(item) && item.checked)
+const selectedCount = computed(() =>
+  selectableList.value
+    .filter((item) => item.checked)
     .reduce((total, item) => total + Number(item.number || 0), 0)
-})
+)
 
-const validItemCount = computed(() => {
-  return list.value.filter((item) => isItemSelectable(item)).length
-})
+const validItemCount = computed(() => selectableList.value.length)
 
-const invalidItemCount = computed(() => {
-  return list.value.filter((item) => !isItemSelectable(item)).length
-})
+const invalidItemCount = computed(() => list.value.length - selectableList.value.length)
 
 const getList = async () => {
   try {
